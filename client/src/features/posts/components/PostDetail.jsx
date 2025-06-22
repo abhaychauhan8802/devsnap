@@ -6,13 +6,17 @@ import PostAuthorInfo from "./PostAuthorInfo";
 import PostContent from "./PostContent";
 
 const PostDetail = () => {
-  const { post, getPost } = usePostStore();
+  const { post, getPost, postLoading } = usePostStore();
 
   const params = useParams();
 
   useEffect(() => {
-    getPost(params.postId);
+    if (!post) {
+      getPost(params.postId);
+    }
   }, [getPost]);
+
+  if (postLoading) return;
 
   return (
     <div className="flex pt-4 px-8 pb-10">

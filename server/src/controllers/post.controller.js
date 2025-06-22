@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import sharp from "sharp";
 
 import Comment from "../models/comment.model.js";
@@ -142,11 +143,11 @@ export const getPost = async (req, res) => {
   }
 };
 
-export const getAuthPost = async (req, res) => {
+export const getUserPost = async (req, res) => {
   try {
-    const authorId = req.id;
+    const userId = req.params.id;
 
-    const posts = await Post.find({ author: authorId })
+    const posts = await Post.find({ author: userId })
       .sort({ createdAt: -1 })
       .populate({
         path: "author",
@@ -155,7 +156,7 @@ export const getAuthPost = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: posts,
+      posts,
     });
   } catch (error) {
     res.status(500).json({
@@ -240,7 +241,7 @@ export const addComment = async (req, res) => {
         .status(404)
         .json({ success: false, message: "Post not found" });
 
-    const comment = await Comment.create({
+    let comment = await Comment.create({
       text,
       author: userId,
       post: postId,
@@ -268,10 +269,12 @@ export const getCommentsOfPost = async (req, res) => {
   try {
     const postId = req.params.id;
 
-    const comments = await Comment.find({ post: postId }).populate({
-      path: "author",
-      select: "username profilePicture",
-    });
+    const comments = await Comment.find({ post: postId })
+      .populate({
+        path: "author",
+        select: "_id name username profilePicture",
+      })
+      .sort({ createdAt: -1 });
 
     if (!comments)
       return res
@@ -280,7 +283,7 @@ export const getCommentsOfPost = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: comments,
+      comments,
     });
   } catch (error) {
     res.status(500).json({
@@ -330,5 +333,35 @@ export const bookmarkPost = async (req, res) => {
     });
 
     console.log("Error in bookmarkPost route", error.message);
+  }
+};
+
+export const getBookmarks = async (req, res) => {
+  try {
+    const userId = req.id;
+
+    let user = await User.findById(userId).select("-password");
+
+    if (!user)
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+
+    user = await user.populate({
+      path: "bookmarks",
+      populate: {
+        path: "author",
+        select: "username profilePicture",
+      },
+    });
+
+    res.status(200).json({ success: true, bookmarks: user.bookmarks });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+
+    console.log("Error in getBookmarks route", error.message);
   }
 };

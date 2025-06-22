@@ -12,7 +12,6 @@ export const useAuthStore = create(
       checkAuthLoading: false,
       onlineUsers: [],
       socket: null,
-      suggestedUsers: [],
 
       checkAuth: async () => {
         set({ checkAuthLoading: true });
@@ -65,15 +64,6 @@ export const useAuthStore = create(
           toast.success(res.data.message);
         } catch (error) {
           toast.error(error?.response?.data?.message);
-        }
-      },
-
-      getSuggested: async () => {
-        try {
-          const res = await axiosInstance("/user/suggested");
-          set({ suggestedUsers: res?.data?.users });
-        } catch (error) {
-          console.log(error?.response?.data?.message);
         }
       },
     }),

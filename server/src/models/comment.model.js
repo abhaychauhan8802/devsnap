@@ -5,6 +5,7 @@ const commentSchema = new mongoose.Schema(
     text: {
       type: String,
       required: true,
+      maxLength: [100, "Comment cannot exceed 100 characters"],
     },
     author: {
       type: mongoose.Schema.Types.ObjectId,

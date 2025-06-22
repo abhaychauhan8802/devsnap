@@ -1,8 +1,3 @@
-import { Logo } from "@/components";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useAuthStore } from "@/store/useAuthStore";
 import { Loader2Icon } from "lucide-react";
 import { EyeOff } from "lucide-react";
 import { Eye } from "lucide-react";
@@ -12,6 +7,12 @@ import { useState } from "react";
 import { Navigate } from "react-router";
 import { Link, data } from "react-router";
 import { useNavigate } from "react-router";
+
+import { Logo } from "@/components";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useAuthStore } from "@/store/useAuthStore";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -73,7 +74,7 @@ const Register = () => {
                     onChange={(e) =>
                       setFormData({ ...formData, email: e.target.value })
                     }
-                    className="bg-secondary h-12"
+                    className="h-12"
                   />
                 </div>
 
@@ -92,7 +93,7 @@ const Register = () => {
                           password: e.target.value,
                         })
                       }
-                      className="bg-secondary h-12"
+                      className="h-12"
                     />
                     <Button
                       variant="ghost"
@@ -116,7 +117,7 @@ const Register = () => {
                     onChange={(e) =>
                       setFormData({ ...formData, name: e.target.value })
                     }
-                    className="bg-secondary h-12"
+                    className="h-12"
                   />
                 </div>
 
@@ -131,7 +132,7 @@ const Register = () => {
                     onChange={(e) =>
                       setFormData({ ...formData, username: e.target.value })
                     }
-                    className="bg-secondary h-12"
+                    className="h-12"
                   />
                 </div>
 
@@ -155,7 +156,7 @@ const Register = () => {
               <div className="pt-1 border-gray-200">
                 <Button
                   asChild
-                  variant="outlineblue"
+                  variant="outlineColor"
                   className="w-full"
                   size="xl"
                   type="button"

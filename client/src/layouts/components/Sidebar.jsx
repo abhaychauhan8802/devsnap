@@ -1,3 +1,10 @@
+import { Plus } from "lucide-react";
+import { Compass, House, LogOut, MessageCircleMore, Users } from "lucide-react";
+import { useMediaQuery } from "react-responsive";
+import { Link } from "react-router";
+import { useLocation } from "react-router";
+
+import AvatarImg from "@/assets/images/avatar.png";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,12 +16,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useAuthStore } from "@/store/useAuthStore";
-import { getInitials } from "@/utils/getInitials";
-import { Plus } from "lucide-react";
-import { Compass, House, LogOut, MessageCircleMore, Users } from "lucide-react";
-import { useMediaQuery } from "react-responsive";
-import { Link } from "react-router";
-import { useLocation } from "react-router";
 
 const Sidebar = () => {
   const { authUser, logout } = useAuthStore();
@@ -49,7 +50,7 @@ const Sidebar = () => {
         <Avatar className="size-6">
           <AvatarImage src={authUser.profilePicture} alt="pfp" />
           <AvatarFallback className="bg-gray-800 dark:bg-gray-600 text-white text-xs font-semibold">
-            {getInitials(authUser.username)}
+            <img src={AvatarImg} alt="profilePicture" />
           </AvatarFallback>
         </Avatar>
       ),
@@ -72,7 +73,10 @@ const Sidebar = () => {
           </span>
 
           {/* Add new post button */}
-          <Button size={isDesktop ? "lg" : "icon"} className="lg:w-full">
+          <Button
+            size={isDesktop ? "lg" : "icon"}
+            className="lg:w-full ml-1 lg:ml-0"
+          >
             <Plus /> <span className="hidden lg:inline-block">New Post</span>
           </Button>
 

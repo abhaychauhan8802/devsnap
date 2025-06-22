@@ -9,6 +9,7 @@ export const usePostStore = create((set, get) => ({
   posts: [],
   post: null,
   postLoading: false,
+  postComments: [],
 
   getAllPost: async () => {
     set({ postLoading: true });
@@ -27,13 +28,14 @@ export const usePostStore = create((set, get) => ({
   },
 
   getPost: async (postId) => {
-    if (get().post) return;
-
+    set({ postLoading: true });
     try {
       const res = await axiosInstance.get(`/post/${postId}`);
       set({ post: res.data.post });
     } catch (error) {
       console.log(error.response?.data?.message);
+    } finally {
+      set({ postLoading: false });
     }
   },
 
@@ -41,21 +43,23 @@ export const usePostStore = create((set, get) => ({
     const authUserId = useAuthStore.getState().authUser._id;
     const liked = post.likes.includes(authUserId);
 
-    const updatedPost = get().posts.map((p) => {
-      if (p._id === post._id) {
-        const updatedLikes = liked
-          ? p.likes.filter((id) => id !== authUserId)
-          : [...p.likes, authUserId];
+    const updatedPostData = {
+      ...post,
+      likes: liked
+        ? post.likes.filter((id) => id !== authUserId)
+        : [...post.likes, authUserId],
+    };
 
-        return { ...p, likes: updatedLikes };
-      }
-
-      return p;
-    });
+    const updatedPost = get().posts.map((p) =>
+      p._id === post._id ? updatedPostData : p,
+    );
 
     const isLikeOfDislike = liked ? "dislike" : "like";
 
-    set({ posts: updatedPost });
+    set({
+      posts: updatedPost,
+      post: updatedPostData,
+    });
     try {
       await axiosInstance.post(`/post/${post._id}/${isLikeOfDislike}`);
     } catch (error) {
@@ -96,6 +100,60 @@ export const usePostStore = create((set, get) => ({
       }
     } catch (error) {
       useAuthStore.setState({ authUser: prevAuthUser });
+    }
+  },
+
+  getPostComments: async (postId) => {
+    try {
+      const res = await axiosInstance.get(`/post/${postId}/comment/all`);
+      set({ postComments: res?.data?.comments });
+    } catch (error) {
+      console.log(error?.response?.data?.message);
+    }
+  },
+
+  addComment: async ({ postId, text }) => {
+    const authUser = useAuthStore.getState().authUser;
+    const { post, postComments, posts } = get();
+
+    const postBackup = post;
+    const commentsBackup = postComments;
+    const postsBackup = posts;
+
+    const tempComment = {
+      _id: Math.random().toString(36).slice(2),
+      author: authUser,
+      text,
+      createdAt: new Date().toISOString(),
+    };
+
+    const updatedPostComments = [tempComment, ...commentsBackup];
+
+    const updatedPost = {
+      ...post,
+      comments: [...post.comments, tempComment],
+    };
+
+    const updatedPosts = posts.map((p) =>
+      p._id === postId ? { ...p, comments: [...p.comments, tempComment] } : p,
+    );
+
+    set({
+      postComments: updatedPostComments,
+      post: updatedPost,
+      posts: updatedPosts,
+    });
+
+    try {
+      await axiosInstance.post(`/post/${postId}/comment`, { text });
+    } catch (error) {
+      console.log(error?.response?.data?.message);
+
+      set({
+        postComments: commentsBackup,
+        post: postBackup,
+        posts: postsBackup,
+      });
     }
   },
 }));

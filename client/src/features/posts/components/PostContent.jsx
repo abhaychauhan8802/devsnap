@@ -1,13 +1,19 @@
 import { ChevronLeft } from "lucide-react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
+import { Link } from "react-router";
 
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { getInitials } from "@/utils/getInitials";
+
+import PostCommentSection from "./PostCommentSection";
+import PostActionButtons from "./common/PostActionButtons";
+import UserAvatar from "./common/UserAvatar";
 
 const PostContent = ({ post }) => {
   const navigate = useNavigate();
+
+  const [isCommentOpen, setIsCommentOpen] = useState(false);
 
   return (
     <div className="max-w-5xl w-full mx-auto pr-8">
@@ -23,30 +29,24 @@ const PostContent = ({ post }) => {
         </Button>
 
         {/* User info */}
-        <div
-          className="flex gap-2 items-center justify-center cursor-pointer w-fit"
-          onClick={() => console.log("Click")}
-        >
+        <div className="flex gap-2 items-center justify-center cursor-pointer w-fit">
           {/* Avatar */}
-          <Avatar className="size-10">
-            <AvatarImage
-              src={post?.author?.profilePicture}
-              alt="profilePicture"
-            />
-            <AvatarFallback className="bg-gray-800 dark:bg-gray-600 text-white text-sm font-semibold">
-              {getInitials(post?.author?.username)}
-            </AvatarFallback>
-          </Avatar>
+          <Link
+            to={`/user/${post?.author?.username}`}
+            className="flex items-center gap-2"
+          >
+            <UserAvatar avatarStyle="size-10" post={post} />
 
-          {/* Name and username */}
-          <div className="flex flex-col leading-4">
-            <span className="text-md font-medium text-text-secondary">
-              {post?.author?.name}
-            </span>
-            <span className="text-sm text-text-muted">
-              @{post?.author?.username}
-            </span>
-          </div>
+            {/* Name and username */}
+            <div className="flex flex-col leading-4">
+              <span className="text-md font-medium text-text-secondary">
+                {post?.author?.name}
+              </span>
+              <span className="text-sm text-text-muted">
+                @{post?.author?.username}
+              </span>
+            </div>
+          </Link>
           <Button className="lg:hidden ml-4">Follow</Button>
         </div>
 
@@ -75,7 +75,16 @@ const PostContent = ({ post }) => {
         </div>
 
         {/* Actions buttons */}
-        <div></div>
+        <div>
+          <PostActionButtons
+            post={post}
+            mainStyle="border rounded-xl p-3"
+            setIsCommentOpen={setIsCommentOpen}
+          />
+        </div>
+
+        {/* Post comments */}
+        <PostCommentSection isCommentOpen={isCommentOpen} />
       </div>
     </div>
   );

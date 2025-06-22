@@ -7,9 +7,10 @@ import {
   deletePost,
   dislikePost,
   getAllPost,
-  getAuthPost,
+  getBookmarks,
   getCommentsOfPost,
   getPost,
+  getUserPost,
   likePost,
 } from "../controllers/post.controller.js";
 import upload from "../middlewares/multer.middleware.js";
@@ -18,10 +19,14 @@ import verifyToken from "../middlewares/verifyToken.middleware.js";
 const router = express.Router();
 
 router.post("/addpost", verifyToken, upload.single("image"), addNewPost);
-router.delete("/delete/:id", verifyToken, deletePost);
 router.get("/all", verifyToken, getAllPost);
+router.get("/bookmarks", verifyToken, getBookmarks);
+
+router.delete("/delete/:id", verifyToken, deletePost);
+router.get("/user/:id", verifyToken, getUserPost);
+
 router.get("/:id", verifyToken, getPost);
-router.get("/post/all", verifyToken, getAuthPost);
+
 router.post("/:id/like", verifyToken, likePost);
 router.post("/:id/dislike", verifyToken, dislikePost);
 router.post("/:id/comment", verifyToken, addComment);

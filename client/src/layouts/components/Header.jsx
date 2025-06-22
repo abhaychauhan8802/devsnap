@@ -1,7 +1,8 @@
+import { Bell } from "lucide-react";
+
 import { Logo, ThemeToggle } from "@/components";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Bell } from "lucide-react";
 
 const Header = () => {
   return (
@@ -14,7 +15,7 @@ const Header = () => {
         <Input
           type="text"
           placeholder="Search..."
-          className="bg-secondary pr-12 h-10 min-w-md"
+          className="pr-12 h-10 min-w-md"
         />
       </div>
 

@@ -4,14 +4,9 @@ import getDataUri from "../utils/datauri.js";
 
 export const getProfile = async (req, res) => {
   try {
-    const userId = req.params.id;
+    const username = req.params.username;
 
-    let user = await User.findById(userId)
-      .populate({
-        path: "posts",
-        createdAt: -1,
-      })
-      .select("-password -bookmarks");
+    let user = await User.findOne({ username }).select("-password -bookmarks");
 
     return res.status(200).json({
       success: true,
@@ -121,7 +116,6 @@ export const followOrUnfollow = async (req, res) => {
       });
     }
 
-    // mai check krunga ki follow krna hai ya unfollow
     const isFollowing = user.followings.includes(otherUser);
 
     if (isFollowing) {
@@ -129,7 +123,7 @@ export const followOrUnfollow = async (req, res) => {
       await Promise.all([
         User.updateOne(
           { _id: currentUser },
-          { $pull: { following: otherUser } },
+          { $pull: { followings: otherUser } },
         ),
         User.updateOne(
           { _id: otherUser },
@@ -145,11 +139,11 @@ export const followOrUnfollow = async (req, res) => {
       await Promise.all([
         User.updateOne(
           { _id: currentUser },
-          { $push: { following: otherUser } },
+          { $addToSet: { followings: otherUser } },
         ),
         User.updateOne(
           { _id: otherUser },
-          { $push: { followers: currentUser } },
+          { $addToSet: { followers: currentUser } },
         ),
       ]);
 

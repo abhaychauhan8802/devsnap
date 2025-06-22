@@ -1,8 +1,3 @@
-import { Logo } from "@/components";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useAuthStore } from "@/store/useAuthStore";
 import { Loader2Icon } from "lucide-react";
 import { Eye, EyeOff, Heart, MessageCircle, Star } from "lucide-react";
 import { useEffect } from "react";
@@ -10,6 +5,12 @@ import { useState } from "react";
 import { Navigate } from "react-router";
 import { useNavigate } from "react-router";
 import { Link } from "react-router";
+
+import { Logo } from "@/components";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useAuthStore } from "@/store/useAuthStore";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -38,13 +39,13 @@ const Login = () => {
   return (
     <div className="min-h-screen bg-background flex">
       {/* Left side - Hero section */}
-      <div className="w-3/5 hidden md:flex flex-col p-8 bg-gradient-to-br from-teal-50 to-blue-50">
+      <div className="w-3/5 hidden md:flex flex-col p-8 bg-gradient-to-br from-sky-200 to-sky-100 dark:from-slate-700  dark:to-slate-600">
         {/* logo */}
-        <Logo />
+        <Logo logoTextStyle="" />
 
         <div className="h-full flex items-center justify-center">
           <div className="max-w-lg text-center mt-8">
-            <h1 className="text-4xl font-medium bg-gradient-to-r from-blue-500 to-blue-800 bg-clip-text text-transparent mb-4">
+            <h1 className="text-4xl font-bold mb-4 text-text-primary">
               Where Developers Meet, Connect, and Inspire.
             </h1>
 
@@ -134,7 +135,7 @@ const Login = () => {
                       onChange={(e) =>
                         setFormData({ ...formData, email: e.target.value })
                       }
-                      className="bg-secondary h-12"
+                      className="h-12"
                     />
                   </div>
 
@@ -153,7 +154,7 @@ const Login = () => {
                             password: e.target.value,
                           })
                         }
-                        className="bg-secondary h-12"
+                        className="h-12"
                       />
                       <Button
                         variant="ghost"
@@ -191,7 +192,7 @@ const Login = () => {
                 <div className="pt-1 border-gray-200">
                   <Button
                     asChild
-                    variant="outlineblue"
+                    variant="outlineColor"
                     className="w-full"
                     size="xl"
                     type="button"

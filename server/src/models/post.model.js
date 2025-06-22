@@ -5,12 +5,12 @@ const postSchema = mongoose.Schema(
     title: {
       type: String,
       required: [true, "Title is required"],
-      maxLength: [100, "Title cannot exceed 100 characters"],
+      maxLength: [50, "Title cannot exceed 50 characters"],
     },
     text: {
       type: String,
       required: [true, "Desc is required"],
-      maxLength: [5000, "Post cannot exceed 5000 characters"],
+      maxLength: [2000, "Post cannot exceed 2000 characters"],
     },
     image: {
       type: String,
@@ -30,7 +30,7 @@ const postSchema = mongoose.Schema(
     comments: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        ref: "Comment",
       },
     ],
   },

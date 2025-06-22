@@ -11,7 +11,6 @@ import verifyToken from "../middlewares/verifyToken.middleware.js";
 
 const router = express.Router();
 
-router.get("/profile/:id", getProfile);
 router.post(
   "/profile/edit",
   verifyToken,
@@ -19,6 +18,9 @@ router.post(
   editProfile,
 );
 router.get("/suggested", verifyToken, getSuggestedUsers);
+
 router.post("/followorunfollow/:id", verifyToken, followOrUnfollow);
+
+router.get("/profile/:username", getProfile);
 
 export default router;
