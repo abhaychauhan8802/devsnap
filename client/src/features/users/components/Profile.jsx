@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { FaPlus } from "react-icons/fa6";
 
+import UserAvatar from "@/components/common/UserAvatar";
 import { Button } from "@/components/ui/button";
-import UserAvatar from "@/features/posts/components/common/UserAvatar";
 import { formatDate } from "@/features/posts/utils/formatDate";
 import { useAuthStore } from "@/store/useAuthStore";
 
 import { useUserStore } from "../useUserStore";
 import Bookmarks from "./Bookmarks";
+import EditProfile from "./EditProfile";
 import UserPostsFeed from "./UserPostsFeed";
 
 const Profile = ({ user }) => {
@@ -24,8 +25,12 @@ const Profile = ({ user }) => {
 
   return (
     <div className="min-h-full w-full flex flex-row-reverse">
-      <div className="w-[380px] border-l py-8 px-5">
-        <UserAvatar user={user} avatarStyle="size-32" />
+      <div className="w-[380px] border-l pb-8 px-5">
+        <h2 className="py-5 font-bold">Profile</h2>
+        <UserAvatar
+          profilePicture={user?.profilePicture}
+          avatarStyle="size-32"
+        />
 
         <div className="flex flex-col leading-4 mt-5">
           <span className="text-2xl font-bold text-text-secondary">
@@ -79,12 +84,7 @@ const Profile = ({ user }) => {
             {isFollowing ? "Unfollow" : "Follow"}
           </Button>
         ) : (
-          <Button
-            className="mt-3"
-            // onClick={handleFollowUnfollow}
-          >
-            Edit Profile
-          </Button>
+          <EditProfile />
         )}
       </div>
 

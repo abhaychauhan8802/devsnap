@@ -10,6 +10,7 @@ export const usePostStore = create((set, get) => ({
   post: null,
   postLoading: false,
   postComments: [],
+  isAddingPost: false,
 
   getAllPost: async () => {
     set({ postLoading: true });
@@ -20,6 +21,24 @@ export const usePostStore = create((set, get) => ({
       toast.error(error.response.data.message);
     } finally {
       set({ postLoading: false });
+    }
+  },
+
+  addPost: async ({ title, imageFile, text }) => {
+    set({ isAddingPost: true });
+    try {
+      const formData = new FormData();
+      if (title) formData.append("title", title);
+      if (text) formData.append("text", text);
+      if (imageFile) formData.append("image", imageFile);
+
+      const res = await axiosInstance.post("/post/addpost", formData);
+
+      toast.success(res?.data?.message);
+    } catch (error) {
+      toast.error(error?.response?.data?.message);
+    } finally {
+      set({ isAddingPost: false });
     }
   },
 

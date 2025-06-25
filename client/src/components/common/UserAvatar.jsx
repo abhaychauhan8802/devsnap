@@ -1,13 +1,11 @@
 import AvatarImg from "@/assets/images/avatar.png";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-const UserAvatar = ({ avatarStyle = "", post, user }) => {
-  const profileUser = post?.author || user;
-
+const UserAvatar = ({ avatarStyle = "", profilePicture, ...props }) => {
   return (
-    <Avatar className={`cursor-pointer ${avatarStyle}`}>
+    <Avatar className={`cursor-pointer ${avatarStyle}`} {...props}>
       <AvatarImage
-        src={profileUser?.profilePicture ? profileUser?.profilePicture : null}
+        src={profilePicture ? profilePicture : null}
         alt="profilePicture"
       />
       <AvatarFallback className="bg-gray-800 dark:bg-card text-white text-sm font-semibold">

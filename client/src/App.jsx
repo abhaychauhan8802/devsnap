@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/sonner";
 
 import MainLayout from "./layouts/MainLayout";
 import {
+  AddPostPage,
   Home,
   Login,
   PostPage,
@@ -39,10 +40,9 @@ const App = () => {
           }
         >
           <Route path="/" element={<Home />} />
-          <Route path="/following" element={<h1>following</h1>} />
+          <Route path="/add-post" element={<AddPostPage />} />
           <Route path="/explore" element={<h1>explore</h1>} />
           <Route path="/messages" element={<h1>messages</h1>} />
-          <Route path="/notifications" element={<h1>notifications</h1>} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/post/:postId" element={<PostPage />} />
           <Route path="/user/:username" element={<UserProfilePage />} />

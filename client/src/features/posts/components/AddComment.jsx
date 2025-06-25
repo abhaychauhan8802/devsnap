@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { CgClose } from "react-icons/cg";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -11,10 +12,10 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useAuthStore } from "@/store/useAuthStore";
 
+import UserAvatar from "../../../components/common/UserAvatar";
 import { usePostStore } from "../usePostStore";
-import UserAvatar from "./common/UserAvatar";
 
-const AddComment = () => {
+const AddComment = ({ setIsCommentOpen }) => {
   const { authUser } = useAuthStore();
   const { post, addComment } = usePostStore();
 
@@ -31,14 +32,25 @@ const AddComment = () => {
       <form onSubmit={handleAddComment}>
         <Card className="mt-5 border rounded-xl py-3 gap-0">
           <CardHeader className="border-b [.border-b]:pb-1">
-            <CardTitle className="py-2">
+            <CardTitle className="flex justify-between items-center">
               <h4>Add your comment</h4>
+              <Button
+                variant="ghost"
+                size="icon"
+                type="button"
+                onClick={() => setIsCommentOpen((prev) => !prev)}
+              >
+                <CgClose />
+              </Button>
             </CardTitle>
           </CardHeader>
 
           <CardContent className="border-b py-4">
             <div className="flex gap-4">
-              <UserAvatar avatarStyle="size-12" user={authUser} />
+              <UserAvatar
+                avatarStyle="size-12"
+                profilePicture={authUser?.profilePicture}
+              />
               <Textarea
                 onChange={(e) => setComment(e.target.value)}
                 value={comment}

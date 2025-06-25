@@ -5,8 +5,8 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { usePostStore } from "@/features/posts/usePostStore";
 import { useAuthStore } from "@/store/useAuthStore";
 
+import UserAvatar from "../../../components/common/UserAvatar";
 import PostActionButtons from "./common/PostActionButtons";
-import UserAvatar from "./common/UserAvatar";
 
 const PostCard = ({ post }) => {
   const { authUser } = useAuthStore();
@@ -39,7 +39,10 @@ const PostCard = ({ post }) => {
       <Card className={`grid hover:border hover:border-primary`}>
         <CardContent className="w-full">
           <div className="flex gap-2 items-center" onClick={handeUserProfile}>
-            <UserAvatar avatarStyle="size-9" post={post} />
+            <UserAvatar
+              avatarStyle="size-9"
+              profilePicture={post?.author?.profilePicture}
+            />
 
             <span className="text-md font-medium text-text-secondary">
               {post.author.username}

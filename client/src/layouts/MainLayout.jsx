@@ -8,7 +8,7 @@ const MainLayout = () => {
       <Header />
       <div className="flex h-[calc(100vh-4rem)] w-full">
         <Sidebar />
-        <main className="h-full w-full overflow-y-scroll scrollbar">
+        <main className="h-full w-full overflow-x-hidden overflow-y-scroll scrollbar">
           <Outlet />
         </main>
       </div>

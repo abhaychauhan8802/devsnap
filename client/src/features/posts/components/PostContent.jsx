@@ -6,9 +6,9 @@ import { Link } from "react-router";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
 
+import UserAvatar from "../../../components/common/UserAvatar";
 import PostCommentSection from "./PostCommentSection";
 import PostActionButtons from "./common/PostActionButtons";
-import UserAvatar from "./common/UserAvatar";
 
 const PostContent = ({ post }) => {
   const navigate = useNavigate();
@@ -35,7 +35,10 @@ const PostContent = ({ post }) => {
             to={`/user/${post?.author?.username}`}
             className="flex items-center gap-2"
           >
-            <UserAvatar avatarStyle="size-10" post={post} />
+            <UserAvatar
+              avatarStyle="size-10"
+              profilePicture={post?.author?.profilePicture}
+            />
 
             {/* Name and username */}
             <div className="flex flex-col leading-4">
@@ -84,7 +87,10 @@ const PostContent = ({ post }) => {
         </div>
 
         {/* Post comments */}
-        <PostCommentSection isCommentOpen={isCommentOpen} />
+        <PostCommentSection
+          isCommentOpen={isCommentOpen}
+          setIsCommentOpen={setIsCommentOpen}
+        />
       </div>
     </div>
   );

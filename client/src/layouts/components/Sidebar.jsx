@@ -29,11 +29,6 @@ const Sidebar = () => {
       icon: <House size={iconSize} />,
     },
     {
-      name: "Following",
-      path: "/following",
-      icon: <Users size={iconSize} />,
-    },
-    {
       name: "Explore",
       path: "/explore",
       icon: <Compass size={iconSize} />,
@@ -73,12 +68,14 @@ const Sidebar = () => {
           </span>
 
           {/* Add new post button */}
-          <Button
-            size={isDesktop ? "lg" : "icon"}
-            className="lg:w-full ml-1 lg:ml-0"
-          >
-            <Plus /> <span className="hidden lg:inline-block">New Post</span>
-          </Button>
+          <Link to="/add-post">
+            <Button
+              size={isDesktop ? "lg" : "icon"}
+              className="lg:w-full ml-1 lg:ml-0"
+            >
+              <Plus /> <span className="hidden lg:inline-block">New Post</span>
+            </Button>
+          </Link>
 
           {/* Links */}
           <div className="flex flex-col mt-5 gap-2">

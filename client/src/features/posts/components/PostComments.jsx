@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
+import UserAvatar from "../../../components/common/UserAvatar";
 import { usePostStore } from "../usePostStore";
-import UserAvatar from "./common/UserAvatar";
 
 const PostComments = () => {
   const { post, postComments, getPostComments } = usePostStore();
@@ -26,7 +26,10 @@ const PostComments = () => {
                 onClick={() => console.log("Click")}
               >
                 {/* Avatar */}
-                <UserAvatar avatarStyle="size-10" user={comment?.author} />
+                <UserAvatar
+                  avatarStyle="size-10"
+                  profilePicture={comment?.author?.profilePicture}
+                />
 
                 {/* Name and username */}
                 <div className="flex flex-col leading-4">

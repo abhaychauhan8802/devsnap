@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import { create } from "zustand";
 
 import axiosInstance from "@/lib/axios";
@@ -9,6 +10,7 @@ export const useUserStore = create((set, get) => ({
   userPosts: [],
   userBookmarks: [],
   loading: false,
+  isUpdatingProfile: false,
 
   getUserProfile: async ({ userId }) => {
     try {
@@ -16,6 +18,28 @@ export const useUserStore = create((set, get) => ({
       set({ user: res.data.user });
     } catch (error) {
       console.log(error?.response?.data?.message);
+    }
+  },
+
+  editUserProfile: async ({ name, bio }, file) => {
+    set({ isUpdatingProfile: true });
+    try {
+      const formData = new FormData();
+      if (name) formData.append("name", name);
+      if (bio) formData.append("bio", bio);
+      if (file) formData.append("profilePhoto", file); // must match multer field
+
+      const res = await axiosInstance.post("/user/profile/edit", formData);
+
+      useAuthStore.setState({
+        authUser: res.data.user,
+      });
+
+      toast.success(res.data.message);
+    } catch (error) {
+      console.log(error?.response?.data?.message);
+    } finally {
+      set({ isUpdatingProfile: false });
     }
   },
 
@@ -63,6 +87,7 @@ export const useUserStore = create((set, get) => ({
 
   followAndUnfollow: async (userId) => {
     const { authUser } = useAuthStore.getState();
+    const { user } = get();
     const followings = authUser.followings || [];
 
     try {
@@ -74,14 +99,27 @@ export const useUserStore = create((set, get) => ({
         ? followings.filter((id) => id !== userId) // Unfollow
         : [...followings, userId]; // Follow
 
+      // Also update the user.followers (the person we are viewing)
+      let updatedUser = user;
+      if (user && user?._id === userId) {
+        const updatedFollowers = isFollowing
+          ? user.followers.filter((id) => id !== authUser._id) // remove follower
+          : [...user.followers, authUser._id]; // add follower
+
+        updatedUser = {
+          ...user,
+          followers: updatedFollowers,
+        };
+      }
+
+      set({ user: updatedUser });
+
       useAuthStore.setState({
         authUser: {
           ...authUser,
           followings: updatedFollowings,
         },
       });
-
-      console.log(`${isFollowing ? "Unfollowed" : "Followed"} user: ${userId}`);
     } catch (error) {
       console.log(error?.response?.data?.message);
     }

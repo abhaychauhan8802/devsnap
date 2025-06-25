@@ -30,13 +30,6 @@ export const editProfile = async (req, res) => {
 
     let cloudResponse;
 
-    if (profilePicture) {
-      const fileUri = getDataUri(profilePicture);
-      cloudResponse = await cloudinary.uploader.upload(fileUri, {
-        folder: "devsnap/users",
-      });
-    }
-
     const user = await User.findById(userId).select("-password");
 
     if (!user) {
@@ -46,9 +39,31 @@ export const editProfile = async (req, res) => {
       });
     }
 
+    // Delete old profile picture from Cloudinary
+    if (profilePicture && user.profilePicture) {
+      const segments = user.profilePicture.split("/");
+      const publicIdWithExt = segments[segments.length - 1]; // e.g., abc123.jpg
+      const publicId = `devsnap/users/${publicIdWithExt.split(".")[0]}`;
+
+      try {
+        await cloudinary.uploader.destroy(publicId);
+      } catch (err) {
+        console.error("Failed to delete old profile picture:", err.message);
+      }
+    }
+
+    // Upload new profile picture
+    if (profilePicture) {
+      const fileUri = getDataUri(profilePicture);
+      cloudResponse = await cloudinary.uploader.upload(fileUri, {
+        folder: "devsnap/users",
+      });
+
+      user.profilePicture = cloudResponse.secure_url;
+    }
+
     if (name) user.name = name;
     if (bio) user.bio = bio;
-    if (profilePicture) user.profilePicture = cloudResponse.secure_url;
 
     await user.save();
 

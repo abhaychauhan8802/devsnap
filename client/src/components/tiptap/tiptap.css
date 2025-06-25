@@ -1,0 +1,129 @@
+p.is-editor-empty:first-child::before {
+  color: var(--gray-4);
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+/* Headings */
+.ProseMirror h1 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin-top: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.ProseMirror h2 {
+  font-size: 1.875rem;
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.ProseMirror h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.ProseMirror h4 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Paragraph */
+.ProseMirror p {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+}
+
+/* Lists */
+.ProseMirror ul,
+.ProseMirror ol {
+  margin: 0.5rem 0 0.5rem 1.25rem;
+  padding-left: 1rem;
+}
+
+.ProseMirror ul {
+  list-style-type: disc;
+}
+
+.ProseMirror ol {
+  list-style-type: decimal;
+}
+
+/* Blockquote */
+.ProseMirror blockquote {
+  padding-left: 1rem;
+  border-left: 4px solid #334155;
+  color: #94a3b8;
+  font-style: italic;
+  margin: 1rem 0;
+}
+
+/* Bold, Italic, Underline */
+.ProseMirror strong {
+  font-weight: 900;
+}
+
+.ProseMirror em {
+  font-style: italic;
+}
+
+.ProseMirror u {
+  text-decoration: underline;
+}
+
+/* Code */
+.ProseMirror code {
+  background-color: #1e293b;
+  color: #facc15;
+  padding: 0.2em 0.4em;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  font-family: monospace;
+  width: 100%;
+}
+
+.ProseMirror pre {
+  background-color: #0f172a; /* dark slate */
+  color: #e2e8f0; /* slate-200 */
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin: 1rem 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  font-family: "Fira Code", monospace;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.ProseMirror pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
+}
+
+/* Anchor / Link */
+.ProseMirror a {
+  color: #3b82f6; /* Tailwind blue-500 */
+  text-decoration: underline;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.ProseMirror a:hover {
+  color: #2563eb; /* Tailwind blue-600 */
+  text-decoration: underline;
+}
+
+/* Focus outline (optional override) */
+.ProseMirror:focus {
+  outline: none;
+}

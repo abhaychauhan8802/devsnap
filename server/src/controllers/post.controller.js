@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import sharp from "sharp";
 
 import Comment from "../models/comment.model.js";
@@ -26,7 +25,9 @@ export const addNewPost = async (req, res) => {
 
       const fileUri = `data:image/jpeg;base64,${optimizedImageBuffer.toString("base64")}`;
 
-      cloudResponse = await cloudinary.uploader.upload(fileUri);
+      cloudResponse = await cloudinary.uploader.upload(fileUri, {
+        folder: "devsnap/posts",
+      });
     }
 
     const post = await Post.create({
@@ -151,7 +152,7 @@ export const getUserPost = async (req, res) => {
       .sort({ createdAt: -1 })
       .populate({
         path: "author",
-        select: "username profilePicture",
+        select: "name username profilePicture createdAt bio",
       });
 
     return res.status(200).json({
@@ -351,7 +352,7 @@ export const getBookmarks = async (req, res) => {
       path: "bookmarks",
       populate: {
         path: "author",
-        select: "username profilePicture",
+        select: "name username profilePicture createdAt bio",
       },
     });
 

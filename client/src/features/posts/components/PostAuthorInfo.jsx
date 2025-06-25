@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button";
 import { useUserStore } from "@/features/users/useUserStore";
 import { useAuthStore } from "@/store/useAuthStore";
 
+import UserAvatar from "../../../components/common/UserAvatar";
 import { formatDate } from "../utils/formatDate";
-import UserAvatar from "./common/UserAvatar";
 
 const PostAuthorInfo = ({ post }) => {
   const { suggestedUsers, getSuggested } = useUserStore();
@@ -27,7 +27,10 @@ const PostAuthorInfo = ({ post }) => {
     <div className="w-[400px] pt-5 hidden lg:block">
       <div className="relative border p-4 rounded-2xl bg-card">
         <Link to={`/user/${post?.author?.username}`}>
-          <UserAvatar avatarStyle="size-16" post={post} />
+          <UserAvatar
+            avatarStyle="size-16"
+            profilePicture={post?.author?.profilePicture}
+          />
         </Link>
 
         <div className="flex flex-col leading-4 mt-2">
@@ -43,13 +46,15 @@ const PostAuthorInfo = ({ post }) => {
           <span className="mt-2 text-text-secondary">{post?.author?.bio}</span>
         </div>
 
-        <Button
-          className="absolute top-4 right-4"
-          variant={isFollowing ? "secondary" : "default"}
-          onClick={handleFollowUnfollow}
-        >
-          {isFollowing ? "Unfollow" : "Follow"}
-        </Button>
+        {authUser._id !== post?.author?._id && (
+          <Button
+            className="absolute top-4 right-4"
+            variant={isFollowing ? "secondary" : "default"}
+            onClick={handleFollowUnfollow}
+          >
+            {isFollowing ? "Unfollow" : "Follow"}
+          </Button>
+        )}
       </div>
 
       <div className="mt-4 border rounded-2xl bg-card">
@@ -61,7 +66,10 @@ const PostAuthorInfo = ({ post }) => {
               key={user._id}
               className="flex items-center gap-4 px-4 py-3 cursor-pointer border-t"
             >
-              <UserAvatar avatarStyle="size-12" user={user} />
+              <UserAvatar
+                avatarStyle="size-12"
+                profilePicture={user?.profilePicture}
+              />
 
               <div className="flex flex-col leading-5">
                 <span className="text-lg font-medium text-text-secondary">
