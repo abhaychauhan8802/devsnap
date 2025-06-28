@@ -199,5 +199,22 @@
 }
 
 .scrollbar {
-  @apply [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:h-28 [&::-webkit-scrollbar-thumb]:bg-gray-400 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500;
+  @apply [&::-webkit-scrollbar]:w-2 
+  [&::-webkit-scrollbar-track]:bg-transparent
+  [&::-webkit-scrollbar-thumb]:h-20 
+  [&::-webkit-scrollbar-thumb]:bg-gray-400 
+  [&::-webkit-scrollbar-thumb]:rounded-full
+  dark:[&::-webkit-scrollbar-track]:bg-neutral-700 
+  dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500;
+}
+
+.scrollbar-none {
+  @apply [&::-webkit-scrollbar]:w-0
+  [&::-webkit-scrollbar-track]:w-0;
+}
+
+.word-wrap {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }

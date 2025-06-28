@@ -42,7 +42,7 @@ const Register = () => {
   if (authUser) return <Navigate to="/" replace />;
 
   return (
-    <div className="bg-background flex flex-col min-h-screen p-8">
+    <div className="bg-background flex flex-col h-screen p-8 overflow-auto scrollbar">
       <Logo />
 
       <div className="w-full flex items-center justify-center mt-7 md:mt-16">

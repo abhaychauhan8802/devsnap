@@ -55,6 +55,27 @@ export const useUserStore = create((set, get) => ({
     }
   },
 
+  deleteUserPost: async (postId) => {
+    const { userPosts } = get();
+
+    const updatedPosts = userPosts.filter((post) => post._id !== postId);
+
+    const backupPosts = userPosts;
+
+    set({ userPosts: updatedPosts });
+
+    console.log(get().userPosts);
+
+    try {
+      const res = await axiosInstance.delete(`/post/delete/${postId}`);
+
+      toast.success(res?.data?.message);
+    } catch (error) {
+      set({ userPosts: backupPosts });
+      toast.error(error?.response?.data?.message);
+    }
+  },
+
   getUserBookmarks: async () => {
     set({ loading: true });
     try {

@@ -22,7 +22,7 @@ const PostFeed = () => {
   }
 
   return (
-    <div className="w-full">
+    <div className="min-w-full">
       <div className="grid justify-center grid-cols-[repeat(auto-fit,_minmax(320px,_320px))] gap-8 p-10">
         {posts.map((post, idx) => (
           <PostCard key={idx} post={post} />

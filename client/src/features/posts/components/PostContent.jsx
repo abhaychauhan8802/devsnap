@@ -5,15 +5,31 @@ import { Link } from "react-router";
 
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
+import { useUserStore } from "@/features/users/useUserStore";
+import { useAuthStore } from "@/store/useAuthStore";
 
 import UserAvatar from "../../../components/common/UserAvatar";
+import "../../../components/tiptap/tiptap.css";
 import PostCommentSection from "./PostCommentSection";
 import PostActionButtons from "./common/PostActionButtons";
 
 const PostContent = ({ post }) => {
+  const { authUser } = useAuthStore();
+
+  const { followAndUnfollow } = useUserStore();
+
   const navigate = useNavigate();
 
   const [isCommentOpen, setIsCommentOpen] = useState(false);
+
+  const authUsername = authUser?.username;
+  const postAuthorUsername = post?.author?.username;
+
+  const isFollowing = authUser?.followings?.includes(post?.author?._id);
+
+  const handleFollowUnfollow = () => {
+    followAndUnfollow(post?.author?._id);
+  };
 
   return (
     <div className="max-w-5xl w-full mx-auto pr-8">
@@ -32,7 +48,11 @@ const PostContent = ({ post }) => {
         <div className="flex gap-2 items-center justify-center cursor-pointer w-fit">
           {/* Avatar */}
           <Link
-            to={`/user/${post?.author?.username}`}
+            to={
+              authUsername === postAuthorUsername
+                ? "/profile"
+                : `/user/${post?.author?.username}`
+            }
             className="flex items-center gap-2"
           >
             <UserAvatar
@@ -50,13 +70,21 @@ const PostContent = ({ post }) => {
               </span>
             </div>
           </Link>
-          <Button className="lg:hidden ml-4">Follow</Button>
+          {authUser._id !== post?.author?._id && (
+            <Button
+              className="lg:hidden ml-4"
+              variant={isFollowing ? "secondary" : "default"}
+              onClick={handleFollowUnfollow}
+            >
+              {isFollowing ? "Unfollow" : "Follow"}
+            </Button>
+          )}
         </div>
 
         {/* Post info */}
         <div className="my-7">
           {/* post title */}
-          <h1 className="font-bold text-4xl text-text-primary mb-8">
+          <h1 className="font-bold text-4xl text-text-primary mb-4">
             {post?.title}
           </h1>
 
@@ -72,8 +100,11 @@ const PostContent = ({ post }) => {
           )}
 
           {/* post content */}
-          <div className="mt-10 text-text-secondary text-lg">
-            <p>{post?.text}</p>
+          <div className="mt-8 text-text-secondary text-lg">
+            <p
+              dangerouslySetInnerHTML={{ __html: post?.text }}
+              className="ProseMirror"
+            ></p>
           </div>
         </div>
 

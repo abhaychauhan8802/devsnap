@@ -1,5 +1,6 @@
 import sharp from "sharp";
 
+import cloudinary from "../lib/cloudinary.js";
 import Comment from "../models/comment.model.js";
 import Post from "../models/post.model.js";
 import User from "../models/user.model.js";
@@ -73,7 +74,7 @@ export const deletePost = async (req, res) => {
         .status(404)
         .json({ message: "Post not found", success: false });
 
-    if (post.author.toString() !== authorId)
+    if (post.author.toString() !== userId)
       return res.status(403).json({ message: "Unauthorized" });
 
     await Post.findByIdAndDelete(postId);

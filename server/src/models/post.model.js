@@ -5,7 +5,7 @@ const postSchema = mongoose.Schema(
     title: {
       type: String,
       required: [true, "Title is required"],
-      maxLength: [50, "Title cannot exceed 50 characters"],
+      maxLength: [200, "Title cannot exceed 200 characters"],
     },
     text: {
       type: String,

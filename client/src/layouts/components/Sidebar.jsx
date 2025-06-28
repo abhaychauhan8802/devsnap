@@ -1,5 +1,5 @@
 import { Plus } from "lucide-react";
-import { Compass, House, LogOut, MessageCircleMore, Users } from "lucide-react";
+import { Compass, House, LogOut, MessageCircleMore } from "lucide-react";
 import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router";
 import { useLocation } from "react-router";
@@ -57,7 +57,7 @@ const Sidebar = () => {
   const isDesktop = useMediaQuery({ minWidth: 1024 });
 
   return (
-    <div className="w-[60px] lg:w-[300px] px-2 lg:px-3 border-r h-full py-3">
+    <div className="w-[60px] lg:w-[300px] px-2 lg:px-3 border-r h-full py-3 shadow-sm">
       {/* main content */}
       <div
         className={`flex flex-col justify-between ${!isDesktop && "items-center"} h-full`}
@@ -83,7 +83,7 @@ const Sidebar = () => {
               <Link
                 to={link.path}
                 key={idx}
-                className={`hover:bg-secondary p-2 lg:px-4 lg:py-2 rounded-md flex items-center justify-center lg:justify-start gap-2 text-text-secondary ${location.pathname === link.path && "bg-secondary"}`}
+                className={`hover:bg-accent p-2 lg:px-4 lg:py-2 rounded-md flex items-center justify-center lg:justify-start gap-2 text-text-secondary ${location.pathname === link.path && "bg-accent"}`}
               >
                 {link.icon}
                 <span className="hidden lg:inline-block">{link.name}</span>

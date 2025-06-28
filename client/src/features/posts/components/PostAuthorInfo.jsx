@@ -19,6 +19,9 @@ const PostAuthorInfo = ({ post }) => {
     getSuggested();
   }, [getSuggested]);
 
+  const authUsername = authUser?.username;
+  const postAuthorUsername = post?.author?.username;
+
   const handleFollowUnfollow = () => {
     followAndUnfollow(post?.author?._id);
   };
@@ -26,7 +29,13 @@ const PostAuthorInfo = ({ post }) => {
   return (
     <div className="w-[400px] pt-5 hidden lg:block">
       <div className="relative border p-4 rounded-2xl bg-card">
-        <Link to={`/user/${post?.author?.username}`}>
+        <Link
+          to={
+            authUsername === postAuthorUsername
+              ? "/profile"
+              : `/user/${post?.author?.username}`
+          }
+        >
           <UserAvatar
             avatarStyle="size-16"
             profilePicture={post?.author?.profilePicture}

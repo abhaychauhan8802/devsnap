@@ -17,10 +17,16 @@ const Bookmarks = () => {
 
   return (
     <div className="w-full">
-      <div className="grid justify-center grid-cols-[repeat(auto-fit,_minmax(320px,_320px))] gap-8">
-        {userBookmarks?.map((post, idx) => (
-          <PostCard key={idx} post={post} />
-        ))}
+      <div className="flex flex-col gap-8">
+        {userBookmarks.length !== 0 ? (
+          userBookmarks?.map((post, idx) => (
+            <PostCard key={idx} post={post} type="wide" />
+          ))
+        ) : (
+          <div>
+            <span>Dont have any bookmark yet</span>
+          </div>
+        )}
       </div>
     </div>
   );

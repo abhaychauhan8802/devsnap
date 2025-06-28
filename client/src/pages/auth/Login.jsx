@@ -37,9 +37,9 @@ const Login = () => {
   if (authUser) return <Navigate to="/" replace />;
 
   return (
-    <div className="min-h-screen bg-background flex">
+    <div className="h-screen bg-background flex overflow-auto">
       {/* Left side - Hero section */}
-      <div className="w-3/5 hidden md:flex flex-col p-8 bg-gradient-to-br from-sky-200 to-sky-100 dark:from-slate-700  dark:to-slate-600">
+      <div className="min-h-full w-3/5 hidden md:flex flex-col p-8 bg-gradient-to-br from-secondary to-primary">
         {/* logo */}
         <Logo logoTextStyle="" />
 

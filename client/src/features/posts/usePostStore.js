@@ -4,6 +4,7 @@ import { create } from "zustand";
 import axiosInstance from "@/lib/axios";
 
 import { useAuthStore } from "../../store/useAuthStore";
+import { useUserStore } from "../users/useUserStore";
 
 export const usePostStore = create((set, get) => ({
   posts: [],
@@ -61,6 +62,7 @@ export const usePostStore = create((set, get) => ({
   likePost: async (post) => {
     const authUserId = useAuthStore.getState().authUser._id;
     const liked = post.likes.includes(authUserId);
+    const { userPosts, userBookmarks } = useUserStore.getState();
 
     const updatedPostData = {
       ...post,
@@ -73,11 +75,24 @@ export const usePostStore = create((set, get) => ({
       p._id === post._id ? updatedPostData : p,
     );
 
+    const updatedUserPost = userPosts.map((p) =>
+      p._id === post._id ? updatedPostData : p,
+    );
+
+    const updatedUserBookmarks = userBookmarks.map((p) =>
+      p._id === post._id ? updatedPostData : p,
+    );
+
     const isLikeOfDislike = liked ? "dislike" : "like";
 
     set({
       posts: updatedPost,
       post: updatedPostData,
+    });
+
+    useUserStore.setState({
+      userPosts: updatedUserPost,
+      userBookmarks: updatedUserBookmarks,
     });
     try {
       await axiosInstance.post(`/post/${post._id}/${isLikeOfDislike}`);
@@ -98,7 +113,7 @@ export const usePostStore = create((set, get) => ({
     const userBookmarks = authUser.bookmarks;
     const postId = post._id;
 
-    const alreadyBookmark = userBookmarks.includes(postId);
+    const alreadyBookmark = userBookmarks?.includes(postId);
 
     const updatedBookmarks = alreadyBookmark
       ? userBookmarks.filter((b) => b !== postId)

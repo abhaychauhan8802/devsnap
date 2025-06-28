@@ -8,10 +8,9 @@ import AuthRouter from "./routes/auth.routes.js";
 import MessageRouter from "./routes/message.route.js";
 import PostRouter from "./routes/post.routes.js";
 import UserRouter from "./routes/user.routes.js";
+import { app, server } from "./socket/socket.js";
 
 dotenv.config();
-
-const app = express();
 
 // middlewares
 app.use(cookieParser());
@@ -36,7 +35,7 @@ app.use("/api/message", MessageRouter);
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server is listen on port ${PORT}`);
   connectDB();
 });

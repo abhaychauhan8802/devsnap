@@ -55,7 +55,7 @@ const AddComment = ({ setIsCommentOpen }) => {
                 onChange={(e) => setComment(e.target.value)}
                 value={comment}
                 placeholder="Type your comment here"
-                className="resize-none w-full h-20 border-0 bg-card dark:bg-card shadow-none focus-visible:ring-0"
+                className="resize-none w-full h-20 border-0 bg-card dark:bg-card shadow-none focus-visible:ring-0 word-wrap"
               />
             </div>
           </CardContent>

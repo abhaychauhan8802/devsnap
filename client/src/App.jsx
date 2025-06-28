@@ -9,6 +9,7 @@ import {
   AddPostPage,
   Home,
   Login,
+  MessagePage,
   PostPage,
   ProfilePage,
   Register,
@@ -42,7 +43,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/add-post" element={<AddPostPage />} />
           <Route path="/explore" element={<h1>explore</h1>} />
-          <Route path="/messages" element={<h1>messages</h1>} />
+          <Route path="/messages" element={<MessagePage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/post/:postId" element={<PostPage />} />
           <Route path="/user/:username" element={<UserProfilePage />} />

@@ -4,7 +4,7 @@ import PostCard from "@/features/posts/components/PostCard";
 
 import { useUserStore } from "../useUserStore";
 
-const UserPostsFeed = ({ userId }) => {
+const PostsFeed = ({ userId }) => {
   const { getUserPosts, userPosts, loading } = useUserStore();
 
   useEffect(() => {
@@ -17,13 +17,19 @@ const UserPostsFeed = ({ userId }) => {
 
   return (
     <div className="w-full">
-      <div className="grid justify-center grid-cols-[repeat(auto-fit,_minmax(320px,_320px))] gap-8">
-        {userPosts?.map((post, idx) => (
-          <PostCard key={idx} post={post} />
-        ))}
+      <div className="flex flex-col gap-8">
+        {userPosts?.length !== 0 ? (
+          userPosts?.map((post, idx) => (
+            <PostCard key={idx} post={post} type="wide" />
+          ))
+        ) : (
+          <div>
+            <span>User don't have any post</span>
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-export default UserPostsFeed;
+export default PostsFeed;

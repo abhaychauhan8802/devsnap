@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const conversationSchema = mongoose.Schema(
   {
-    conversation: [
+    participants: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",

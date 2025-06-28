@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 import cloudinary from "../lib/cloudinary.js";
 import User from "../models/user.model.js";
 import getDataUri from "../utils/datauri.js";
@@ -84,9 +86,13 @@ export const editProfile = async (req, res) => {
 
 export const getSuggestedUsers = async (req, res) => {
   try {
-    const suggestedUsers = await User.find({ _id: { $ne: req.id } })
-      .select("-password")
-      .limit(6);
+    const userId = req.id;
+
+    const suggestedUsers = await User.aggregate([
+      { $match: { _id: { $ne: new mongoose.Types.ObjectId(userId) } } },
+      { $sample: { size: 6 } },
+      { $project: { password: 0 } },
+    ]);
 
     if (!suggestedUsers) {
       return res.status(400).json({

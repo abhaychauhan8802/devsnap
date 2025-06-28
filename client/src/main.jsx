@@ -6,10 +6,9 @@ import { ThemeProvider } from "./context/theme-provider";
 import "./index.css";
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
-      <App />
-    </ThemeProvider>
-    ,
-  </StrictMode>,
+  // <StrictMode>
+  <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+    <App />
+  </ThemeProvider>,
+  // </StrictMode>,
 );

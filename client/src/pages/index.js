@@ -5,3 +5,5 @@ export { default as PostPage } from "./PostPage";
 export { default as ProfilePage } from "./ProfilePage";
 export { default as UserProfilePage } from "./UserProfilePage";
 export { default as AddPostPage } from "./AddPostPage";
+export { default as MessagePage } from "./MessagePage";
+export { default as ExplorePage } from "./ExplorePage";
