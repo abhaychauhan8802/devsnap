@@ -32,7 +32,7 @@ const PostContent = ({ post }) => {
   };
 
   return (
-    <div className="max-w-5xl w-full mx-auto pr-8">
+    <div className="max-w-5xl w-full mx-auto lg:pr-8">
       <div>
         {/* Back button */}
         <Button
@@ -90,7 +90,10 @@ const PostContent = ({ post }) => {
 
           {/* post image */}
           {post?.image && (
-            <AspectRatio ratio={16 / 9} className="rounded-lg overflow-hidden">
+            <AspectRatio
+              ratio={16 / 9}
+              className="rounded-lg overflow-hidden md:scale-90"
+            >
               <img
                 src={post?.image}
                 alt="image"
@@ -112,7 +115,7 @@ const PostContent = ({ post }) => {
         <div>
           <PostActionButtons
             post={post}
-            mainStyle="border rounded-xl p-3"
+            mainStyle="border rounded-xl p-1"
             setIsCommentOpen={setIsCommentOpen}
           />
         </div>

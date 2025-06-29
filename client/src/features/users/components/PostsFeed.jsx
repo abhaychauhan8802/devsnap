@@ -1,11 +1,14 @@
 import { useEffect } from "react";
 
 import PostCard from "@/features/posts/components/PostCard";
+import useBreakPoints from "@/hooks/useBreakPoints";
 
 import { useUserStore } from "../useUserStore";
 
 const PostsFeed = ({ userId }) => {
   const { getUserPosts, userPosts, loading } = useUserStore();
+
+  const { isMobile } = useBreakPoints();
 
   useEffect(() => {
     if (userId) {
@@ -20,7 +23,11 @@ const PostsFeed = ({ userId }) => {
       <div className="flex flex-col gap-8">
         {userPosts?.length !== 0 ? (
           userPosts?.map((post, idx) => (
-            <PostCard key={idx} post={post} type="wide" />
+            <PostCard
+              key={idx}
+              post={post}
+              varient={isMobile ? "default" : "wide"}
+            />
           ))
         ) : (
           <div>

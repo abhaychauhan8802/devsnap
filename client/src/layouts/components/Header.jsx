@@ -11,7 +11,7 @@ const Header = () => {
         <Logo />
       </div>
 
-      <div>
+      <div className="hidden lg:block">
         <Input
           type="text"
           placeholder="Search..."

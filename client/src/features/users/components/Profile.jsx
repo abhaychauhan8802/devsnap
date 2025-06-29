@@ -25,101 +25,101 @@ const Profile = ({ user }) => {
   };
 
   return (
-    <div className="min-h-full max-w-3xl xl:max-w-4xl w-full flex flex-col lg:flex-row-reverse gap-2 lg:gap-5 mx-auto">
-      <Card className="w-full lg:w-[300px] shrink-0 h-fit mt-5 bg-card/30">
-        <CardHeader>
-          <CardTitle>
-            <h2 className="font-bold">Profile</h2>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <UserAvatar
-            profilePicture={user?.profilePicture}
-            avatarStyle="size-32"
-          />
+    <div className="min-h-full">
+      <div className="border-b p-4">
+        <h2 className="font-bold">Profile</h2>
+      </div>
+      <div className="max-w-4xl w-full flex flex-col lg:flex-row-reverse gap-2 lg:gap-5 mx-auto px-5">
+        <Card className="w-full lg:w-[300px] shrink-0 h-fit mt-5 bg-card/30">
+          <CardContent>
+            <UserAvatar
+              profilePicture={user?.profilePicture}
+              avatarStyle="size-32"
+            />
 
-          <div className="flex flex-col leading-4 mt-5">
-            <span className="text-2xl font-bold text-text-secondary">
-              {user?.name}
-            </span>
-            <span className="text-md text-text-muted mt-1">
-              @{user?.username}
-            </span>
-            <span className="text-text-muted/50 mt-1">
-              Joined {formatDate(user?.createdAt)}
-            </span>
-          </div>
-
-          <div className="mt-2">
-            {user?.bio ? (
-              <span className="mt-2 text-text-secondary">{user?.bio}</span>
-            ) : (
-              ""
-            )}
-          </div>
-
-          <div className="mt-3 flex flex-col">
-            <div className="flex gap-3">
-              <span className="font-bold cursor-pointer">
-                {user?.followers?.length}{" "}
-                <span className="font-normal text-text-secondary">
-                  followers
-                </span>
+            <div className="flex flex-col leading-4 mt-5">
+              <span className="text-2xl font-bold text-text-secondary">
+                {user?.name}
               </span>
-              <span className="font-bold cursor-pointer">
-                {user?.followings?.length}{" "}
-                <span className="font-normal text-text-secondary">
-                  followings
-                </span>
+              <span className="text-md text-text-muted mt-1">
+                @{user?.username}
+              </span>
+              <span className="text-text-muted/50 mt-1">
+                Joined {formatDate(user?.createdAt)}
               </span>
             </div>
-            <span className="font-bold cursor-pointer">
-              {user?.posts?.length}{" "}
-              <span className="font-normal text-text-secondary">posts</span>
-            </span>
-          </div>
 
-          {authUser?._id !== user?._id ? (
-            <Button
-              className="mt-3"
-              variant={isFollowing ? "secondary" : "default"}
-              onClick={handleFollowUnfollow}
-            >
-              {isFollowing ? "Unfollow" : "Follow"}
-            </Button>
-          ) : (
-            <EditProfile />
-          )}
-        </CardContent>
-      </Card>
+            <div className="mt-2">
+              {user?.bio ? (
+                <span className="mt-2 text-text-secondary">{user?.bio}</span>
+              ) : (
+                ""
+              )}
+            </div>
 
-      <div className="w-full">
-        <div className="py-3 flex gap-2 px-4 border rounded-xl shadow-sm mt-5 bg-background z-20 sticky top-0">
-          {["Posts", "Bookmarks"].map((title, idx) => {
-            if (title === "Bookmarks" && authUser?._id !== user?._id)
-              return null;
-
-            return (
-              <div key={idx}>
-                <Button
-                  variant={selectedTab === title ? "secondary" : "ghost"}
-                  onClick={() => setSelectedTab(title)}
-                >
-                  {title}
-                </Button>
+            <div className="mt-3 flex flex-col">
+              <div className="flex gap-3">
+                <span className="font-bold cursor-pointer">
+                  {user?.followers?.length}{" "}
+                  <span className="font-normal text-text-secondary">
+                    followers
+                  </span>
+                </span>
+                <span className="font-bold cursor-pointer">
+                  {user?.followings?.length}{" "}
+                  <span className="font-normal text-text-secondary">
+                    followings
+                  </span>
+                </span>
               </div>
-            );
-          })}
-        </div>
+              <span className="font-bold cursor-pointer">
+                {user?.posts?.length}{" "}
+                <span className="font-normal text-text-secondary">posts</span>
+              </span>
+            </div>
 
-        <div className="mt-8 mb-10">
-          <div>
-            {selectedTab === "Posts" && <PostsFeed userId={user?._id} />}
-          </div>
-          <div>
-            {authUser?._id === user?._id && selectedTab === "Bookmarks" && (
-              <Bookmarks />
+            {authUser?._id !== user?._id ? (
+              <Button
+                className="mt-3"
+                variant={isFollowing ? "secondary" : "default"}
+                onClick={handleFollowUnfollow}
+              >
+                {isFollowing ? "Unfollow" : "Follow"}
+              </Button>
+            ) : (
+              <EditProfile />
             )}
+          </CardContent>
+        </Card>
+
+        <div className="w-full">
+          <div className="p-1 flex gap-2 border rounded-xl shadow-sm mt-5 bg-background z-20 sticky top-1">
+            {["Posts", "Bookmarks"].map((title, idx) => {
+              if (title === "Bookmarks" && authUser?._id !== user?._id)
+                return null;
+
+              return (
+                <div key={idx}>
+                  <Button
+                    variant={selectedTab === title ? "secondary" : "ghost"}
+                    onClick={() => setSelectedTab(title)}
+                  >
+                    {title}
+                  </Button>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="mt-8 mb-10">
+            <div>
+              {selectedTab === "Posts" && <PostsFeed userId={user?._id} />}
+            </div>
+            <div>
+              {authUser?._id === user?._id && selectedTab === "Bookmarks" && (
+                <Bookmarks />
+              )}
+            </div>
           </div>
         </div>
       </div>

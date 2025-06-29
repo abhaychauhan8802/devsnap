@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import { useNavigate } from "react-router";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,7 +17,7 @@ import { useAuthStore } from "@/store/useAuthStore";
 import UserAvatar from "../../../components/common/UserAvatar";
 import PostActionButtons from "./common/PostActionButtons";
 
-const PostCard = ({ post, type = "default" }) => {
+const PostCard = ({ post, varient = "default" }) => {
   const { authUser } = useAuthStore();
   const { setPost } = usePostStore();
   const { deleteUserPost } = useUserStore();
@@ -27,7 +27,7 @@ const PostCard = ({ post, type = "default" }) => {
   const authUsername = authUser?.username;
   const postAuthorUsername = post?.author?.username;
 
-  const wide = type === "wide";
+  const wide = varient === "wide";
 
   const handleNavigate = (e) => {
     e.stopPropagation();
@@ -55,6 +55,7 @@ const PostCard = ({ post, type = "default" }) => {
     >
       <Card className={`hover:border hover:border-primary`}>
         <CardContent className="w-full">
+          {/* Post owner info */}
           <div className="flex justify-between items-center">
             <div className="flex gap-2 items-center" onClick={handleNavigate}>
               <UserAvatar
@@ -83,16 +84,23 @@ const PostCard = ({ post, type = "default" }) => {
           </div>
 
           {/* post */}
-          <div className={`mt-4 ${wide && "flex justify-between items-start"}`}>
-            <h1
-              className={`text-2xl font-bold text-text-primary line-clamp-2 h-16 ${wide && "w-1/2"}`}
-            >
-              {post.title}
-            </h1>
+          <div
+            className={`mt-4 flex flex-col gap-4 ${wide && "flex-row justify-between"}`}
+          >
+            <div className="flex-1/2 flex flex-col justify-between">
+              <h1
+                className={`text-2xl font-bold text-text-primary line-clamp-2 h-16`}
+              >
+                {post.title}
+              </h1>
+              {wide && (
+                <div className="">
+                  <PostActionButtons post={post} mainStyle="w-full" />
+                </div>
+              )}
+            </div>
 
-            <div
-              className={`aspect-video mt-5 rounded-xl overflow-hidden ${wide && "w-1/3 mt-0"}`}
-            >
+            <div className={`aspect-video rounded-xl overflow-hidden flex-1/2`}>
               {post.image && (
                 <img
                   src={post.image}
@@ -104,10 +112,12 @@ const PostCard = ({ post, type = "default" }) => {
           </div>
 
           {/* buttons */}
+          {!wide && (
+            <div className="mt-4">
+              <PostActionButtons post={post} mainStyle="w-full" />
+            </div>
+          )}
         </CardContent>
-        <CardFooter className="content-end py-0">
-          <PostActionButtons post={post} mainStyle="w-full" />
-        </CardFooter>
       </Card>
     </Link>
   );

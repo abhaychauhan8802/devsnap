@@ -1,8 +1,10 @@
 import { MessageCircleMore } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useRef } from "react";
 import { IoSend } from "react-icons/io5";
+import { useNavigate } from "react-router";
 
 import UserAvatar from "@/components/common/UserAvatar";
 import { Button } from "@/components/ui/button";
@@ -26,6 +28,8 @@ const UserMessages = () => {
   const [textMessage, setTextMessage] = useState("");
   const [typingUser, setTypingUser] = useState(null);
   const [dots, setDots] = useState(".");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -80,6 +84,14 @@ const UserMessages = () => {
         <div className="h-full w-full flex flex-col">
           <div className="border-b h-14 flex items-center px-4">
             <div className="flex items-center gap-2 cursor-pointer">
+              <Button
+                size="icon"
+                variant="ghost"
+                className="rounded-full size-10"
+                onClick={() => navigate(-1)}
+              >
+                <ChevronLeft />
+              </Button>
               <div
                 className={`rounded-full relative p-[1px] ${onlineUsers?.includes(selectedUser?._id) && "border-2 border-green-500"}`}
               >

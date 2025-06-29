@@ -15,6 +15,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import useBreakPoints from "@/hooks/useBreakPoints";
 import { useAuthStore } from "@/store/useAuthStore";
 
 const Sidebar = () => {
@@ -54,7 +55,7 @@ const Sidebar = () => {
 
   const location = useLocation();
 
-  const isDesktop = useMediaQuery({ minWidth: 1024 });
+  const { isDesktop } = useBreakPoints();
 
   return (
     <div className="w-[60px] lg:w-[300px] px-2 lg:px-3 border-r h-full py-3 shadow-sm">
@@ -71,7 +72,7 @@ const Sidebar = () => {
           <Link to="/add-post">
             <Button
               size={isDesktop ? "lg" : "icon"}
-              className="lg:w-full ml-1 lg:ml-0"
+              className="lg:w-full ml-[2px] lg:ml-0"
             >
               <Plus /> <span className="hidden lg:inline-block">New Post</span>
             </Button>

@@ -101,10 +101,19 @@ export const deletePost = async (req, res) => {
 
 export const getAllPost = async (req, res) => {
   try {
-    const posts = await Post.find().sort({ createdAt: -1 }).populate({
-      path: "author",
-      select: "_id username name profilePicture bio createdAt",
-    });
+    const userId = req.id;
+
+    const skip = parseInt(req.query.skip) || 0;
+    const limit = parseInt(req.query.limit) || 100;
+
+    const posts = await Post.find({ author: { $ne: userId } })
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .populate({
+        path: "author",
+        select: "_id username name profilePicture bio createdAt",
+      });
 
     res.status(200).json({
       success: true,

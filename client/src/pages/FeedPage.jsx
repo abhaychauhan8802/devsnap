@@ -1,7 +1,7 @@
 import { PostFeed } from "@/features/posts";
 
-const Home = () => {
+const FeedPage = () => {
   return <PostFeed />;
 };
 
-export default Home;
+export default FeedPage;

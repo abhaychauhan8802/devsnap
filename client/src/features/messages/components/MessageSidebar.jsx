@@ -26,7 +26,7 @@ const MessageSidebar = () => {
   };
 
   return (
-    <div className="border-r w-[260px] h-full flex flex-col shrink-0">
+    <div className="md:border-r w-full md:w-[260px] h-full flex flex-col shrink-0">
       <div className="border-b p-4">
         <h2 className="font-bold">Messages</h2>
       </div>

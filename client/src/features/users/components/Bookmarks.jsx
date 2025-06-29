@@ -1,11 +1,14 @@
 import { useEffect } from "react";
 
 import PostCard from "@/features/posts/components/PostCard";
+import useBreakPoints from "@/hooks/useBreakPoints";
 
 import { useUserStore } from "../useUserStore";
 
 const Bookmarks = () => {
   const { getUserBookmarks, userBookmarks, loading } = useUserStore();
+
+  const { isMobile } = useBreakPoints();
 
   useEffect(() => {
     if (userBookmarks?.length === 0) {
@@ -20,7 +23,11 @@ const Bookmarks = () => {
       <div className="flex flex-col gap-8">
         {userBookmarks.length !== 0 ? (
           userBookmarks?.map((post, idx) => (
-            <PostCard key={idx} post={post} type="wide" />
+            <PostCard
+              key={idx}
+              post={post}
+              varient={isMobile ? "default" : "wide"}
+            />
           ))
         ) : (
           <div>
