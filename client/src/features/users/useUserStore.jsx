@@ -11,6 +11,8 @@ export const useUserStore = create((set, get) => ({
   userBookmarks: [],
   loading: false,
   isUpdatingProfile: false,
+  followers: [],
+  followings: [],
 
   getUserProfile: async ({ userId }) => {
     try {
@@ -141,6 +143,50 @@ export const useUserStore = create((set, get) => ({
           followings: updatedFollowings,
         },
       });
+    } catch (error) {
+      console.log(error?.response?.data?.message);
+    }
+  },
+
+  removeFollower: async (userId) => {
+    const { authUser } = useAuthStore.getState();
+    const followers = authUser.followers || [];
+    try {
+      axiosInstance.delete(`/user/removefollower/${userId}`);
+
+      const isFollower = followers.includes(userId);
+
+      const updatedFollowers =
+        isFollower && followers.filter((id) => id !== userId);
+
+      useAuthStore.setState({
+        authUser: {
+          ...authUser,
+          followers: updatedFollowers,
+        },
+      });
+
+      set({ followers: updatedFollowers });
+    } catch (error) {
+      console.log(error?.response?.data?.message);
+    }
+  },
+
+  getFollowers: async (userId) => {
+    try {
+      const res = await axiosInstance.get(`/user/${userId}/followers`);
+
+      set({ followers: res?.data?.followers?.followers });
+    } catch (error) {
+      console.log(error?.response?.data?.message);
+    }
+  },
+
+  getFollowings: async (userId) => {
+    try {
+      const res = await axiosInstance.get(`/user/${userId}/followings`);
+
+      set({ followings: res?.data?.followings?.followings });
     } catch (error) {
       console.log(error?.response?.data?.message);
     }

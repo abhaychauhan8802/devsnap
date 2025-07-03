@@ -83,7 +83,7 @@ const AddPost = () => {
 
               <div className="relative w-fit">
                 <div
-                  className="w-44 h-28 rounded-2xl overflow-hidden border border-input cursor-pointer"
+                  className="w-44 h-28 rounded-lg overflow-hidden border border-input cursor-pointer"
                   onClick={() => imageRef.current.click()}
                 >
                   {previewURL ? (

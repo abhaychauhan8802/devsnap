@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { Link } from "react-router";
 import { useNavigate } from "react-router";
@@ -17,7 +18,7 @@ import { useAuthStore } from "@/store/useAuthStore";
 import UserAvatar from "../../../components/common/UserAvatar";
 import PostActionButtons from "./common/PostActionButtons";
 
-const PostCard = ({ post, varient = "default" }) => {
+const PostCard = forwardRef(({ post, varient = "default" }, ref) => {
   const { authUser } = useAuthStore();
   const { setPost } = usePostStore();
   const { deleteUserPost } = useUserStore();
@@ -33,11 +34,7 @@ const PostCard = ({ post, varient = "default" }) => {
     e.stopPropagation();
     e.preventDefault();
 
-    if (authUsername !== postAuthorUsername) {
-      navigate(`/user/${postAuthorUsername}`);
-    } else {
-      navigate("/profile");
-    }
+    navigate(`/user/${postAuthorUsername}`);
   };
 
   const handleDeletePost = (e) => {
@@ -52,8 +49,9 @@ const PostCard = ({ post, varient = "default" }) => {
       onClick={() => {
         setPost(post);
       }}
+      ref={ref}
     >
-      <Card className={`hover:border hover:border-primary`}>
+      <Card className={`hover:border hover:border-text-muted/60`}>
         <CardContent className="w-full">
           {/* Post owner info */}
           <div className="flex justify-between items-center">
@@ -121,6 +119,6 @@ const PostCard = ({ post, varient = "default" }) => {
       </Card>
     </Link>
   );
-};
+});
 
 export default PostCard;

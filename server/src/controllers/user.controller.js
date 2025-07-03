@@ -91,7 +91,7 @@ export const getSuggestedUsers = async (req, res) => {
     const suggestedUsers = await User.aggregate([
       { $match: { _id: { $ne: new mongoose.Types.ObjectId(userId) } } },
       { $sample: { size: 6 } },
-      { $project: { password: 0 } },
+      { $project: { name: 1, username: 1, profilePicture: 1 } },
     ]);
 
     if (!suggestedUsers) {
@@ -179,5 +179,95 @@ export const followOrUnfollow = async (req, res) => {
     });
 
     console.log("Error in followOrUnfollow route", error.message);
+  }
+};
+
+export const removeFollower = async (req, res) => {
+  try {
+    const currentUserId = req.id;
+    const otherUserId = req.params.id;
+
+    const currentUser = await User.findById(currentUserId);
+    const otherUser = await User.findById(otherUserId);
+
+    if (!currentUser || !otherUser) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+
+    await Promise.all([
+      User.updateOne(
+        { _id: currentUserId },
+        { $pull: { followers: otherUserId } },
+      ),
+      User.updateOne(
+        { _id: otherUserId },
+        { $pull: { followings: currentUserId } },
+      ),
+    ]);
+
+    return res
+      .status(200)
+      .json({ message: "remove follower successfully", success: true });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+
+    console.log("Error in removeFollower route", error.message);
+  }
+};
+
+export const getFollowers = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    const followers = await User.findById(userId).select("followers").populate({
+      path: "followers",
+      select: "name username profilePicture",
+    });
+
+    if (!followers)
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+
+    res.status(200).json({ success: true, followers });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+
+    console.log("Error in getFollowers route", error.message);
+  }
+};
+
+export const getFollowings = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    const followings = await User.findById(userId)
+      .select("followings")
+      .populate({
+        path: "followings",
+        select: "name username profilePicture",
+      });
+
+    if (!followings)
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+
+    res.status(200).json({ success: true, followings });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+
+    console.log("Error in getFollowings route", error.message);
   }
 };

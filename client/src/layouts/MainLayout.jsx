@@ -4,8 +4,9 @@ import { Outlet } from "react-router";
 import { useLocation } from "react-router";
 
 import useBreakPoints from "@/hooks/useBreakPoints";
+import { useScrollStore } from "@/store/useScrollStore";
 
-import { Header, Sidebar } from "./components";
+import { Sidebar } from "./components";
 import Tabs from "./components/Tabs";
 
 const MainLayout = () => {
@@ -13,14 +14,35 @@ const MainLayout = () => {
 
   const location = useLocation();
 
+  const pathname = location.pathname;
+
+  const saveScroll = useScrollStore((s) => s.saveScroll);
+  const getScroll = useScrollStore((s) => s.getScroll);
+
+  // 🧠 Save scroll only if it's the feed page ("/")
   useEffect(() => {
-    const isFeedPage = location.pathname === "/";
     const container = scrollRef.current;
 
-    if (!isFeedPage) {
-      container.scrollTo(0, 0);
+    return () => {
+      if (pathname === "/" && container) {
+        saveScroll(pathname, container.scrollTop);
+      }
+    };
+  }, [pathname, saveScroll]);
+
+  useEffect(() => {
+    const container = scrollRef.current;
+
+    if (!container) return;
+
+    if (pathname === "/") {
+      const saved = getScroll(pathname);
+
+      container.scrollTo({ top: saved, behavior: "auto" });
+    } else {
+      container.scrollTo({ top: 0, behavior: "auto" });
     }
-  }, [location.pathname]);
+  }, [pathname, getScroll]);
 
   const { isMobile } = useBreakPoints();
 

@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useRef } from "react";
 import { IoSend } from "react-icons/io5";
 import { useNavigate } from "react-router";
+import { Link } from "react-router";
 
 import UserAvatar from "@/components/common/UserAvatar";
 import { Button } from "@/components/ui/button";
@@ -18,6 +19,7 @@ const UserMessages = () => {
   const {
     selectedUser,
     messages,
+    getMessages,
     sendMessage,
     subscribeToMessages,
     unsubscribeFromMessages,
@@ -30,19 +32,6 @@ const UserMessages = () => {
   const [dots, setDots] = useState(".");
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setDots((prev) => (prev.length >= 3 ? "." : prev + "."));
-    }, 400);
-    return () => clearInterval(interval);
-  }, []);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    sendMessage(selectedUser?._id, textMessage);
-    setTextMessage("");
-  };
 
   const typingTimeoutRef = useRef(null);
 
@@ -57,10 +46,29 @@ const UserMessages = () => {
   };
 
   useEffect(() => {
+    if (selectedUser) {
+      getMessages(selectedUser?._id);
+    }
+  }, [getMessages, selectedUser]);
+
+  useEffect(() => {
     subscribeToMessages();
 
     return () => unsubscribeFromMessages();
   }, [selectedUser?._id, subscribeToMessages, unsubscribeFromMessages]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDots((prev) => (prev.length >= 3 ? "." : prev + "."));
+    }, 400);
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    sendMessage(selectedUser?._id, textMessage);
+    setTextMessage("");
+  };
 
   useEffect(() => {
     if (!socket) return;
@@ -82,8 +90,8 @@ const UserMessages = () => {
     <>
       {selectedUser ? (
         <div className="h-full w-full flex flex-col">
-          <div className="border-b h-14 flex items-center px-4">
-            <div className="flex items-center gap-2 cursor-pointer">
+          <div className="border-b h-16 flex items-center px-4">
+            <div className="flex items-center gap-2">
               <Button
                 size="icon"
                 variant="ghost"
@@ -92,38 +100,43 @@ const UserMessages = () => {
               >
                 <ChevronLeft />
               </Button>
-              <div
-                className={`rounded-full relative p-[1px] ${onlineUsers?.includes(selectedUser?._id) && "border-2 border-green-500"}`}
+              <Link
+                className="flex items-center gap-2"
+                to={`/user/${selectedUser?.username}`}
               >
-                <UserAvatar
-                  profilePicture={selectedUser?.profilePicture}
-                  avatarStyle="size-9"
-                />
-                {onlineUsers?.includes(selectedUser?._id) && (
-                  <span className="w-2 h-2 absolute bottom-0 right-1 bg-green-500 rounded-full" />
-                )}
-              </div>
-              <div className="flex flex-col">
-                <span className="font-semibold text-text-secondary text-sm">
-                  {selectedUser?.name}
-                </span>
-                <span className="font-medium text-xs text-text-muted">
-                  @{selectedUser?.username}
-                </span>
-              </div>
+                <div
+                  className={`rounded-full relative p-[1px] ${onlineUsers?.includes(selectedUser?._id) && "border-2 border-green-500"}`}
+                >
+                  <UserAvatar
+                    profilePicture={selectedUser?.profilePicture}
+                    avatarStyle="size-9"
+                  />
+                  {onlineUsers?.includes(selectedUser?._id) && (
+                    <span className="w-2 h-2 absolute bottom-0 right-1 bg-green-500 rounded-full" />
+                  )}
+                </div>
+                <div className="flex flex-col">
+                  <span className="font-semibold text-text-secondary text-sm">
+                    {selectedUser?.name}
+                  </span>
+                  <span className="font-medium text-xs text-text-muted">
+                    @{selectedUser?.username}
+                  </span>
+                </div>
+              </Link>
             </div>
           </div>
 
           <div className="flex-1 flex flex-col-reverse gap-2 overflow-auto p-4 scrollbar">
             {typingUser && (
-              <span className="self-start bg-secondary/50 rounded-bl-none py-2 px-4 rounded-full">
+              <span className="self-start text-md text-text-muted">
                 typing{dots}
               </span>
             )}
             {messages?.map((message, idx) => (
               <div
                 key={idx}
-                className={`${authUser?._id === message?.senderId ? "self-end bg-primary rounded-br-none text-primary-foreground" : "self-start bg-secondary rounded-bl-none"} py-2 px-4 rounded-full `}
+                className={`${authUser?._id === message?.senderId ? "self-end bg-primary rounded-br-none text-primary-foreground" : "self-start bg-secondary rounded-bl-none"} py-2 px-4 rounded-xl`}
               >
                 {message?.message}
               </div>

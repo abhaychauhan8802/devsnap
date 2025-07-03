@@ -1,10 +1,16 @@
 import { useEffect } from "react";
+import { Link } from "react-router";
+
+import { useAuthStore } from "@/store/useAuthStore";
 
 import UserAvatar from "../../../components/common/UserAvatar";
 import { usePostStore } from "../usePostStore";
 
 const PostComments = () => {
+  const { authUser } = useAuthStore();
   const { post, postComments, getPostComments } = usePostStore();
+
+  const authUsername = authUser?.username;
 
   useEffect(() => {
     if (post) {
@@ -21,9 +27,9 @@ const PostComments = () => {
               key={idx}
               className="border p-4 rounded-xl hover:bg-card/80 dark:hover:bg-card/30"
             >
-              <div
+              <Link
+                to={`/user/${comment?.author?.username}`}
                 className="flex gap-2 items-center justify-center cursor-pointer w-fit"
-                onClick={() => console.log("Click")}
               >
                 {/* Avatar */}
                 <UserAvatar
@@ -40,7 +46,7 @@ const PostComments = () => {
                     @{comment?.author?.username}
                   </span>
                 </div>
-              </div>
+              </Link>
 
               <div className="py-4">
                 <p>{comment?.text}</p>

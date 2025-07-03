@@ -20,7 +20,7 @@ const PostsFeed = ({ userId }) => {
 
   return (
     <div className="w-full">
-      <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-4">
         {userPosts?.length !== 0 ? (
           userPosts?.map((post, idx) => (
             <PostCard

@@ -1,6 +1,12 @@
 import { Plus } from "lucide-react";
 import { Compass, House, LogOut, MessageCircleMore } from "lucide-react";
-import { useMediaQuery } from "react-responsive";
+import { GoHome, GoHomeFill } from "react-icons/go";
+import {
+  IoChatbubbleEllipsesOutline,
+  IoChatbubbleEllipsesSharp,
+  IoCompassOutline,
+  IoCompassSharp,
+} from "react-icons/io5";
 import { Link } from "react-router";
 import { useLocation } from "react-router";
 
@@ -18,44 +24,39 @@ import {
 import useBreakPoints from "@/hooks/useBreakPoints";
 import { useAuthStore } from "@/store/useAuthStore";
 
+const iconSize = 20;
+
 const Sidebar = () => {
   const { authUser, logout } = useAuthStore();
 
-  const iconSize = 20;
+  const location = useLocation();
+
+  const { isDesktop } = useBreakPoints();
 
   const navLinks = [
     {
       name: "Feed",
       path: "/",
-      icon: <House size={iconSize} />,
+      icon: <GoHome size={iconSize} />,
+      iconFill: <GoHomeFill size={iconSize} />,
     },
     {
       name: "Explore",
       path: "/explore",
-      icon: <Compass size={iconSize} />,
+      icon: <IoCompassOutline size={iconSize} />,
+      iconFill: <IoCompassSharp size={iconSize} />,
     },
     {
       name: "Messages",
       path: "/messages",
-      icon: <MessageCircleMore size={iconSize} />,
+      icon: <IoChatbubbleEllipsesOutline size={iconSize} />,
+      iconFill: <IoChatbubbleEllipsesSharp size={iconSize} />,
     },
     {
       name: "Profile",
-      path: "/profile",
-      icon: (
-        <Avatar className="size-6">
-          <AvatarImage src={authUser.profilePicture} alt="pfp" />
-          <AvatarFallback className="bg-gray-800 dark:bg-gray-600 text-white text-xs font-semibold">
-            <img src={AvatarImg} alt="profilePicture" />
-          </AvatarFallback>
-        </Avatar>
-      ),
+      path: `/user/${authUser?.username}`,
     },
   ];
-
-  const location = useLocation();
-
-  const { isDesktop } = useBreakPoints();
 
   return (
     <div className="w-[60px] lg:w-[300px] px-2 lg:px-3 border-r h-full py-3 shadow-sm">
@@ -86,8 +87,24 @@ const Sidebar = () => {
                 key={idx}
                 className={`hover:bg-accent p-2 lg:px-4 lg:py-2 rounded-md flex items-center justify-center lg:justify-start gap-2 text-text-secondary ${location.pathname === link.path && "bg-accent"}`}
               >
-                {link.icon}
-                <span className="hidden lg:inline-block">{link.name}</span>
+                {link.name === "Profile" ? (
+                  <>
+                    <Avatar className="size-5">
+                      <AvatarImage src={authUser?.profilePicture} alt="pfp" />
+                      <AvatarFallback className="bg-gray-800 dark:bg-gray-600 text-white text-xs font-semibold">
+                        <img src={AvatarImg} alt="profilePicture" />
+                      </AvatarFallback>
+                    </Avatar>
+                    <span className="hidden lg:inline-block">{link.name}</span>
+                  </>
+                ) : (
+                  <>
+                    {location.pathname === link.path
+                      ? link.iconFill
+                      : link.icon}
+                    <span className="hidden lg:inline-block">{link.name}</span>
+                  </>
+                )}
               </Link>
             ))}
           </div>

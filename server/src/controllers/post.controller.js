@@ -104,7 +104,7 @@ export const getAllPost = async (req, res) => {
     const userId = req.id;
 
     const skip = parseInt(req.query.skip) || 0;
-    const limit = parseInt(req.query.limit) || 100;
+    const limit = parseInt(req.query.limit) || 15;
 
     const posts = await Post.find({ author: { $ne: userId } })
       .sort({ createdAt: -1 })

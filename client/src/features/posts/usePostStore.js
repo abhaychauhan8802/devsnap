@@ -8,21 +8,44 @@ import { useUserStore } from "../users/useUserStore";
 
 export const usePostStore = create((set, get) => ({
   posts: [],
+  skip: 0,
+  hasMore: true,
   post: null,
   postLoading: false,
   postComments: [],
   isAddingPost: false,
 
-  getAllPost: async () => {
+  setHasMore: (value) => {
+    set({ hasMore: value });
+  },
+
+  getAllPost: async ({ skip, limit }) => {
     set({ postLoading: true });
     try {
-      const res = await axiosInstance.get("/post/all");
-      set({ posts: res.data.message });
+      const res = await axiosInstance.get(
+        `/post/all?skip=${skip}&limit=${limit}`,
+      );
+
+      return res.data.message;
     } catch (error) {
       toast.error(error.response.data.message);
     } finally {
       set({ postLoading: false });
     }
+  },
+
+  setPosts: (posts, skipValue) => {
+    set({
+      posts: posts,
+      skip: skipValue,
+    });
+  },
+
+  appendPosts: (newPosts, skipValue) => {
+    set((state) => ({
+      posts: [...state.posts, ...newPosts],
+      skip: state.skip + skipValue,
+    }));
   },
 
   addPost: async ({ title, imageFile, text }) => {

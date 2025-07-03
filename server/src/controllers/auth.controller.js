@@ -31,15 +31,11 @@ export const register = async (req, res) => {
       password: hashedPassword,
     });
 
+    const userObj = newUser.toObject();
+
     const token = await generateToken(newUser._id);
 
-    newUser = {
-      _id: newUser._id,
-      name: newUser.name,
-      username: newUser.username,
-      email: newUser.email,
-      profilePicture: newUser.profilePicture,
-    };
+    delete userObj.password;
 
     res.cookie("token", token, {
       httpOnly: true,
@@ -49,7 +45,7 @@ export const register = async (req, res) => {
 
     res.status(201).json({
       success: true,
-      message: newUser,
+      message: userObj,
     });
   } catch (error) {
     res.status(500).json({
@@ -72,7 +68,7 @@ export const login = async (req, res) => {
       });
     }
 
-    let user = await User.findOne({ email });
+    let user = await User.findOne({ email }).lean();
 
     if (!user) {
       return res.status(404).json({
@@ -89,15 +85,9 @@ export const login = async (req, res) => {
         .json({ success: false, message: "Invalid credentials" });
     }
 
-    const token = await generateToken(user._id);
+    delete user.password;
 
-    user = {
-      _id: user._id,
-      name: user.name,
-      username: user.username,
-      email: user.email,
-      profilePicture: user.profilePicture,
-    };
+    const token = await generateToken(user._id);
 
     res.cookie("token", token, {
       httpOnly: true,

@@ -1,16 +1,24 @@
 import { Loader2Icon } from "lucide-react";
-import { Eye, EyeOff, Heart, MessageCircle, Star } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import { useEffect } from "react";
 import { useState } from "react";
+import { BiLike } from "react-icons/bi";
+import { FaLink, FaRegBookmark } from "react-icons/fa6";
+import { MdOutlineMessage } from "react-icons/md";
 import { Navigate } from "react-router";
 import { useNavigate } from "react-router";
 import { Link } from "react-router";
 
 import { Logo } from "@/components";
+import UserAvatar from "@/components/common/UserAvatar";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuthStore } from "@/store/useAuthStore";
+
+import Avatar from "../../assets/images/avatar.png";
+import DummyImage from "../../assets/images/dummy-image.webp";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -48,62 +56,6 @@ const Login = () => {
             <h1 className="text-4xl font-bold mb-4 text-text-primary">
               Where Developers Meet, Connect, and Inspire.
             </h1>
-
-            <div className="relative mx-auto mt-12 w-80 h-96 bg-gray-900 rounded-3xl p-2 shadow-2xl transform rotate-2 hover:rotate-0 transition-transform duration-300">
-              <div className="w-full h-full bg-white rounded-2xl overflow-hidden relative">
-                {/* Status bar */}
-                <div className="h-6 bg-gray-100 flex items-center justify-between px-4 text-xs">
-                  <span>9:41</span>
-                  <div className="flex space-x-1">
-                    <div className="w-1 h-1 bg-gray-600 rounded-full"></div>
-                    <div className="w-1 h-1 bg-gray-600 rounded-full"></div>
-                    <div className="w-1 h-1 bg-gray-600 rounded-full"></div>
-                  </div>
-                </div>
-
-                {/* Mock Instagram interface */}
-                <div className="p-4 space-y-4">
-                  {/* Story circles */}
-                  <div className="flex space-x-3">
-                    <div className="w-12 h-12 bg-gradient-to-r from-pink-500 to-orange-500 rounded-full p-0.5">
-                      <div className="w-full h-full bg-gray-200 rounded-full"></div>
-                    </div>
-                    <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full p-0.5">
-                      <div className="w-full h-full bg-gray-200 rounded-full"></div>
-                    </div>
-                    <div className="w-12 h-12 bg-gradient-to-r from-yellow-500 to-red-500 rounded-full p-0.5">
-                      <div className="w-full h-full bg-gray-200 rounded-full"></div>
-                    </div>
-                  </div>
-
-                  {/* Mock post */}
-                  <div className="space-y-2">
-                    <div className="flex items-center space-x-2">
-                      <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
-                      <div className="flex-1 h-3 bg-gray-200 rounded"></div>
-                    </div>
-                    <div className="h-40 bg-gradient-to-br from-blue-200 to-green-200 rounded-lg relative overflow-hidden">
-                      <div className="absolute top-2 left-2">
-                        <Heart className="w-4 h-4 text-red-500 fill-current animate-pulse" />
-                      </div>
-                      <div className="absolute top-2 right-2">
-                        <Star className="w-4 h-4 text-yellow-500 fill-current" />
-                      </div>
-                      <div className="absolute bottom-2 left-2 right-2">
-                        <div className="bg-white bg-opacity-90 rounded-full px-3 py-1 text-xs">
-                          Beautiful moment ✨
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex items-center space-x-4">
-                      <Heart className="w-5 h-5 text-gray-700" />
-                      <MessageCircle className="w-5 h-5 text-gray-700" />
-                      <div className="w-5 h-5 bg-gray-300 rounded"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>

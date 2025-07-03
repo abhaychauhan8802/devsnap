@@ -19,23 +19,14 @@ const PostAuthorInfo = ({ post }) => {
     getSuggested();
   }, [getSuggested]);
 
-  const authUsername = authUser?.username;
-  const postAuthorUsername = post?.author?.username;
-
   const handleFollowUnfollow = () => {
     followAndUnfollow(post?.author?._id);
   };
 
   return (
     <div className="w-[400px] pt-5 hidden lg:block">
-      <div className="relative border p-4 rounded-2xl bg-card">
-        <Link
-          to={
-            authUsername === postAuthorUsername
-              ? "/profile"
-              : `/user/${post?.author?.username}`
-          }
-        >
+      <div className="relative border p-4 rounded-xl bg-card">
+        <Link to={`/user/${post?.author?.username}`}>
           <UserAvatar
             avatarStyle="size-16"
             profilePicture={post?.author?.profilePicture}
@@ -66,14 +57,14 @@ const PostAuthorInfo = ({ post }) => {
         )}
       </div>
 
-      <div className="mt-4 border rounded-2xl bg-card">
+      <div className="mt-4 border rounded-xl bg-card overflow-hidden">
         <h2 className="p-4">More users</h2>
         <div className="">
           {suggestedUsers.map((user, _) => (
             <Link
               to={`/user/${user?.username}`}
               key={user._id}
-              className="flex items-center gap-4 px-4 py-3 cursor-pointer border-t"
+              className="flex items-center gap-4 px-4 py-3 cursor-pointer border-t hover:bg-background/80"
             >
               <UserAvatar
                 avatarStyle="size-12"

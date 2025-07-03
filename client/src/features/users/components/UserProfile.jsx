@@ -11,7 +11,7 @@ const UserProfile = () => {
 
   useEffect(() => {
     getUser(params.username);
-  }, []);
+  }, [params.username]);
 
   return <Profile user={user} />;
 };

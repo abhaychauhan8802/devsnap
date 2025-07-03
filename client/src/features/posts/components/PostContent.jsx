@@ -48,11 +48,7 @@ const PostContent = ({ post }) => {
         <div className="flex gap-2 items-center justify-center cursor-pointer w-fit">
           {/* Avatar */}
           <Link
-            to={
-              authUsername === postAuthorUsername
-                ? "/profile"
-                : `/user/${post?.author?.username}`
-            }
+            to={`/user/${post?.author?.username}`}
             className="flex items-center gap-2"
           >
             <UserAvatar

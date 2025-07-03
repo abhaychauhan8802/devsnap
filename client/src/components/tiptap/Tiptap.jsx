@@ -114,7 +114,7 @@ const Tiptap = ({ onChange }) => {
   });
 
   return (
-    <div className="h-[80vh] md:h-[60vh] border rounded-2xl shadow-sm overflow-hidden flex flex-col">
+    <div className="h-[80vh] md:h-[60vh] border rounded-lg shadow-sm overflow-hidden flex flex-col">
       <div className="sticky top-0 z-10">
         <MenuBar editor={editor} />
       </div>

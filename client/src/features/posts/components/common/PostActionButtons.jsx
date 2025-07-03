@@ -1,7 +1,12 @@
 import { BiLike, BiSolidLike } from "react-icons/bi";
 import { FaBookmark } from "react-icons/fa";
-import { FaLink, FaRegBookmark } from "react-icons/fa6";
-import { MdOutlineMessage } from "react-icons/md";
+import { FaLink, FaRegBookmark, FaRegComment } from "react-icons/fa6";
+import { IoIosHeart, IoIosHeartEmpty } from "react-icons/io";
+import {
+  MdBookmark,
+  MdOutlineBookmarkBorder,
+  MdOutlineMessage,
+} from "react-icons/md";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 
@@ -10,7 +15,7 @@ import { useAuthStore } from "@/store/useAuthStore";
 
 import { usePostStore } from "../../usePostStore";
 
-const PostActionButtons = ({ post, mainStyle = "", setIsCommentOpen }) => {
+const PostActionButtons = ({ post, setIsCommentOpen }) => {
   const { authUser } = useAuthStore();
   const { likePost, bookmarkPost } = usePostStore();
 
@@ -49,40 +54,51 @@ const PostActionButtons = ({ post, mainStyle = "", setIsCommentOpen }) => {
   };
 
   return (
-    <div className={`flex justify-between ${mainStyle}`}>
-      <div className={`flex gap-2`}>
-        <Button
-          variant="ghost"
-          className={`flex gap-2 items-center z-10 hover:bg-green-500/20 dark:hover:dark:bg-green-600/50 ${authUserPostsLikes && "bg-green-300/20 dark:bg-green-600/50"}`}
+    <div className={`flex justify-between items-center`}>
+      <div className={`flex gap-5`}>
+        <button
+          className={`flex gap-2 items-center z-10 cursor-pointer`}
           onClick={handleLike}
         >
           {authUserPostsLikes ? (
             <>
-              <BiSolidLike className="text-green-600 dark:text-green-400" />
-              <span className="text-green-600 dark:text-green-400">
-                {post?.likes?.length}
-              </span>
+              <IoIosHeart
+                className="text-like-text dark:text-green-400"
+                size={20}
+              />
+              <span className="">{post?.likes?.length}</span>
             </>
           ) : (
             <>
-              <BiLike />
+              <IoIosHeartEmpty
+                className="text-text-secondary group-hover:text-like-text"
+                size={20}
+              />
               <span>{post?.likes?.length}</span>
             </>
           )}
-        </Button>
+        </button>
 
-        <Button variant="ghost" onClick={handleCommentBoxOpen}>
-          <MdOutlineMessage />
+        <button
+          onClick={handleCommentBoxOpen}
+          className={`flex gap-2 items-center z-10 cursor-pointer`}
+        >
+          <FaRegComment />
           <span>{post?.comments?.length}</span>
-        </Button>
-        <Button variant="ghost" onClick={handleBookmark}>
-          {postbookmarked ? <FaBookmark /> : <FaRegBookmark />}
-        </Button>
+        </button>
+
+        <button variant="ghost" onClick={handleBookmark}>
+          {postbookmarked ? (
+            <MdBookmark size={20} />
+          ) : (
+            <MdOutlineBookmarkBorder size={20} />
+          )}
+        </button>
       </div>
       <div>
-        <Button variant="ghost" onClick={handleCopyPostLink}>
-          <FaLink />
-        </Button>
+        <button className="cursor-pointer" onClick={handleCopyPostLink}>
+          <FaLink size={15} />
+        </button>
       </div>
     </div>
   );
