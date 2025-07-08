@@ -271,3 +271,30 @@ export const getFollowings = async (req, res) => {
     console.log("Error in getFollowings route", error.message);
   }
 };
+
+export const searchUser = async (req, res) => {
+  try {
+    const searchTerm = req.query.searchTerm;
+
+    if (!searchTerm || typeof searchTerm !== "string")
+      return res.status(400).json({ message: "Search Query is required" });
+
+    const searchRegex = new RegExp(searchTerm, "i");
+
+    const users = await User.find({
+      $or: [
+        { username: { $regex: searchRegex } },
+        { name: { $regex: searchRegex } },
+      ],
+    }).sort({ username: 1, name: 1 });
+
+    res.status(200).json({ success: true, users });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+
+    console.log("Error in getFollowings route", error.message);
+  }
+};

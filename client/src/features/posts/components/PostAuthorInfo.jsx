@@ -1,7 +1,7 @@
-import { useEffect } from "react";
 import { Link } from "react-router";
 
 import { Button } from "@/components/ui/button";
+import SuggestedUser from "@/features/users/components/SuggestedUser";
 import { useUserStore } from "@/features/users/useUserStore";
 import { useAuthStore } from "@/store/useAuthStore";
 
@@ -9,15 +9,10 @@ import UserAvatar from "../../../components/common/UserAvatar";
 import { formatDate } from "../utils/formatDate";
 
 const PostAuthorInfo = ({ post }) => {
-  const { suggestedUsers, getSuggested } = useUserStore();
   const { followAndUnfollow } = useUserStore();
   const { authUser } = useAuthStore();
 
   const isFollowing = authUser?.followings?.includes(post?.author?._id);
-
-  useEffect(() => {
-    getSuggested();
-  }, [getSuggested]);
 
   const handleFollowUnfollow = () => {
     followAndUnfollow(post?.author?._id);
@@ -57,31 +52,8 @@ const PostAuthorInfo = ({ post }) => {
         )}
       </div>
 
-      <div className="mt-4 border rounded-xl bg-card overflow-hidden">
-        <h2 className="p-4">More users</h2>
-        <div className="">
-          {suggestedUsers.map((user, _) => (
-            <Link
-              to={`/user/${user?.username}`}
-              key={user._id}
-              className="flex items-center gap-4 px-4 py-3 cursor-pointer border-t hover:bg-background/80"
-            >
-              <UserAvatar
-                avatarStyle="size-12"
-                profilePicture={user?.profilePicture}
-              />
-
-              <div className="flex flex-col leading-5">
-                <span className="text-lg font-medium text-text-secondary">
-                  {user?.name}
-                </span>
-                <span className="text-md text-text-muted">
-                  @{user?.username}
-                </span>
-              </div>
-            </Link>
-          ))}
-        </div>
+      <div className="mt-4">
+        <SuggestedUser />
       </div>
     </div>
   );

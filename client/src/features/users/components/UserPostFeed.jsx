@@ -5,7 +5,7 @@ import useBreakPoints from "@/hooks/useBreakPoints";
 
 import { useUserStore } from "../useUserStore";
 
-const PostsFeed = ({ userId }) => {
+const UserPostFeed = ({ userId }) => {
   const { getUserPosts, userPosts, loading } = useUserStore();
 
   const { isMobile } = useBreakPoints();
@@ -39,4 +39,4 @@ const PostsFeed = ({ userId }) => {
   );
 };
 
-export default PostsFeed;
+export default UserPostFeed;

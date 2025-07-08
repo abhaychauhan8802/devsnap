@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 
+import { redis } from "../lib/redis.js";
 import User from "../models/user.model.js";
 import { generateToken } from "../utils/generateToken.js";
 
@@ -45,7 +46,7 @@ export const register = async (req, res) => {
 
     res.status(201).json({
       success: true,
-      message: userObj,
+      user: userObj,
     });
   } catch (error) {
     res.status(500).json({
@@ -97,7 +98,7 @@ export const login = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: user,
+      user,
     });
   } catch (error) {
     res.status(500).json({
@@ -111,6 +112,10 @@ export const login = async (req, res) => {
 
 export const logout = async (req, res) => {
   try {
+    const userId = req.id;
+
+    await redis.del(`user:${userId}`);
+
     res.clearCookie("token");
 
     res.status(200).json({ success: true, message: "logout successfully" });
@@ -128,6 +133,16 @@ export const getUserProfile = async (req, res) => {
   try {
     const userId = req.id;
 
+    const cachedUser = await redis.get(`user:${userId}`);
+
+    if (cachedUser) {
+      return res.json({
+        user: JSON.parse(cachedUser),
+        success: true,
+        source: "redis",
+      });
+    }
+
     const user = await User.findById(userId).select("-password");
 
     if (!user) {
@@ -136,7 +151,9 @@ export const getUserProfile = async (req, res) => {
         .json({ success: false, message: "user not found" });
     }
 
-    res.status(200).json({ success: true, message: user });
+    await redis.setEx(`user:${userId}`, 3600, JSON.stringify(user));
+
+    res.status(200).json({ success: true, user, source: "mongodb" });
   } catch (error) {
     res.status(500).json({
       success: false,

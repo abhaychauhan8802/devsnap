@@ -2,6 +2,7 @@ import { MessageCircleMore } from "lucide-react";
 import { Compass } from "lucide-react";
 import { House } from "lucide-react";
 import { Plus } from "lucide-react";
+import { AiFillPlusSquare, AiOutlinePlusSquare } from "react-icons/ai";
 import { GoHome, GoHomeFill } from "react-icons/go";
 import {
   IoChatbubbleEllipsesOutline,
@@ -38,9 +39,10 @@ const Tabs = () => {
       iconFill: <IoCompassSharp size={iconSize} />,
     },
     {
-      name: "Add Post",
-      path: "/add-post",
-      icon: <Plus size={iconSize} />,
+      name: "Create",
+      path: "/create",
+      icon: <AiOutlinePlusSquare size={iconSize} />,
+      iconFill: <AiFillPlusSquare size={iconSize} />,
     },
     {
       name: "Messages",
@@ -58,25 +60,11 @@ const Tabs = () => {
     <div className="h-16 w-full border-t shadow-sm">
       <div className="flex h-full items-center justify-between max-w-md px-6 mx-auto">
         {navLinks.map((link, idx) => {
-          if (link.path === "/add-post") {
-            return (
-              <Link to={link.path} key={idx}>
-                <Button
-                  size="icon"
-                  variant="secondary"
-                  className="lg:w-full ml-1 lg:ml-0"
-                >
-                  <Plus size={iconSize} />
-                </Button>
-              </Link>
-            );
-          }
-
           return (
             <Link
               to={link.path}
               key={idx}
-              className={`hover:bg-accent rounded-full flex items-center justify-center gap-2 text-text-secondary ${location.pathname === link.path && link.path === "/profile" && "border-2 border-text-primary"}`}
+              className={`hover:bg-accent rounded-full flex items-center justify-center gap-2 text-text-secondary ${location.pathname === link.path && link.name === "Profile" && "border-2 border-text-primary"}`}
             >
               {link.name === "Profile" ? (
                 <>

@@ -1,6 +1,5 @@
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { IoIosAdd } from "react-icons/io";
-import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import { Link } from "react-router";
 
@@ -28,8 +27,14 @@ const UserCard = ({ follower, following }) => {
   const isFollowing = authUser?.followings?.includes(following?._id);
   const isFollower = authUser?.followers?.includes(follower?._id);
 
+  const handleFollowUnfollow = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    followAndUnfollow(following?._id);
+  };
+
   return (
-    <div className="bg-muted/50 hover:bg-muted rounded-xl py-3 px-4 mb-1">
+    <div className="bg-card hover:bg-card/80 rounded-xl py-3 px-4 mb-1">
       {follower ? (
         <Link
           to={`/user/${follower?.username}`}
@@ -94,36 +99,42 @@ const UserCard = ({ follower, following }) => {
             </div>
           </div>
           <div className="flex gap-1 items-center">
-            {authUser._id === user?._id && (
-              <>
-                <Link to="/messages">
-                  <Button
-                    onClick={() => setSelectedUser(following)}
-                    size={isMobile ? "sm" : "default"}
-                  >
-                    Message
-                  </Button>
-                </Link>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
+            {authUser._id === user?._id &&
+              (isFollowing ? (
+                <>
+                  <Link to="/messages">
                     <Button
-                      variant="ghost"
-                      size="icon"
-                      className={`${isMobile && "size-8"}`}
+                      onClick={() => setSelectedUser(following)}
+                      size={isMobile ? "sm" : "default"}
                     >
-                      <BsThreeDotsVertical />
+                      Message
                     </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem
-                      onClick={() => followAndUnfollow(following?._id)}
-                    >
-                      Unfollow
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </>
-            )}
+                  </Link>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className={`${isMobile && "size-8"}`}
+                      >
+                        <BsThreeDotsVertical />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={handleFollowUnfollow}>
+                        Unfollow
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </>
+              ) : (
+                <Button
+                  size={isMobile ? "sm" : "default"}
+                  onClick={handleFollowUnfollow}
+                >
+                  Follow
+                </Button>
+              ))}
           </div>
         </Link>
       )}

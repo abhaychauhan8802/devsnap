@@ -72,7 +72,7 @@ const AddPost = () => {
               />
             </div>
             <div className="grid gap-3">
-              <Label>Thumbnail</Label>
+              <Label>Image</Label>
               <Input
                 type="file"
                 accept="image/*"
@@ -81,9 +81,9 @@ const AddPost = () => {
                 ref={imageRef}
               />
 
-              <div className="relative w-fit">
+              <div className="relative w-full">
                 <div
-                  className="w-44 h-28 rounded-lg overflow-hidden border border-input cursor-pointer"
+                  className="aspect-video w-full sm:w-80 rounded-lg overflow-hidden border border-input cursor-pointer"
                   onClick={() => imageRef.current.click()}
                 >
                   {previewURL ? (
@@ -119,7 +119,11 @@ const AddPost = () => {
               <Tiptap onChange={handleUpdateContent} />
             </div>
 
-            <Button onClick={handleSubmit} disabled={!title || !content}>
+            <Button
+              onClick={handleSubmit}
+              disabled={!title || !content}
+              size="xl"
+            >
               {isAddingPost ? (
                 <span className="flex gap-3 items-center">
                   <Loader2Icon className="animate-spin" /> Please wait

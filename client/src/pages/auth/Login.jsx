@@ -2,23 +2,15 @@ import { Loader2Icon } from "lucide-react";
 import { Eye, EyeOff } from "lucide-react";
 import { useEffect } from "react";
 import { useState } from "react";
-import { BiLike } from "react-icons/bi";
-import { FaLink, FaRegBookmark } from "react-icons/fa6";
-import { MdOutlineMessage } from "react-icons/md";
 import { Navigate } from "react-router";
 import { useNavigate } from "react-router";
 import { Link } from "react-router";
 
 import { Logo } from "@/components";
-import UserAvatar from "@/components/common/UserAvatar";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuthStore } from "@/store/useAuthStore";
-
-import Avatar from "../../assets/images/avatar.png";
-import DummyImage from "../../assets/images/dummy-image.webp";
 
 const Login = () => {
   const [formData, setFormData] = useState({

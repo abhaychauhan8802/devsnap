@@ -7,19 +7,40 @@ import { useAuthStore } from "../../store/useAuthStore";
 import { useUserStore } from "../users/useUserStore";
 
 export const usePostStore = create((set, get) => ({
-  posts: [],
-  skip: 0,
-  hasMore: true,
+  posts: {
+    feed: [],
+    explore: [],
+    following: [],
+  },
+  pagination: {
+    feed: {
+      skip: 0,
+      hasMore: true,
+    },
+    explore: {
+      skip: 0,
+      hasMore: true,
+    },
+    following: {
+      skip: 0,
+      hasMore: true,
+    },
+  },
   post: null,
   postLoading: false,
   postComments: [],
   isAddingPost: false,
 
-  setHasMore: (value) => {
-    set({ hasMore: value });
+  setHasMore: (value, type) => {
+    set((state) => ({
+      pagination: {
+        ...state.pagination,
+        [type]: { ...state.pagination[type], hasMore: value },
+      },
+    }));
   },
 
-  getAllPost: async ({ skip, limit }) => {
+  getAllPosts: async ({ skip, limit }) => {
     set({ postLoading: true });
     try {
       const res = await axiosInstance.get(
@@ -34,17 +55,65 @@ export const usePostStore = create((set, get) => ({
     }
   },
 
-  setPosts: (posts, skipValue) => {
-    set({
-      posts: posts,
-      skip: skipValue,
-    });
+  getFeedPost: async ({ skip, limit }) => {
+    set({ postLoading: true });
+    try {
+      const res = await axiosInstance.get(
+        `/post/feed?skip=${skip}&limit=${limit}`,
+      );
+
+      return res.data.message;
+    } catch (error) {
+      toast.error(error.response.data.message);
+    } finally {
+      set({ postLoading: false });
+    }
   },
 
-  appendPosts: (newPosts, skipValue) => {
+  getFollowingPosts: async ({ skip, limit }) => {
+    set({ postLoading: true });
+    try {
+      const res = await axiosInstance.get(
+        `/post/following?skip=${skip}&limit=${limit}`,
+      );
+
+      return res.data.message;
+    } catch (error) {
+      toast.error(error.response.data.message);
+    } finally {
+      set({ postLoading: false });
+    }
+  },
+
+  setPosts: (posts, skipValue, type) => {
     set((state) => ({
-      posts: [...state.posts, ...newPosts],
-      skip: state.skip + skipValue,
+      posts: {
+        ...state.posts,
+        [type]: posts,
+      },
+      pagination: {
+        ...state.pagination,
+        [type]: {
+          ...state.pagination[type],
+          skip: skipValue,
+        },
+      },
+    }));
+  },
+
+  appendPosts: (newPosts, skipValue, type) => {
+    set((state) => ({
+      posts: {
+        ...state.posts,
+        [type]: [...state.posts[type], ...newPosts],
+      },
+      pagination: {
+        ...state.pagination,
+        [type]: {
+          ...state.pagination[type],
+          skip: state.pagination[type].skip + skipValue,
+        },
+      },
     }));
   },
 
@@ -87,6 +156,8 @@ export const usePostStore = create((set, get) => ({
     const liked = post.likes.includes(authUserId);
     const { userPosts, userBookmarks } = useUserStore.getState();
 
+    const isLikeOfDislike = liked ? "dislike" : "like";
+
     const updatedPostData = {
       ...post,
       likes: liked
@@ -94,9 +165,18 @@ export const usePostStore = create((set, get) => ({
         : [...post.likes, authUserId],
     };
 
-    const updatedPost = get().posts.map((p) =>
-      p._id === post._id ? updatedPostData : p,
-    );
+    const postKeys = ["feed", "explore", "following"];
+
+    const newPostStoreState = {
+      posts: {},
+    };
+
+    postKeys.forEach((key) => {
+      const current = get().posts[key];
+      newPostStoreState.posts[key] = current.map((p) =>
+        p._id === post._id ? updatedPostData : p,
+      );
+    });
 
     const updatedUserPost = userPosts.map((p) =>
       p._id === post._id ? updatedPostData : p,
@@ -106,12 +186,11 @@ export const usePostStore = create((set, get) => ({
       p._id === post._id ? updatedPostData : p,
     );
 
-    const isLikeOfDislike = liked ? "dislike" : "like";
+    if (get().post?._id === post._id) {
+      newPostStoreState["post"] = updatedPostData;
+    }
 
-    set({
-      posts: updatedPost,
-      post: updatedPostData,
-    });
+    set(newPostStoreState);
 
     useUserStore.setState({
       userPosts: updatedUserPost,
@@ -120,14 +199,7 @@ export const usePostStore = create((set, get) => ({
     try {
       await axiosInstance.post(`/post/${post._id}/${isLikeOfDislike}`);
     } catch (error) {
-      const revertedPosts = get().posts.map((p) => {
-        if (p._id === post._id) {
-          return { ...p, likes: post.likes };
-        }
-        return p;
-      });
-
-      set({ posts: revertedPosts });
+      console.log("Error when like post", error?.response?.data?.message);
     }
   },
 
@@ -171,11 +243,12 @@ export const usePostStore = create((set, get) => ({
 
   addComment: async ({ postId, text }) => {
     const authUser = useAuthStore.getState().authUser;
-    const { post, postComments, posts } = get();
+    const { post, postComments, feedPosts, explorePosts } = get();
 
     const postBackup = post;
     const commentsBackup = postComments;
-    const postsBackup = posts;
+    const feedPostsBackup = feedPosts;
+    const explorePostsBackup = explorePosts;
 
     const tempComment = {
       _id: Math.random().toString(36).slice(2),
@@ -191,14 +264,19 @@ export const usePostStore = create((set, get) => ({
       comments: [...post.comments, tempComment],
     };
 
-    const updatedPosts = posts.map((p) =>
+    const updatedFeedPosts = feedPosts.map((p) =>
+      p._id === postId ? { ...p, comments: [...p.comments, tempComment] } : p,
+    );
+
+    const updatedExplorePosts = explorePosts.map((p) =>
       p._id === postId ? { ...p, comments: [...p.comments, tempComment] } : p,
     );
 
     set({
       postComments: updatedPostComments,
       post: updatedPost,
-      posts: updatedPosts,
+      feedPosts: updatedFeedPosts,
+      explorePosts: updatedExplorePosts,
     });
 
     try {
@@ -209,7 +287,8 @@ export const usePostStore = create((set, get) => ({
       set({
         postComments: commentsBackup,
         post: postBackup,
-        posts: postsBackup,
+        feedPosts: feedPostsBackup,
+        explorePosts: explorePostsBackup,
       });
     }
   },

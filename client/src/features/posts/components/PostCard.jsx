@@ -28,7 +28,7 @@ const PostCard = forwardRef(({ post, varient = "default" }, ref) => {
   const authUsername = authUser?.username;
   const postAuthorUsername = post?.author?.username;
 
-  const wide = varient === "wide";
+  const isWide = varient === "wide";
 
   const handleNavigate = (e) => {
     e.stopPropagation();
@@ -51,7 +51,7 @@ const PostCard = forwardRef(({ post, varient = "default" }, ref) => {
       }}
       ref={ref}
     >
-      <Card className={`hover:border hover:border-text-muted/60`}>
+      <Card className={`hover:bg-secondary/10`}>
         <CardContent className="w-full">
           {/* Post owner info */}
           <div className="flex justify-between items-center">
@@ -83,22 +83,24 @@ const PostCard = forwardRef(({ post, varient = "default" }, ref) => {
 
           {/* post */}
           <div
-            className={`mt-4 flex flex-col gap-4 ${wide && "flex-row justify-between"}`}
+            className={`mt-4 flex flex-col gap-8 ${isWide && "flex-row justify-between"}`}
           >
-            <div className="flex-1/2 flex flex-col justify-between">
+            <div className="flex-[65%] flex flex-col justify-between">
               <h1
                 className={`text-2xl font-bold text-text-primary line-clamp-2 h-16`}
               >
                 {post.title}
               </h1>
-              {wide && (
+              {isWide && (
                 <div className="">
                   <PostActionButtons post={post} mainStyle="w-full" />
                 </div>
               )}
             </div>
 
-            <div className={`aspect-video rounded-xl overflow-hidden flex-1/2`}>
+            <div
+              className={`${isWide ? "aspect-5/4 flex-[35%]" : "aspect-video"} rounded-xl overflow-hidden`}
+            >
               {post.image && (
                 <img
                   src={post.image}
@@ -110,7 +112,7 @@ const PostCard = forwardRef(({ post, varient = "default" }, ref) => {
           </div>
 
           {/* buttons */}
-          {!wide && (
+          {!isWide && (
             <div className="mt-4">
               <PostActionButtons post={post} mainStyle="w-full" />
             </div>

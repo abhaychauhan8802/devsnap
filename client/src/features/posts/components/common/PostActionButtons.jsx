@@ -87,7 +87,11 @@ const PostActionButtons = ({ post, setIsCommentOpen }) => {
           <span>{post?.comments?.length}</span>
         </button>
 
-        <button variant="ghost" onClick={handleBookmark}>
+        <button
+          variant="ghost"
+          onClick={handleBookmark}
+          className="cursor-pointer"
+        >
           {postbookmarked ? (
             <MdBookmark size={20} />
           ) : (

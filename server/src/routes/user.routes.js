@@ -8,6 +8,7 @@ import {
   getProfile,
   getSuggestedUsers,
   removeFollower,
+  searchUser,
 } from "../controllers/user.controller.js";
 import upload from "../middlewares/multer.middleware.js";
 import verifyToken from "../middlewares/verifyToken.middleware.js";
@@ -21,6 +22,8 @@ router.post(
   editProfile,
 );
 router.get("/suggested", verifyToken, getSuggestedUsers);
+
+router.get("/search", verifyToken, searchUser);
 
 router.post("/followorunfollow/:id", verifyToken, followOrUnfollow);
 router.delete("/removefollower/:id", verifyToken, removeFollower);

@@ -22,7 +22,7 @@ export const useAuthStore = create(
         try {
           const res = await axiosInstance.get("/auth/auth-profile");
 
-          set({ authUser: res.data.message });
+          set({ authUser: res.data.user });
 
           setTimeout(() => {
             get().socketConnection();
@@ -40,7 +40,7 @@ export const useAuthStore = create(
         try {
           const res = await axiosInstance.post("/auth/login", data);
 
-          set({ authUser: res.data.message });
+          set({ authUser: res.data.user });
           toast.success("Login successfully");
 
           setTimeout(() => {
@@ -59,7 +59,7 @@ export const useAuthStore = create(
         try {
           const res = await axiosInstance.post("/auth/register", data);
 
-          set({ authUser: res.data.message });
+          set({ authUser: res.data.user });
           toast.success("Account created");
 
           setTimeout(() => {

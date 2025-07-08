@@ -1,35 +1,46 @@
-import { Plus } from "lucide-react";
-import { Compass, House, LogOut, MessageCircleMore } from "lucide-react";
+import { AiFillPlusSquare, AiOutlinePlusSquare } from "react-icons/ai";
+import { FaRegMoon } from "react-icons/fa";
 import { GoHome, GoHomeFill } from "react-icons/go";
+import { IoMdMenu } from "react-icons/io";
 import {
   IoChatbubbleEllipsesOutline,
   IoChatbubbleEllipsesSharp,
-  IoCompassOutline,
-  IoCompassSharp,
+  IoSearch,
+  IoSearchOutline,
 } from "react-icons/io5";
+import { MdOutlineSettings } from "react-icons/md";
+import { PiBellSimpleFill, PiBellSimpleLight } from "react-icons/pi";
 import { Link } from "react-router";
 import { useLocation } from "react-router";
 
 import AvatarImg from "@/assets/images/avatar.png";
+import { Logo } from "@/components";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useTheme } from "@/context/theme-provider";
 import useBreakPoints from "@/hooks/useBreakPoints";
 import { useAuthStore } from "@/store/useAuthStore";
 
-const iconSize = 20;
+import Logout from "./Logout";
+
+const iconSize = 25;
 
 const Sidebar = () => {
-  const { authUser, logout } = useAuthStore();
+  const { authUser } = useAuthStore();
 
   const location = useLocation();
+
+  const { setTheme } = useTheme();
 
   const { isDesktop } = useBreakPoints();
 
@@ -43,8 +54,8 @@ const Sidebar = () => {
     {
       name: "Explore",
       path: "/explore",
-      icon: <IoCompassOutline size={iconSize} />,
-      iconFill: <IoCompassSharp size={iconSize} />,
+      icon: <IoSearchOutline size={iconSize} />,
+      iconFill: <IoSearch size={iconSize} />,
     },
     {
       name: "Messages",
@@ -53,31 +64,33 @@ const Sidebar = () => {
       iconFill: <IoChatbubbleEllipsesSharp size={iconSize} />,
     },
     {
+      name: "Notifications",
+      path: "/notifications",
+      icon: <PiBellSimpleLight size={iconSize} />,
+      iconFill: <PiBellSimpleFill size={iconSize} />,
+    },
+    {
+      name: "Create",
+      path: "/create",
+      icon: <AiOutlinePlusSquare size={iconSize} />,
+      iconFill: <AiFillPlusSquare size={iconSize} />,
+    },
+    {
       name: "Profile",
       path: `/user/${authUser?.username}`,
     },
   ];
 
   return (
-    <div className="w-[60px] lg:w-[300px] px-2 lg:px-3 border-r h-full py-3 shadow-sm">
+    <div className="w-[60px] xl:w-[300px] px-2 xl:px-3 border-r h-full py-3 shadow-sm">
       {/* main content */}
       <div
         className={`flex flex-col justify-between ${!isDesktop && "items-center"} h-full`}
       >
-        <div>
-          <span className="hidden lg:inline-block font-bold text-text-secondary text-md pb-2">
-            Menu
-          </span>
-
-          {/* Add new post button */}
-          <Link to="/add-post">
-            <Button
-              size={isDesktop ? "lg" : "icon"}
-              className="lg:w-full ml-[2px] lg:ml-0"
-            >
-              <Plus /> <span className="hidden lg:inline-block">New Post</span>
-            </Button>
-          </Link>
+        <div className="">
+          <div className="xl:scale-80 xl:origin-left flex items-center justify-center xl:block py-3">
+            <Logo textStyle="hidden xl:block" />
+          </div>
 
           {/* Links */}
           <div className="flex flex-col mt-5 gap-2">
@@ -85,24 +98,28 @@ const Sidebar = () => {
               <Link
                 to={link.path}
                 key={idx}
-                className={`hover:bg-accent p-2 lg:px-4 lg:py-2 rounded-md flex items-center justify-center lg:justify-start gap-2 text-text-secondary ${location.pathname === link.path && "bg-accent"}`}
+                className={`hover:bg-accent p-2 xl:px-4 xl:py-2 rounded-full flex items-center justify-center xl:justify-start gap-2 text-text-secondary ${location.pathname === link.path && "bg-accent"}`}
               >
                 {link.name === "Profile" ? (
                   <>
-                    <Avatar className="size-5">
+                    <Avatar className="size-6">
                       <AvatarImage src={authUser?.profilePicture} alt="pfp" />
                       <AvatarFallback className="bg-gray-800 dark:bg-gray-600 text-white text-xs font-semibold">
                         <img src={AvatarImg} alt="profilePicture" />
                       </AvatarFallback>
                     </Avatar>
-                    <span className="hidden lg:inline-block">{link.name}</span>
+                    <span className="hidden xl:inline-block sm:ml-[2px] text-lg font-medium">
+                      {link.name}
+                    </span>
                   </>
                 ) : (
                   <>
                     {location.pathname === link.path
                       ? link.iconFill
                       : link.icon}
-                    <span className="hidden lg:inline-block">{link.name}</span>
+                    <span className="hidden xl:inline-block text-lg font-medium">
+                      {link.name}
+                    </span>
                   </>
                 )}
               </Link>
@@ -112,37 +129,52 @@ const Sidebar = () => {
 
         {/*  */}
 
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button
-              className="w-full justify-center lg:justify-start lg:has-[>svg]:px-5"
-              variant="ghost"
-              size={isDesktop ? "lg" : "icon"}
-            >
-              <LogOut />
-              <span className="hidden lg:inline-block">Logout</span>
-            </Button>
-          </DialogTrigger>
-          <DialogContent
-            className="w-[300px] overflow-hidden"
-            showCloseButton={false}
-          >
-            <DialogHeader className="mb-12">
-              <DialogTitle className="text-center text-xl font-bold">
-                Logout
-              </DialogTitle>
-              <DialogDescription className="text-center">
-                Are you sure you want to log out?
-              </DialogDescription>
-            </DialogHeader>
-            <button
-              className="border-t h-10 absolute bottom-0 inset-x-0 hover:bg-secondary cursor-pointer text-md"
-              onClick={() => logout()}
-            >
-              Logout
-            </button>
-          </DialogContent>
-        </Dialog>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <div className="hover:bg-accent p-2 xl:px-4 xl:py-2 rounded-md flex items-center justify-center xl:justify-start gap-2 text-text-secondary cursor-pointer">
+              <IoMdMenu size={iconSize} />
+              <span className="hidden xl:inline-block text-lg font-medium">
+                More
+              </span>
+            </div>
+          </DropdownMenuTrigger>
+
+          <DropdownMenuContent className="w-[250px]" align="start">
+            <DropdownMenuGroup>
+              <DropdownMenuItem className="py-2 px-3 cursor-pointer">
+                <MdOutlineSettings className="text-secondary-foreground" />
+                <span className="font-medium">Settings</span>
+              </DropdownMenuItem>
+
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger className="flex gap-3 py-2 px-3 cursor-pointer">
+                  <FaRegMoon className="text-secondary-foreground" />
+                  <span className="font-medium">Theme</span>
+                </DropdownMenuSubTrigger>
+
+                <DropdownMenuSubContent>
+                  <DropdownMenuItem onClick={() => setTheme("light")}>
+                    Light
+                  </DropdownMenuItem>
+
+                  <DropdownMenuItem onClick={() => setTheme("dark")}>
+                    Dark
+                  </DropdownMenuItem>
+
+                  <DropdownMenuItem onClick={() => setTheme("system")}>
+                    System
+                  </DropdownMenuItem>
+                </DropdownMenuSubContent>
+              </DropdownMenuSub>
+            </DropdownMenuGroup>
+
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem asChild>
+              <Logout />
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
   );

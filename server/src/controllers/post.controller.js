@@ -1,9 +1,11 @@
 import sharp from "sharp";
 
 import cloudinary from "../lib/cloudinary.js";
+import { redis } from "../lib/redis.js";
 import Comment from "../models/comment.model.js";
 import Post from "../models/post.model.js";
 import User from "../models/user.model.js";
+import { shuffleArray } from "../utils/shuffleArray.js";
 
 export const addNewPost = async (req, res) => {
   try {
@@ -99,7 +101,67 @@ export const deletePost = async (req, res) => {
   }
 };
 
-export const getAllPost = async (req, res) => {
+export const searchPost = async (req, res) => {
+  try {
+    const searchTerm = req.query.searchTerm;
+
+    if (!searchTerm || typeof searchTerm !== "string")
+      return res.status(400).json({ message: "Search Query is required" });
+
+    const searchRegex = new RegExp(searchTerm, "i");
+
+    const posts = await Post.find({
+      $or: [
+        { title: { $regex: searchRegex } },
+        { text: { $regex: searchRegex } },
+      ],
+    });
+
+    res.status(200).json({ success: true, posts });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+
+    console.log("Error in searchPost route", error.message);
+  }
+};
+
+export const getFollowingPosts = async (req, res) => {
+  try {
+    const userId = req.id;
+
+    const skip = parseInt(req.query.skip) || 0;
+    const limit = parseInt(req.query.limit) || 15;
+
+    const user = await User.findById(userId).select("followings");
+
+    const userFollowings = user.followings;
+
+    const posts = await Post.find({ author: { $in: userFollowings } })
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .populate({
+        path: "author",
+        select: "_id username name profilePicture bio createdAt",
+      });
+
+    res.status(200).json({
+      success: true,
+      message: posts,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+
+    console.log("Error in getFollowingPosts route", error.message);
+  }
+};
+export const getFeedPosts = async (req, res) => {
   try {
     const userId = req.id;
 
@@ -114,6 +176,52 @@ export const getAllPost = async (req, res) => {
         path: "author",
         select: "_id username name profilePicture bio createdAt",
       });
+
+    res.status(200).json({
+      success: true,
+      message: posts,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+
+    console.log("Error in getFeedPosts route", error.message);
+  }
+};
+
+export const getAllPost = async (req, res) => {
+  try {
+    const userId = req.id;
+
+    const skip = parseInt(req.query.skip) || 0;
+    const limit = parseInt(req.query.limit) || 15;
+
+    let shuffledIds = await redis.get(`explore:${userId}`);
+
+    if (!shuffledIds) {
+      const allPostIds = await Post.find({ author: { $ne: userId } })
+        .select("_id")
+        .lean();
+      shuffledIds = shuffleArray(allPostIds.map((p) => p._id.toString()));
+
+      await redis.setEx(`explore:${userId}`, 3600, JSON.stringify(shuffledIds));
+    } else {
+      shuffledIds = JSON.parse(shuffledIds);
+    }
+
+    const paginatedIds = shuffledIds.slice(
+      Math.min(skip, shuffledIds.length),
+      Math.min(skip + limit, shuffledIds.length),
+    );
+
+    const posts = await Post.find({ _id: { $in: [...paginatedIds] } }).populate(
+      {
+        path: "author",
+        select: "_id username name profilePicture bio createdAt",
+      },
+    );
 
     res.status(200).json({
       success: true,
