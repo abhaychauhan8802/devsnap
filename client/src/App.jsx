@@ -44,8 +44,8 @@ const App = () => {
         >
           <Route path="/" element={<FeedPage />} />
           <Route path="/create" element={<AddPostPage />} />
-          <Route path="/explore" element={<ExplorePage />} />
           <Route path="/explore/search" element={<SearchPage />} />
+          <Route path="/explore" element={<ExplorePage />} />
           <Route path="/messages" element={<MessagePage />} />
           <Route path="/post/:postId" element={<PostPage />} />
           <Route path="/user/:username" element={<ProfilePage />} />

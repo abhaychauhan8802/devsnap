@@ -243,12 +243,12 @@ export const usePostStore = create((set, get) => ({
 
   addComment: async ({ postId, text }) => {
     const authUser = useAuthStore.getState().authUser;
-    const { post, postComments, feedPosts, explorePosts } = get();
+    const { post, postComments, posts } = get();
 
     const postBackup = post;
     const commentsBackup = postComments;
-    const feedPostsBackup = feedPosts;
-    const explorePostsBackup = explorePosts;
+    const feedPostsBackup = posts.feed;
+    const explorePostsBackup = posts.explore;
 
     const tempComment = {
       _id: Math.random().toString(36).slice(2),
@@ -278,6 +278,8 @@ export const usePostStore = create((set, get) => ({
       feedPosts: updatedFeedPosts,
       explorePosts: updatedExplorePosts,
     });
+
+    console.log("Add comment");
 
     try {
       await axiosInstance.post(`/post/${postId}/comment`, { text });

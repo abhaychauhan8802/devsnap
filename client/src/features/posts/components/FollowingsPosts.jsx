@@ -12,11 +12,10 @@ import PostSkeleton from "./PostSkeleton";
 const limit = 15;
 const FollowingsPosts = () => {
   const {
-    followingPosts,
+    posts,
     setPosts,
     appendPosts,
-    followingSkip,
-    followingHasMore,
+    pagination,
     setHasMore,
     postLoading,
     getFollowingPosts,
@@ -27,7 +26,10 @@ const FollowingsPosts = () => {
   const observer = useRef();
 
   const loadMorePosts = async () => {
-    const newPosts = await getFollowingPosts({ skip: followingSkip, limit });
+    const newPosts = await getFollowingPosts({
+      skip: pagination.following.skip,
+      limit,
+    });
 
     if (newPosts?.length === 0) {
       setHasMore(false, "following");
@@ -42,31 +44,32 @@ const FollowingsPosts = () => {
       if (observer.current) observer.current.disconnect();
 
       observer.current = new IntersectionObserver(([entry]) => {
-        if (entry.isIntersecting && followingHasMore) {
+        if (entry.isIntersecting && pagination.following.hasMore) {
           loadMorePosts();
         }
       });
 
       if (node) observer.current.observe(node);
     },
-    [postLoading, followingHasMore, followingSkip],
+    [postLoading, pagination.following.hasMore, pagination.following.skip],
   );
 
   useEffect(() => {
     const initialFetch = async () => {
       const firstBatch = await getFollowingPosts({
-        skip: followingSkip,
+        skip: pagination.following.skip,
         limit,
       });
       setPosts(firstBatch, limit, "following");
+      console.log("Initial fetch call");
     };
 
-    if (followingPosts?.length === 0) {
+    if (posts?.following?.length === 0) {
       initialFetch();
     }
   }, []);
 
-  if (followingPosts?.length === 0 && postLoading) {
+  if (posts?.following?.length === 0 && postLoading) {
     return (
       <div className="w-full min-h-full flex justify-center items-center">
         <Loader2Icon className="animate-spin" />
@@ -75,9 +78,9 @@ const FollowingsPosts = () => {
   }
 
   return (
-    <div className={`flex flex-col gap-4 mt-5 px-3 sm:px-0`}>
-      {followingPosts?.map((post, idx) => {
-        const isLast = idx === followingPosts?.length - 1;
+    <div className={`flex flex-col gap-2`}>
+      {posts?.following?.map((post, idx) => {
+        const isLast = idx === posts?.following?.length - 1;
 
         return (
           <PostCard
@@ -89,7 +92,7 @@ const FollowingsPosts = () => {
         );
       })}
       {postLoading && [1, 2, 3].map((itm) => <PostSkeleton key={itm} />)}
-      {!followingHasMore && (
+      {!pagination.following.hasMore && (
         <p className="text-center text-sm text-gray-400 mb-5">
           There are no more posts to show
         </p>

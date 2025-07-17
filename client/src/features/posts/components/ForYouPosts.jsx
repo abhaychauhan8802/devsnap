@@ -75,7 +75,7 @@ const ForYouPosts = () => {
   }
 
   return (
-    <div className={`flex flex-col gap-4 px-3 sm:px-0`}>
+    <div className={`flex flex-col gap-2`}>
       {posts?.feed?.map((post, idx) => {
         const isLast = idx === posts?.feed?.length - 1;
 

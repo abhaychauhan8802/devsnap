@@ -15,7 +15,7 @@ import { useAuthStore } from "@/store/useAuthStore";
 
 import { usePostStore } from "../../usePostStore";
 
-const PostActionButtons = ({ post, setIsCommentOpen }) => {
+const PostActionButtons = ({ post }) => {
   const { authUser } = useAuthStore();
   const { likePost, bookmarkPost } = usePostStore();
 
@@ -46,13 +46,6 @@ const PostActionButtons = ({ post, setIsCommentOpen }) => {
     toast.message("🔗 Copy link to clipboard");
   };
 
-  const handleCommentBoxOpen = () => {
-    if (!setIsCommentOpen) {
-      return;
-    }
-    setIsCommentOpen((prev) => !prev);
-  };
-
   return (
     <div className={`flex justify-between items-center`}>
       <div className={`flex gap-5`}>
@@ -79,10 +72,7 @@ const PostActionButtons = ({ post, setIsCommentOpen }) => {
           )}
         </button>
 
-        <button
-          onClick={handleCommentBoxOpen}
-          className={`flex gap-2 items-center z-10 cursor-pointer`}
-        >
+        <button className={`flex gap-2 items-center z-10 cursor-pointer`}>
           <FaRegComment />
           <span>{post?.comments?.length}</span>
         </button>

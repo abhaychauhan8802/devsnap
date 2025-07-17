@@ -51,19 +51,25 @@ const PostCard = forwardRef(({ post, varient = "default" }, ref) => {
       }}
       ref={ref}
     >
-      <Card className={`hover:bg-secondary/10`}>
+      <Card className="shadow-none rounded-[10px]">
         <CardContent className="w-full">
           {/* Post owner info */}
-          <div className="flex justify-between items-center">
-            <div className="flex gap-2 items-center" onClick={handleNavigate}>
+          <div className="flex gap-2 items-center justify-between">
+            <div onClick={handleNavigate} className="flex items-center gap-2">
               <UserAvatar
-                avatarStyle="size-9"
+                avatarStyle="size-10"
                 profilePicture={post?.author?.profilePicture}
               />
 
-              <span className="text-md font-medium text-text-secondary">
-                {post.author.username}
-              </span>
+              {/* Name and username */}
+              <div className="flex flex-col leading-4">
+                <span className="text-md font-medium text-text-secondary">
+                  {post?.author?.name}
+                </span>
+                <span className="text-sm text-text-muted">
+                  @{post?.author?.username}
+                </span>
+              </div>
             </div>
             {authUsername === postAuthorUsername && (
               <DropdownMenu>

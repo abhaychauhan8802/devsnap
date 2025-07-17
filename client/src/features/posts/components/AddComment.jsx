@@ -15,7 +15,7 @@ import { useAuthStore } from "@/store/useAuthStore";
 import UserAvatar from "../../../components/common/UserAvatar";
 import { usePostStore } from "../usePostStore";
 
-const AddComment = ({ setIsCommentOpen }) => {
+const AddComment = () => {
   const { authUser } = useAuthStore();
   const { post, addComment } = usePostStore();
 
@@ -30,22 +30,14 @@ const AddComment = ({ setIsCommentOpen }) => {
   return (
     <div>
       <form onSubmit={handleAddComment}>
-        <Card className="mt-5 border rounded-xl py-3 gap-0">
+        <Card className="mt-5 border rounded-xl py-3 gap-0 bg-card/50 shadow-none">
           <CardHeader className="border-b [.border-b]:pb-1">
-            <CardTitle className="flex justify-between items-center">
+            <CardTitle className="flex justify-between items-center py-2">
               <h4>Add your comment</h4>
-              <Button
-                variant="ghost"
-                size="icon"
-                type="button"
-                onClick={() => setIsCommentOpen((prev) => !prev)}
-              >
-                <CgClose />
-              </Button>
             </CardTitle>
           </CardHeader>
 
-          <CardContent className="border-b py-4">
+          <CardContent className="py-4">
             <div className="flex gap-4">
               <UserAvatar
                 avatarStyle="size-12"
@@ -55,11 +47,12 @@ const AddComment = ({ setIsCommentOpen }) => {
                 onChange={(e) => setComment(e.target.value)}
                 value={comment}
                 placeholder="Type your comment here"
-                className="resize-none w-full h-20 border-0 bg-card dark:bg-card shadow-none focus-visible:ring-0 word-wrap scrollbar"
+                className="resize-none w-full h-20 border-0 shadow-none focus-visible:ring-0 word-wrap scrollbar"
               />
             </div>
           </CardContent>
-          <CardFooter className="flex justify-end pt-3">
+          {/* <div className="flex justify-end px-6 pt-2"></div> */}
+          <CardFooter className="flex justify-end">
             <Button disabled={!comment} type="submit">
               Comment
             </Button>

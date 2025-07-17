@@ -1,14 +1,14 @@
 import { usePostStore } from "../usePostStore";
 import AddComment from "./AddComment";
-import PostComments from "./PostComments";
+import CommentCard from "./CommentCard";
 
-const PostCommentSection = ({ isCommentOpen, setIsCommentOpen }) => {
+const PostCommentSection = () => {
   const { post } = usePostStore();
 
   return (
     <div id="comments">
-      {isCommentOpen && <AddComment setIsCommentOpen={setIsCommentOpen} />}
-      {post && <PostComments />}
+      <AddComment />
+      {post && <CommentCard />}
     </div>
   );
 };

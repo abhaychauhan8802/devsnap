@@ -51,7 +51,9 @@ const EditProfile = () => {
     <Dialog open={open} onOpenChange={setOpen}>
       <form>
         <DialogTrigger asChild>
-          <Button className="mt-3">Edit Profile</Button>
+          <Button className="mt-3" variant="secondary">
+            Edit Profile
+          </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>

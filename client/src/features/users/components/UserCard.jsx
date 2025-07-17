@@ -1,7 +1,7 @@
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { IoIosAdd } from "react-icons/io";
 import { RxCross2 } from "react-icons/rx";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 import UserAvatar from "@/components/common/UserAvatar";
 import { Button } from "@/components/ui/button";
@@ -26,6 +26,8 @@ const UserCard = ({ follower, following }) => {
 
   const isFollowing = authUser?.followings?.includes(following?._id);
   const isFollower = authUser?.followers?.includes(follower?._id);
+
+  const navigate = useNavigate();
 
   const handleFollowUnfollow = (e) => {
     e.stopPropagation();
@@ -57,14 +59,16 @@ const UserCard = ({ follower, following }) => {
           <div className="flex gap-1 items-center">
             {authUser._id === user?._id && (
               <>
-                <Link to="/messages">
-                  <Button
-                    onClick={() => setSelectedUser(following)}
-                    size={isMobile ? "sm" : "default"}
-                  >
-                    Message
-                  </Button>
-                </Link>
+                <Button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedUser(following);
+                    navigate("/messages");
+                  }}
+                  size={isMobile ? "sm" : "default"}
+                >
+                  Message
+                </Button>
                 <Button
                   variant={isFollower ? "secondary" : "danger"}
                   size="icon"
@@ -102,14 +106,16 @@ const UserCard = ({ follower, following }) => {
             {authUser._id === user?._id &&
               (isFollowing ? (
                 <>
-                  <Link to="/messages">
-                    <Button
-                      onClick={() => setSelectedUser(following)}
-                      size={isMobile ? "sm" : "default"}
-                    >
-                      Message
-                    </Button>
-                  </Link>
+                  <Button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedUser(following);
+                      navigate("/messages");
+                    }}
+                    size={isMobile ? "sm" : "default"}
+                  >
+                    Message
+                  </Button>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button

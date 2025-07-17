@@ -98,7 +98,7 @@ const Sidebar = () => {
               <Link
                 to={link.path}
                 key={idx}
-                className={`hover:bg-accent p-2 xl:px-4 xl:py-2 rounded-full flex items-center justify-center xl:justify-start gap-2 text-text-secondary ${location.pathname === link.path && "bg-accent"}`}
+                className={`hover:bg-accent p-2 xl:px-4 xl:py-2 rounded-lg flex items-center justify-center xl:justify-start gap-2 text-text-secondary ${location.pathname === link.path && "bg-accent"}`}
               >
                 {link.name === "Profile" ? (
                   <>
@@ -131,7 +131,7 @@ const Sidebar = () => {
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <div className="hover:bg-accent p-2 xl:px-4 xl:py-2 rounded-md flex items-center justify-center xl:justify-start gap-2 text-text-secondary cursor-pointer">
+            <div className="hover:bg-accent p-2 xl:px-4 xl:py-2 rounded-lg flex items-center justify-center xl:justify-start gap-2 text-text-secondary cursor-pointer">
               <IoMdMenu size={iconSize} />
               <span className="hidden xl:inline-block text-lg font-medium">
                 More

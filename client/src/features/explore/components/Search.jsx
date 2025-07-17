@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { replace, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { useSearchParams } from "react-router";
 
 import PostCard from "@/features/posts/components/PostCard";
@@ -21,6 +21,10 @@ const Search = () => {
   const query = searchParams.get("q");
 
   useEffect(() => {
+    if (!query || query.trim() === "") {
+      return navigate("/explore", { replace: true });
+    }
+
     getSearchPosts(query);
 
     return () => {
@@ -28,21 +32,15 @@ const Search = () => {
     };
   }, [query]);
 
-  console.log(query);
-
-  if (query === "") {
-    return navigate("/explore", replace);
-  }
-
   return (
     <div className="flex gap-5 px-4">
-      <div className="max-w-2xl w-full mx-auto">
+      <div className="max-w-2xl w-full mx-auto px-4">
         <div className="sticky top-0 bg-background z-20 py-2">
           <SearchBar />
         </div>
 
-        <div className="mt-5 mb-5">
-          <div className={`flex flex-col gap-4 px-3 sm:px-0`}>
+        <div className="mt-2">
+          <div className={`flex flex-col gap-2 px-3 sm:px-0`}>
             {searchPosts?.map((post, idx) => {
               const isLast = idx === searchPosts?.length - 1;
 

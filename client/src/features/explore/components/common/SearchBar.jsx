@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoSearch } from "react-icons/io5";
 import { useNavigate } from "react-router";
@@ -9,14 +8,15 @@ import { useLocation } from "react-router";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-import { useExploreStore } from "../../useExploreStore";
-
 const SearchBar = () => {
   const [searchParams] = useSearchParams();
 
-  const { searchTerm, setSearchTerm } = useExploreStore();
+  const [searchTerm, setSearchTerm] = useState("");
 
   const query = searchParams.get("q");
+
+  const location = useLocation();
+  const pathname = location.pathname;
 
   const navigate = useNavigate();
 
@@ -25,8 +25,20 @@ const SearchBar = () => {
 
     if (!searchTerm) return;
 
-    navigate(`/explore/search?q=${searchTerm}`);
+    if (pathname === "/explore") {
+      navigate(`/explore/search?q=${encodeURIComponent(searchTerm)}`);
+    } else if (pathname === "/explore/search") {
+      navigate(`/explore/search?q=${encodeURIComponent(searchTerm)}`, {
+        replace: true,
+      });
+    }
   };
+
+  useEffect(() => {
+    if (query) {
+      setSearchTerm(query);
+    }
+  }, []);
 
   return (
     <form
@@ -34,7 +46,13 @@ const SearchBar = () => {
       onSubmit={handleSearch}
     >
       {query && (
-        <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          className="rounded-full"
+          onClick={() => navigate(-1)}
+        >
           <IoIosArrowBack />
         </Button>
       )}
@@ -43,9 +61,9 @@ const SearchBar = () => {
         placeholder="Search"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        className="w-full sm:w-3/4 rounded-full h-10 px-5 bg-secondary/20"
+        className="w-full rounded-full h-10 px-5 bg-secondary/20"
       />
-      <Button variant="secondary" size="icon">
+      <Button variant="secondary" size="icon" className="rounded-full">
         <IoSearch />
       </Button>
     </form>

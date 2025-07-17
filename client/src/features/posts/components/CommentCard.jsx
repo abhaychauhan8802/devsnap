@@ -6,11 +6,9 @@ import { useAuthStore } from "@/store/useAuthStore";
 import UserAvatar from "../../../components/common/UserAvatar";
 import { usePostStore } from "../usePostStore";
 
-const PostComments = () => {
+const CommentCard = () => {
   const { authUser } = useAuthStore();
   const { post, postComments, getPostComments } = usePostStore();
-
-  const authUsername = authUser?.username;
 
   useEffect(() => {
     if (post) {
@@ -23,10 +21,7 @@ const PostComments = () => {
       {postComments.length !== 0 ? (
         <div className="flex flex-col gap-5">
           {postComments.map((comment, idx) => (
-            <div
-              key={idx}
-              className="border p-4 rounded-xl hover:bg-card/80 dark:hover:bg-card/30"
-            >
+            <div key={idx} className="border p-4 rounded-xl">
               <Link
                 to={`/user/${comment?.author?.username}`}
                 className="flex gap-2 items-center justify-center cursor-pointer w-fit"
@@ -63,4 +58,4 @@ const PostComments = () => {
   );
 };
 
-export default PostComments;
+export default CommentCard;

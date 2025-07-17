@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useLocation } from "react-router";
 
 import PostCard from "@/features/posts/components/PostCard";
 import useBreakPoints from "@/hooks/useBreakPoints";
@@ -20,7 +21,7 @@ const UserPostFeed = ({ userId }) => {
 
   return (
     <div className="w-full">
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-2">
         {userPosts?.length !== 0 ? (
           userPosts?.map((post, idx) => (
             <PostCard
@@ -30,7 +31,7 @@ const UserPostFeed = ({ userId }) => {
             />
           ))
         ) : (
-          <div>
+          <div className="text-center">
             <span>User don't have any post</span>
           </div>
         )}

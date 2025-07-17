@@ -81,13 +81,13 @@ const Explore = () => {
 
   return (
     <div className="flex gap-5 px-4">
-      <div className="max-w-2xl w-full mx-auto">
+      <div className="max-w-2xl w-full mx-auto px-4">
         <div className="sticky top-0 bg-background z-20 py-2">
           <SearchBar />
         </div>
 
-        <div className="mt-5">
-          <div className={`flex flex-col gap-4 px-3 sm:px-0`}>
+        <div className="mt-2">
+          <div className={`flex flex-col gap-2 px-3 sm:px-0`}>
             {posts?.explore?.map((post, idx) => {
               const isLast = idx === posts?.explore?.length - 1;
 

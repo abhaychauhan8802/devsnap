@@ -1,6 +1,3 @@
-import { ChevronLeft } from "lucide-react";
-import { useState } from "react";
-import { useNavigate } from "react-router";
 import { Link } from "react-router";
 
 import { AspectRatio } from "@/components/ui/aspect-ratio";
@@ -18,13 +15,6 @@ const PostContent = ({ post }) => {
 
   const { followAndUnfollow } = useUserStore();
 
-  const navigate = useNavigate();
-
-  const [isCommentOpen, setIsCommentOpen] = useState(false);
-
-  const authUsername = authUser?.username;
-  const postAuthorUsername = post?.author?.username;
-
   const isFollowing = authUser?.followings?.includes(post?.author?._id);
 
   const handleFollowUnfollow = () => {
@@ -32,20 +22,23 @@ const PostContent = ({ post }) => {
   };
 
   return (
-    <div className="max-w-5xl w-full mx-auto lg:pr-8">
-      <div>
-        {/* Back button */}
-        <Button
-          size="icon"
-          variant="ghost"
-          className="rounded-full size-10 -ml-4 mb-5"
-          onClick={() => navigate(-1)}
-        >
-          <ChevronLeft />
-        </Button>
+    <div className="max-w-5xl w-full mx-auto lg:pr-8 pt-5">
+      {/* post image */}
+      {post?.image && (
+        <AspectRatio ratio={16 / 9} className="overflow-hidden rounded-md">
+          <img
+            src={post?.image}
+            alt="image"
+            className="object-cover w-full h-full"
+          />
+        </AspectRatio>
+      )}
 
+      <div className="pb-10">
         {/* User info */}
-        <div className="flex gap-2 items-center justify-center cursor-pointer w-fit">
+        <div
+          className={`flex gap-2 items-center justify-center cursor-pointer w-fit ${post?.image && "mt-8"}`}
+        >
           {/* Avatar */}
           <Link
             to={`/user/${post?.author?.username}`}
@@ -80,23 +73,9 @@ const PostContent = ({ post }) => {
         {/* Post info */}
         <div className="my-7">
           {/* post title */}
-          <h1 className="font-bold text-4xl text-text-primary mb-4">
+          <h1 className="font-bold text-4xl text-text-primary">
             {post?.title}
           </h1>
-
-          {/* post image */}
-          {post?.image && (
-            <AspectRatio
-              ratio={16 / 9}
-              className="rounded-lg overflow-hidden md:scale-90"
-            >
-              <img
-                src={post?.image}
-                alt="image"
-                className="object-cover w-full h-full"
-              />
-            </AspectRatio>
-          )}
 
           {/* post content */}
           <div className="mt-8 text-text-secondary text-lg">
@@ -109,18 +88,11 @@ const PostContent = ({ post }) => {
 
         {/* Actions buttons */}
         <div>
-          <PostActionButtons
-            post={post}
-            mainStyle="border rounded-xl p-1"
-            setIsCommentOpen={setIsCommentOpen}
-          />
+          <PostActionButtons post={post} mainStyle="border rounded-xl p-1" />
         </div>
 
         {/* Post comments */}
-        <PostCommentSection
-          isCommentOpen={isCommentOpen}
-          setIsCommentOpen={setIsCommentOpen}
-        />
+        <PostCommentSection />
       </div>
     </div>
   );

@@ -20,7 +20,7 @@ const Bookmarks = () => {
 
   return (
     <div className="w-full">
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-2">
         {userBookmarks.length !== 0 ? (
           userBookmarks?.map((post, idx) => (
             <PostCard
