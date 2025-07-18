@@ -26,7 +26,7 @@ router.get("/suggested", verifyToken, getSuggestedUsers);
 router.get("/search", verifyToken, searchUser);
 
 router.post("/followorunfollow/:id", verifyToken, followOrUnfollow);
-router.delete("/removefollower/:id", verifyToken, removeFollower);
+router.post("/removefollower/:id", verifyToken, removeFollower);
 
 router.get("/profile/:username", getProfile);
 

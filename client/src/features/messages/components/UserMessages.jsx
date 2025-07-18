@@ -95,7 +95,7 @@ const UserMessages = () => {
               <Button
                 size="icon"
                 variant="ghost"
-                className="rounded-full size-10"
+                className="rounded-full size-10 sm:hidden"
                 onClick={() => navigate(-1)}
               >
                 <ChevronLeft />
@@ -109,7 +109,7 @@ const UserMessages = () => {
                 >
                   <UserAvatar
                     profilePicture={selectedUser?.profilePicture}
-                    avatarStyle="size-9"
+                    avatarStyle="size-8"
                   />
                   {onlineUsers?.includes(selectedUser?._id) && (
                     <span className="w-2 h-2 absolute bottom-0 right-1 bg-green-500 rounded-full" />

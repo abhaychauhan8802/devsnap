@@ -32,8 +32,8 @@ const PostFeed = () => {
   };
 
   return (
-    <div className="flex gap-5 pt-3 px-4">
-      <div className="max-w-2xl w-full mx-auto pt-0 px-4">
+    <div className="flex gap-5 px-4">
+      <div className="max-w-2xl w-full mx-auto pt-2 px-4">
         <div className="flex gap-3 border-b">
           {tabs.map((tab, idx) => (
             <button
@@ -51,12 +51,12 @@ const PostFeed = () => {
         </div>
       </div>
 
-      <div className="w-[300px] shrink-0 hidden lg:inline-block sticky top-5 h-fit space-y-4">
-        <div className="relative border rounded-xl bg-card overflow-hidden">
-          <h1 className=" border-b p-4">Current User</h1>
+      <div className="w-[300px] border-l shrink-0 hidden lg:inline-block sticky space-y-4 px-5 top-0 h-screen">
+        <div className="relative">
+          <h1 className="py-4 font-semibold">Current User</h1>
           <Link
             to={`/user/${authUser?.username}`}
-            className="flex gap-3 items-center p-4 hover:bg-background/80"
+            className="flex gap-3 items-center hover:bg-background/80"
           >
             <UserAvatar
               avatarStyle="size-12"

@@ -264,22 +264,22 @@ export const usePostStore = create((set, get) => ({
       comments: [...post.comments, tempComment],
     };
 
-    const updatedFeedPosts = feedPosts.map((p) =>
+    const updatedFeedPosts = posts.feed.map((p) =>
       p._id === postId ? { ...p, comments: [...p.comments, tempComment] } : p,
     );
 
-    const updatedExplorePosts = explorePosts.map((p) =>
+    const updatedExplorePosts = posts.explore.map((p) =>
       p._id === postId ? { ...p, comments: [...p.comments, tempComment] } : p,
     );
 
     set({
       postComments: updatedPostComments,
       post: updatedPost,
-      feedPosts: updatedFeedPosts,
-      explorePosts: updatedExplorePosts,
+      posts: {
+        feed: updatedFeedPosts,
+        explore: updatedExplorePosts,
+      },
     });
-
-    console.log("Add comment");
 
     try {
       await axiosInstance.post(`/post/${postId}/comment`, { text });
@@ -289,8 +289,10 @@ export const usePostStore = create((set, get) => ({
       set({
         postComments: commentsBackup,
         post: postBackup,
-        feedPosts: feedPostsBackup,
-        explorePosts: explorePostsBackup,
+        posts: {
+          feed: feedPostsBackup,
+          explore: explorePostsBackup,
+        },
       });
     }
   },

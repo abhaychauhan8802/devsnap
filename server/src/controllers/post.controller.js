@@ -115,6 +115,9 @@ export const searchPost = async (req, res) => {
         { title: { $regex: searchRegex } },
         { text: { $regex: searchRegex } },
       ],
+    }).populate({
+      path: "author",
+      select: "_id username name profilePicture bio createdAt",
     });
 
     res.status(200).json({ success: true, posts });

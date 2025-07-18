@@ -95,6 +95,7 @@ const Explore = () => {
                 <PostCard
                   ref={isLast ? lastPostRef : null}
                   key={idx}
+                  idx={idx}
                   post={post}
                   varient={isMobile ? "default" : "wide"}
                 />
@@ -113,7 +114,7 @@ const Explore = () => {
         </div>
       </div>
 
-      <div className="w-[300px] shrink-0 hidden lg:inline-block sticky top-5 mt-5 h-fit">
+      <div className="w-[300px] border-l shrink-0 hidden lg:inline-block sticky space-y-4 px-5 top-0 h-screen">
         <SuggestedUser />
       </div>
     </div>

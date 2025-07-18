@@ -152,7 +152,7 @@ export const useUserStore = create((set, get) => ({
     const { authUser } = useAuthStore.getState();
     const followers = authUser.followers || [];
     try {
-      axiosInstance.delete(`/user/removefollower/${userId}`);
+      axiosInstance.post(`/user/removefollower/${userId}`);
 
       const isFollower = followers.includes(userId);
 

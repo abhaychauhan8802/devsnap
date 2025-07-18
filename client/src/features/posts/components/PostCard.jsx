@@ -13,12 +13,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { usePostStore } from "@/features/posts/usePostStore";
 import { useUserStore } from "@/features/users/useUserStore";
+import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/store/useAuthStore";
 
 import UserAvatar from "../../../components/common/UserAvatar";
 import PostActionButtons from "./common/PostActionButtons";
 
-const PostCard = forwardRef(({ post, varient = "default" }, ref) => {
+const PostCard = forwardRef(({ post, idx, varient = "default" }, ref) => {
   const { authUser } = useAuthStore();
   const { setPost } = usePostStore();
   const { deleteUserPost } = useUserStore();
@@ -51,8 +52,8 @@ const PostCard = forwardRef(({ post, varient = "default" }, ref) => {
       }}
       ref={ref}
     >
-      <Card className="shadow-none rounded-[10px]">
-        <CardContent className="w-full">
+      <div className={cn("shadow-none py-6", idx !== 0 && "border-t ")}>
+        <div className="w-full">
           {/* Post owner info */}
           <div className="flex gap-2 items-center justify-between">
             <div onClick={handleNavigate} className="flex items-center gap-2">
@@ -123,8 +124,8 @@ const PostCard = forwardRef(({ post, varient = "default" }, ref) => {
               <PostActionButtons post={post} mainStyle="w-full" />
             </div>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </Link>
   );
 });

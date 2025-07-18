@@ -86,6 +86,7 @@ const FollowingsPosts = () => {
           <PostCard
             ref={isLast ? lastPostRef : null}
             key={idx}
+            idx={idx}
             post={post}
             varient={isMobile ? "default" : "wide"}
           />

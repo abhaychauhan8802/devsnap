@@ -3,8 +3,8 @@ import { useEffect } from "react";
 import useBreakPoints from "@/hooks/useBreakPoints";
 
 import { useMessageStore } from "../useMessageStore";
-import MessageSidebar from "./MessageSidebar";
 import UserMessages from "./UserMessages";
+import MessageSidebar from "./message-sidebar/MessageSidebar";
 
 const Message = () => {
   const { selectedUser, setSelectedUser } = useMessageStore();

@@ -1,24 +1,13 @@
-import { BsThreeDotsVertical } from "react-icons/bs";
-import { IoIosAdd } from "react-icons/io";
-import { RxCross2 } from "react-icons/rx";
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 
 import UserAvatar from "@/components/common/UserAvatar";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useMessageStore } from "@/features/messages/useMessageStore";
 import useBreakPoints from "@/hooks/useBreakPoints";
 import { useAuthStore } from "@/store/useAuthStore";
 
 import { useUserStore } from "../useUserStore";
 
 const UserCard = ({ follower, following }) => {
-  const { setSelectedUser } = useMessageStore();
   const { followAndUnfollow, removeFollower, user } = useUserStore();
   const { authUser } = useAuthStore();
 
@@ -36,11 +25,11 @@ const UserCard = ({ follower, following }) => {
   };
 
   return (
-    <div className="bg-card hover:bg-card/80 rounded-xl py-3 px-4 mb-1">
+    <div className="hover:bg-card/80 rounded-xl py-3 px-4 mb-1">
       {follower ? (
-        <Link
-          to={`/user/${follower?.username}`}
-          className="flex justify-between items-center"
+        <div
+          onClick={() => navigate(`/user/${follower?.username}`)}
+          className="flex justify-between items-center cursor-pointer z-0"
         >
           <div className="flex gap-3 items-center">
             <UserAvatar
@@ -57,35 +46,25 @@ const UserCard = ({ follower, following }) => {
             </div>
           </div>
           <div className="flex gap-1 items-center">
-            {authUser._id === user?._id && (
+            {authUser?._id === user?._id && (
               <>
                 <Button
+                  variant="secondary"
+                  className="z-20"
                   onClick={(e) => {
                     e.stopPropagation();
-                    setSelectedUser(following);
-                    navigate("/messages");
-                  }}
-                  size={isMobile ? "sm" : "default"}
-                >
-                  Message
-                </Button>
-                <Button
-                  variant={isFollower ? "secondary" : "danger"}
-                  size="icon"
-                  className={`${isMobile && "size-8"}`}
-                  onClick={() => {
                     if (isFollower) removeFollower(follower?._id);
                   }}
                 >
-                  {isFollower ? <RxCross2 /> : <IoIosAdd />}
+                  Remove
                 </Button>
               </>
             )}
           </div>
-        </Link>
+        </div>
       ) : (
-        <Link
-          to={`/user/${following?.username}`}
+        <div
+          onClick={() => navigate(`/user/${following?.username}`)}
           className="flex justify-between items-center"
         >
           <div className="flex gap-3 items-center">
@@ -107,31 +86,12 @@ const UserCard = ({ follower, following }) => {
               (isFollowing ? (
                 <>
                   <Button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSelectedUser(following);
-                      navigate("/messages");
-                    }}
+                    variant="secondary"
+                    onClick={handleFollowUnfollow}
                     size={isMobile ? "sm" : "default"}
                   >
-                    Message
+                    Unfollow
                   </Button>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className={`${isMobile && "size-8"}`}
-                      >
-                        <BsThreeDotsVertical />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem onClick={handleFollowUnfollow}>
-                        Unfollow
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
                 </>
               ) : (
                 <Button
@@ -142,7 +102,7 @@ const UserCard = ({ follower, following }) => {
                 </Button>
               ))}
           </div>
-        </Link>
+        </div>
       )}
     </div>
   );

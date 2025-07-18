@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 import cloudinary from "../lib/cloudinary.js";
+import { redis } from "../lib/redis.js";
 import User from "../models/user.model.js";
 import getDataUri from "../utils/datauri.js";
 
@@ -152,6 +153,8 @@ export const followOrUnfollow = async (req, res) => {
         ),
       ]);
 
+      await redis.del(`user:${currentUser}`);
+
       return res
         .status(200)
         .json({ message: "Unfollowed successfully", success: true });
@@ -168,6 +171,8 @@ export const followOrUnfollow = async (req, res) => {
         ),
       ]);
 
+      await redis.del(`user:${currentUser}`);
+
       return res
         .status(200)
         .json({ message: "followed successfully", success: true });
@@ -183,10 +188,10 @@ export const followOrUnfollow = async (req, res) => {
 };
 
 export const removeFollower = async (req, res) => {
-  try {
-    const currentUserId = req.id;
-    const otherUserId = req.params.id;
+  const currentUserId = req.id;
+  const otherUserId = req.params.id;
 
+  try {
     const currentUser = await User.findById(currentUserId);
     const otherUser = await User.findById(otherUserId);
 
@@ -206,6 +211,9 @@ export const removeFollower = async (req, res) => {
         { $pull: { followings: currentUserId } },
       ),
     ]);
+
+    await redis.del(`user:${currentUserId}`);
+    await redis.del(`user:${otherUserId}`);
 
     return res
       .status(200)
@@ -273,6 +281,7 @@ export const getFollowings = async (req, res) => {
 };
 
 export const searchUser = async (req, res) => {
+  const userId = req.id;
   try {
     const searchTerm = req.query.searchTerm;
 
@@ -282,11 +291,12 @@ export const searchUser = async (req, res) => {
     const searchRegex = new RegExp(searchTerm, "i");
 
     const users = await User.find({
+      _id: { $ne: userId },
       $or: [
         { username: { $regex: searchRegex } },
         { name: { $regex: searchRegex } },
       ],
-    }).sort({ username: 1, name: 1 });
+    });
 
     res.status(200).json({ success: true, users });
   } catch (error) {

@@ -1,14 +1,7 @@
 import { useState } from "react";
-import { CgClose } from "react-icons/cg";
+import { useNavigate } from "react-router";
 
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuthStore } from "@/store/useAuthStore";
 
@@ -20,6 +13,9 @@ const AddComment = () => {
   const { post, addComment } = usePostStore();
 
   const [comment, setComment] = useState("");
+  const [isCommentOpen, setIsCommentOpen] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleAddComment = (e) => {
     e.preventDefault();
@@ -28,38 +24,55 @@ const AddComment = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleAddComment}>
-        <Card className="mt-5 border rounded-xl py-3 gap-0 bg-card/50 shadow-none">
-          <CardHeader className="border-b [.border-b]:pb-1">
-            <CardTitle className="flex justify-between items-center py-2">
-              <h4>Add your comment</h4>
-            </CardTitle>
-          </CardHeader>
+    <form onSubmit={handleAddComment} className="mt-5">
+      <div className="flex flex-col gap-3">
+        <div
+          onClick={() => navigate(`/user/${authUser?.username}`)}
+          className="flex items-center gap-2 cursor-pointer w-fit"
+        >
+          <UserAvatar
+            avatarStyle="size-10"
+            profilePicture={authUser?.profilePicture}
+          />
 
-          <CardContent className="py-4">
-            <div className="flex gap-4">
-              <UserAvatar
-                avatarStyle="size-12"
-                profilePicture={authUser?.profilePicture}
-              />
-              <Textarea
-                onChange={(e) => setComment(e.target.value)}
-                value={comment}
-                placeholder="Type your comment here"
-                className="resize-none w-full h-20 border-0 shadow-none focus-visible:ring-0 word-wrap scrollbar"
-              />
-            </div>
-          </CardContent>
-          {/* <div className="flex justify-end px-6 pt-2"></div> */}
-          <CardFooter className="flex justify-end">
-            <Button disabled={!comment} type="submit">
+          {/* Name and username */}
+          <div className="flex flex-col leading-4">
+            <span className="text-md font-medium text-text-secondary">
+              {authUser?.name}
+            </span>
+            <span className="text-sm text-text-muted">
+              @{authUser?.username}
+            </span>
+          </div>
+        </div>
+
+        {isCommentOpen ? (
+          <>
+            <Textarea
+              onChange={(e) => setComment(e.target.value)}
+              value={comment}
+              placeholder="Type your comment here"
+              className="resize-none w-full word-wrap h-24 scrollbar bg-accent/40"
+            />
+
+            <Button
+              disabled={!comment}
+              type="submit"
+              className="w-fit self-end"
+            >
               Comment
             </Button>
-          </CardFooter>
-        </Card>
-      </form>
-    </div>
+          </>
+        ) : (
+          <div
+            className="bg-accent/40 px-4 py-2 rounded-lg text-sm cursor-pointer border"
+            onClick={() => setIsCommentOpen(true)}
+          >
+            Write your comment here
+          </div>
+        )}
+      </div>
+    </form>
   );
 };
 

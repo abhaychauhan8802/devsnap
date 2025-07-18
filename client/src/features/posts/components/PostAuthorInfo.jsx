@@ -19,8 +19,8 @@ const PostAuthorInfo = ({ post }) => {
   };
 
   return (
-    <div className="w-[400px] pt-5 hidden lg:block">
-      <div className="relative border p-4 rounded-xl bg-card">
+    <div className="w-[300px] border-l shrink-0 hidden lg:inline-block sticky space-y-4 px-5 top-0 h-screen pt-5">
+      <div className="relative">
         <Link to={`/user/${post?.author?.username}`}>
           <UserAvatar
             avatarStyle="size-16"
@@ -43,7 +43,7 @@ const PostAuthorInfo = ({ post }) => {
 
         {authUser._id !== post?.author?._id && (
           <Button
-            className="absolute top-4 right-4"
+            className="absolute top-4 right-0"
             variant={isFollowing ? "secondary" : "default"}
             onClick={handleFollowUnfollow}
           >
@@ -52,7 +52,9 @@ const PostAuthorInfo = ({ post }) => {
         )}
       </div>
 
-      <div className="mt-4">
+      <hr />
+
+      <div className="">
         <SuggestedUser />
       </div>
     </div>

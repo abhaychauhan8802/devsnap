@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Link } from "react-router";
 
 import UserAvatar from "@/components/common/UserAvatar";
+import { cn } from "@/lib/utils";
 
 import { useUserStore } from "../useUserStore";
 
@@ -13,14 +14,14 @@ const SuggestedUser = () => {
   }, [getSuggested]);
 
   return (
-    <div className="border rounded-xl bg-card overflow-hidden">
-      <h2 className="p-4">Suggested users</h2>
+    <div className="">
+      <h2 className="py-4 font-semibold">Suggested users</h2>
       <div className="">
         {suggestedUsers.map((user, _) => (
           <Link
             to={`/user/${user?.username}`}
             key={user._id}
-            className="flex items-center gap-4 px-4 py-3 cursor-pointer border-t hover:bg-background/80"
+            className="flex items-center gap-4 py-3 cursor-pointer hover:bg-background/80"
           >
             <UserAvatar
               avatarStyle="size-12"

@@ -25,6 +25,7 @@ const UserPostFeed = ({ userId }) => {
         {userPosts?.length !== 0 ? (
           userPosts?.map((post, idx) => (
             <PostCard
+              idx={idx}
               key={idx}
               post={post}
               varient={isMobile ? "default" : "wide"}

@@ -75,13 +75,14 @@ const ForYouPosts = () => {
   }
 
   return (
-    <div className={`flex flex-col gap-2`}>
+    <div className={`flex flex-col gap-0`}>
       {posts?.feed?.map((post, idx) => {
         const isLast = idx === posts?.feed?.length - 1;
 
         return (
           <PostCard
             ref={isLast ? lastPostRef : null}
+            idx={idx}
             key={idx}
             post={post}
             varient={isMobile ? "default" : "wide"}

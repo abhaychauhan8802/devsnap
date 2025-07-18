@@ -25,6 +25,7 @@ const Bookmarks = () => {
           userBookmarks?.map((post, idx) => (
             <PostCard
               key={idx}
+              idx={idx}
               post={post}
               varient={isMobile ? "default" : "wide"}
             />

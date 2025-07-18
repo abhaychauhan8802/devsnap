@@ -19,7 +19,7 @@ const PostDetail = () => {
   if (postLoading) return;
 
   return (
-    <div className="flex pt-4 px-4 md:px-8 pb-10">
+    <div className="flex px-4 md:px-8">
       <PostContent post={post} />
       <PostAuthorInfo post={post} />
     </div>

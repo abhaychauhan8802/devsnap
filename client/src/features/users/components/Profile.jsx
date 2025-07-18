@@ -1,12 +1,7 @@
 import { useState } from "react";
-import { BsPostcard, BsPostcardFill } from "react-icons/bs";
-import { IoGrid, IoGridOutline } from "react-icons/io5";
-import { MdBookmark, MdGrid3X3, MdOutlineBookmarkBorder } from "react-icons/md";
 
 import UserAvatar from "@/components/common/UserAvatar";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { formatDate } from "@/features/posts/utils/formatDate";
 import useBreakPoints from "@/hooks/useBreakPoints";
 import { useAuthStore } from "@/store/useAuthStore";
@@ -33,7 +28,7 @@ const Profile = ({ user }) => {
   const [open, setOpen] = useState(false);
   const [defaultValue, setDefaultValue] = useState(null);
 
-  const isFollowing = authUser?.followings?.includes(user?._id);
+  const isFollowing = authUser?.followings.includes(user?._id);
 
   const { isMobile } = useBreakPoints();
 
