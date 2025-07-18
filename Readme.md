@@ -57,8 +57,8 @@ The following environment variables are required to run the app:
 - `PORT`=
 - `CLIENT_URL`= The URL of the client.
 - `MONGODB_URI`= Mongodb URI
+- `REDIS_URI`= Redis uri
 - `JWT_SECRET`= Token secret
-
 - `CLOUD_NAME`= Cloudnary Name
 - `API_KEY`= Cloudnary Key
 - `API_SECRET`= Cloudnary Secret
