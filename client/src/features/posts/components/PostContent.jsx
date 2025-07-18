@@ -7,8 +7,8 @@ import { useAuthStore } from "@/store/useAuthStore";
 
 import UserAvatar from "../../../components/common/UserAvatar";
 import "../../../components/tiptap/tiptap.css";
+import PostActionButtons from "./PostActionButtons";
 import PostCommentSection from "./PostCommentSection";
-import PostActionButtons from "./common/PostActionButtons";
 
 const PostContent = ({ post }) => {
   const { authUser } = useAuthStore();

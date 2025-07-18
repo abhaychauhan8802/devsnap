@@ -63,12 +63,12 @@ const Sidebar = () => {
       icon: <IoChatbubbleEllipsesOutline size={iconSize} />,
       iconFill: <IoChatbubbleEllipsesSharp size={iconSize} />,
     },
-    {
-      name: "Notifications",
-      path: "/notifications",
-      icon: <PiBellSimpleLight size={iconSize} />,
-      iconFill: <PiBellSimpleFill size={iconSize} />,
-    },
+    // {
+    //   name: "Notifications",
+    //   path: "/notifications",
+    //   icon: <PiBellSimpleLight size={iconSize} />,
+    //   iconFill: <PiBellSimpleFill size={iconSize} />,
+    // },
     {
       name: "Create",
       path: "/create",

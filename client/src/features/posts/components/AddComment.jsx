@@ -51,24 +51,30 @@ const AddComment = () => {
             <Textarea
               onChange={(e) => setComment(e.target.value)}
               value={comment}
-              placeholder="Type your comment here"
+              placeholder="What are your thoughts?"
               className="resize-none w-full word-wrap h-24 scrollbar bg-accent/40"
             />
 
-            <Button
-              disabled={!comment}
-              type="submit"
-              className="w-fit self-end"
-            >
-              Comment
-            </Button>
+            <div className="self-end space-x-2">
+              <Button
+                type="button"
+                variant="ghost"
+                className="w-fit"
+                onClick={() => setIsCommentOpen(false)}
+              >
+                Cancel
+              </Button>
+              <Button disabled={!comment} type="submit" className="w-fit">
+                Comment
+              </Button>
+            </div>
           </>
         ) : (
           <div
-            className="bg-accent/40 px-4 py-2 rounded-lg text-sm cursor-pointer border"
+            className="bg-accent/40 px-4 py-2 rounded-lg text-sm cursor-pointer border border-input text-text-muted"
             onClick={() => setIsCommentOpen(true)}
           >
-            Write your comment here
+            What are your thoughts?
           </div>
         )}
       </div>

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router";
 
+import { Logo } from "@/components";
 import UserAvatar from "@/components/common/UserAvatar";
 import SuggestedUser from "@/features/users/components/SuggestedUser";
 import { useAuthStore } from "@/store/useAuthStore";
@@ -32,50 +33,57 @@ const PostFeed = () => {
   };
 
   return (
-    <div className="flex gap-5 px-4">
-      <div className="max-w-2xl w-full mx-auto pt-2 px-4">
-        <div className="flex gap-3 border-b">
-          {tabs.map((tab, idx) => (
-            <button
-              key={idx}
-              className={`flex items-center gap-1 cursor-pointer px-2 py-2 ${currentTab === tab.name && "border-b-2 border-primary text-primary"}`}
-              onClick={() => handleTabSwitch(tab.name)}
+    <>
+      <div className="h-14 border-b sticky top-0 bg-background z-20 flex items-center px-4">
+        <div className="scale-70">
+          <Logo />
+        </div>
+      </div>
+      <div className="flex gap-5 sm:px-4">
+        <div className="max-w-2xl w-full mx-auto pt-2 px-4">
+          <div className="flex gap-3 border-b">
+            {tabs.map((tab, idx) => (
+              <button
+                key={idx}
+                className={`flex items-center gap-1 cursor-pointer px-2 py-2 ${currentTab === tab.name && "border-b-2 border-primary text-primary"}`}
+                onClick={() => handleTabSwitch(tab.name)}
+              >
+                <span>{tab.label}</span>
+              </button>
+            ))}
+          </div>
+          <div className="mt-2 sm:mt-6">
+            {currentTab === "foryou" && <ForYouPosts />}
+            {currentTab === "followings" && <FollowingsPosts />}
+          </div>
+        </div>
+
+        <div className="w-[300px] border-l shrink-0 hidden lg:inline-block sticky space-y-4 px-5 top-0 h-screen">
+          <div className="relative">
+            <h1 className="py-4 font-semibold">Current User</h1>
+            <Link
+              to={`/user/${authUser?.username}`}
+              className="flex gap-3 items-center hover:bg-background/80"
             >
-              <span>{tab.label}</span>
-            </button>
-          ))}
-        </div>
-        <div className="mt-6">
-          {currentTab === "foryou" && <ForYouPosts />}
-          {currentTab === "followings" && <FollowingsPosts />}
+              <UserAvatar
+                avatarStyle="size-12"
+                profilePicture={authUser?.profilePicture}
+              />
+
+              <div className="flex flex-col">
+                <span className="text-lg font-medium text-text-secondary">
+                  {authUser?.name}
+                </span>
+                <span className="text-md text-text-muted">
+                  @{authUser?.username}
+                </span>
+              </div>
+            </Link>
+          </div>
+          <SuggestedUser />
         </div>
       </div>
-
-      <div className="w-[300px] border-l shrink-0 hidden lg:inline-block sticky space-y-4 px-5 top-0 h-screen">
-        <div className="relative">
-          <h1 className="py-4 font-semibold">Current User</h1>
-          <Link
-            to={`/user/${authUser?.username}`}
-            className="flex gap-3 items-center hover:bg-background/80"
-          >
-            <UserAvatar
-              avatarStyle="size-12"
-              profilePicture={authUser?.profilePicture}
-            />
-
-            <div className="flex flex-col">
-              <span className="text-lg font-medium text-text-secondary">
-                {authUser?.name}
-              </span>
-              <span className="text-md text-text-muted">
-                @{authUser?.username}
-              </span>
-            </div>
-          </Link>
-        </div>
-        <SuggestedUser />
-      </div>
-    </div>
+    </>
   );
 };
 

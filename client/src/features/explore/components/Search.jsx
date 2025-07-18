@@ -43,7 +43,7 @@ const Search = () => {
   console.log("searchPosts", searchPosts, "searchUsers", searchUsers);
 
   return (
-    <div className="flex gap-5 px-4">
+    <div className="flex gap-5 sm:px-4">
       <div className="max-w-2xl w-full mx-auto px-4">
         <div className="sticky top-0 bg-background z-20 py-2">
           <SearchBar />
@@ -59,7 +59,7 @@ const Search = () => {
                     <Link
                       to={`/user/${user?.username}`}
                       key={idx}
-                      className="flex items-center gap-2 py-2 cursor-pointer hover:bg-accent/30 px-2 rounded-sm"
+                      className="flex items-center gap-2 py-2 cursor-pointer hover:bg-accent/30 rounded-sm"
                     >
                       <UserAvatar
                         avatarStyle="size-12"
@@ -83,7 +83,7 @@ const Search = () => {
           {searchPosts?.length !== 0 && (
             <div className="py-4">
               <h2 className="font-semibold text-lg">Posts</h2>
-              <div className={`flex flex-col gap-2 px-3 sm:px-0`}>
+              <div className={`flex flex-col gap-2`}>
                 {searchPosts?.map((post, idx) => {
                   return (
                     <PostCard

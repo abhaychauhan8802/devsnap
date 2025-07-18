@@ -1,25 +1,15 @@
-import { BiLike, BiSolidLike } from "react-icons/bi";
-import { FaBookmark } from "react-icons/fa";
-import { FaLink, FaRegBookmark, FaRegComment } from "react-icons/fa6";
+import { FaLink, FaRegComment } from "react-icons/fa6";
 import { IoIosHeart, IoIosHeartEmpty } from "react-icons/io";
-import {
-  MdBookmark,
-  MdOutlineBookmarkBorder,
-  MdOutlineMessage,
-} from "react-icons/md";
-import { useNavigate } from "react-router";
+import { MdBookmark, MdOutlineBookmarkBorder } from "react-icons/md";
 import { toast } from "sonner";
 
-import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/store/useAuthStore";
 
-import { usePostStore } from "../../usePostStore";
+import { usePostStore } from "../usePostStore";
 
 const PostActionButtons = ({ post }) => {
   const { authUser } = useAuthStore();
   const { likePost, bookmarkPost } = usePostStore();
-
-  const navigate = useNavigate();
 
   const authUserPostsLikes = post?.likes?.includes(authUser?._id);
   const postbookmarked = authUser?.bookmarks?.includes(post?._id);

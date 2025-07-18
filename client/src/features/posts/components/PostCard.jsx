@@ -4,7 +4,6 @@ import { Link } from "react-router";
 import { useNavigate } from "react-router";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,7 +16,7 @@ import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/store/useAuthStore";
 
 import UserAvatar from "../../../components/common/UserAvatar";
-import PostActionButtons from "./common/PostActionButtons";
+import PostActionButtons from "./PostActionButtons";
 
 const PostCard = forwardRef(({ post, idx, varient = "default" }, ref) => {
   const { authUser } = useAuthStore();

@@ -80,37 +80,35 @@ const Explore = () => {
   }
 
   return (
-    <div className="flex gap-5 px-4">
+    <div className="flex gap-5 sm:px-4">
       <div className="max-w-2xl w-full mx-auto px-4">
         <div className="sticky top-0 bg-background z-20 py-2">
           <SearchBar />
         </div>
 
-        <div className="mt-2">
-          <div className={`flex flex-col gap-2 px-3 sm:px-0`}>
-            {posts?.explore?.map((post, idx) => {
-              const isLast = idx === posts?.explore?.length - 1;
+        <div className="mt-2 flex flex-col">
+          {posts?.explore?.map((post, idx) => {
+            const isLast = idx === posts?.explore?.length - 1;
 
-              return (
-                <PostCard
-                  ref={isLast ? lastPostRef : null}
-                  key={idx}
-                  idx={idx}
-                  post={post}
-                  varient={isMobile ? "default" : "wide"}
-                />
-              );
-            })}
-            {postLoading &&
-              [1, 2, 3].map((itm) => (
-                <PostSkeleton key={itm} type={isMobile ? "default" : "wide"} />
-              ))}
-            {!pagination.explore.hasMore && (
-              <p className="text-center text-sm text-gray-400 mb-5">
-                There are no more posts to show
-              </p>
-            )}
-          </div>
+            return (
+              <PostCard
+                ref={isLast ? lastPostRef : null}
+                key={idx}
+                idx={idx}
+                post={post}
+                varient={isMobile ? "default" : "wide"}
+              />
+            );
+          })}
+          {postLoading &&
+            [1, 2, 3].map((itm) => (
+              <PostSkeleton key={itm} type={isMobile ? "default" : "wide"} />
+            ))}
+          {!pagination.explore.hasMore && (
+            <p className="text-center text-sm text-gray-400 mb-5">
+              There are no more posts to show
+            </p>
+          )}
         </div>
       </div>
 
