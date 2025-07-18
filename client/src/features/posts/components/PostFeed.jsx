@@ -34,7 +34,7 @@ const PostFeed = () => {
 
   return (
     <>
-      <div className="h-14 border-b sticky top-0 bg-background z-20 flex items-center px-4">
+      <div className="h-14 border-b sticky top-0 bg-background z-20 flex items-center px-4 sm:hidden">
         <div className="scale-70">
           <Logo />
         </div>
