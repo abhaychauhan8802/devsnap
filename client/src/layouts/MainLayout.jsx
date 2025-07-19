@@ -47,29 +47,23 @@ const MainLayout = () => {
   const { isMobile } = useBreakPoints();
 
   return (
-    <div className="h-screen w-screen overflow-hidden text-text-primary">
+    <>
       {isMobile ? (
-        <div className="flex flex-col h-full w-full">
-          <main
-            ref={scrollRef}
-            className="h-full w-full overflow-x-hidden overflow-y-auto scrollbar"
-          >
+        <div className="flex flex-col h-dvh w-full">
+          <main ref={scrollRef} className="w-full pb-16">
             <Outlet />
           </main>
           <Tabs />
         </div>
       ) : (
-        <div className="flex h-full w-full">
+        <div className="flex w-full">
           <Sidebar />
-          <main
-            ref={scrollRef}
-            className="h-full w-full overflow-x-hidden overflow-y-auto scrollbar"
-          >
+          <main ref={scrollRef} className="w-full">
             <Outlet />
           </main>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

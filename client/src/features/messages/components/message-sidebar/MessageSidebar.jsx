@@ -23,7 +23,7 @@ const MessageSidebar = () => {
 
   return (
     <div className="md:border-r w-full md:w-[260px] h-full flex flex-col shrink-0">
-      <div className="flex items-center justify-between border-b h-16 px-4">
+      <div className="flex items-center justify-between border-b h-16 px-4 sticky top-0 bg-background z-20">
         <h2 className="font-bold text-xl">Messages</h2>
         <UserDialog>
           <button>

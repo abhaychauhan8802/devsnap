@@ -33,11 +33,11 @@ const Message = () => {
   return (
     <>
       {isMid ? (
-        <div className="h-full w-full">
+        <div className="w-full">
           {selectedUser ? <UserMessages /> : <MessageSidebar />}
         </div>
       ) : (
-        <div className="h-full w-full flex overflow-hidden scrollbar-none">
+        <div className="h-screen w-full flex overflow-hidden scrollbar-none">
           <MessageSidebar />
           <UserMessages />
         </div>

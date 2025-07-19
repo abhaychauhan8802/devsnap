@@ -53,7 +53,7 @@ const Login = () => {
       </div>
 
       {/* Right side - Login form */}
-      <div className="md:w-2/5 w-full flex flex-col p-8 bg-background">
+      <div className="md:w-2/5 w-full flex flex-col py-8 px-4 sm:px-8 bg-background">
         <div className="md:hidden">
           <Logo />
         </div>

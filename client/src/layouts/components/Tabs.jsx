@@ -57,8 +57,8 @@ const Tabs = () => {
   ];
 
   return (
-    <div className="h-16 w-full border-t shadow-sm">
-      <div className="flex h-full items-center justify-between max-w-md px-6 mx-auto">
+    <div className="border-t shadow-sm fixed bottom-0 bg-background z-20 w-full">
+      <div className="flex h-16 items-center justify-between max-w-md px-6 mx-auto">
         {navLinks.map((link, idx) => {
           return (
             <Link

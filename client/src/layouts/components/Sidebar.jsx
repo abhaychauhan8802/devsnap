@@ -82,7 +82,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="w-[60px] xl:w-[300px] px-2 xl:px-3 border-r h-full py-3">
+    <div className="w-[60px] xl:w-[300px] px-2 xl:px-3 border-r sticky top-0 py-3 h-screen">
       {/* main content */}
       <div
         className={`flex flex-col justify-between ${!isDesktop && "items-center"} h-full`}

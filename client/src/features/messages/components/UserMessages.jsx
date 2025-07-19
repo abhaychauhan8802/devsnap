@@ -89,9 +89,9 @@ const UserMessages = () => {
   return (
     <>
       {selectedUser ? (
-        <div className="h-full w-full flex flex-col">
-          <div className="border-b h-16 flex items-center px-4">
-            <div className="flex items-center gap-2">
+        <div className="max-sm:h-[calc(100dvh-64px-56px)] w-full flex flex-col">
+          <div className="border-b h-16 flex items-center px-4 sticky top-0 z-20 bg-background">
+            <div className="flex items-center gap-2 h-16">
               <Button
                 size="icon"
                 variant="ghost"
@@ -127,7 +127,7 @@ const UserMessages = () => {
             </div>
           </div>
 
-          <div className="flex-1 flex flex-col-reverse gap-2 overflow-auto p-4 scrollbar">
+          <div className="flex flex-col-reverse gap-2 p-4 h-full overflow-y-auto scrollbar-none">
             {typingUser && (
               <span className="self-start text-md text-text-muted">
                 typing{dots}
@@ -143,7 +143,10 @@ const UserMessages = () => {
             ))}
           </div>
 
-          <form onSubmit={handleSubmit}>
+          <form
+            onSubmit={handleSubmit}
+            className="max-sm:fixed bottom-16 bg-background w-full"
+          >
             <div className="h-14 flex items-center px-4">
               <div className="flex gap-2 w-full">
                 <Input
