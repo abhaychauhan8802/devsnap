@@ -9,7 +9,6 @@ import {
   IoSearchOutline,
 } from "react-icons/io5";
 import { MdOutlineSettings } from "react-icons/md";
-import { PiBellSimpleFill, PiBellSimpleLight } from "react-icons/pi";
 import { Link } from "react-router";
 import { useLocation } from "react-router";
 
@@ -82,7 +81,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="w-[60px] xl:w-[300px] px-2 xl:px-3 border-r sticky top-0 py-3 h-screen">
+    <div className="w-[60px] xl:w-[280px] px-2 xl:px-3 border-r shrink-0 fixed top-0 py-3 h-screen">
       {/* main content */}
       <div
         className={`flex flex-col justify-between ${!isDesktop && "items-center"} h-full`}

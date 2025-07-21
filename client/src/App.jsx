@@ -4,6 +4,8 @@ import { Navigate } from "react-router";
 
 import { Toaster } from "@/components/ui/sonner";
 
+import SplashScreen from "./components/SplashScreen";
+import useBreakPoints from "./hooks/useBreakPoints";
 import MainLayout from "./layouts/MainLayout";
 import {
   AddPostPage,
@@ -16,17 +18,29 @@ import {
   Register,
   SearchPage,
 } from "./pages";
+import PageNotFound from "./pages/PageNotFound";
 import { useAuthStore } from "./store/useAuthStore";
 
 const App = () => {
   const { authUser, checkAuth, checkAuthLoading } = useAuthStore();
+
+  const { isMobile } = useBreakPoints();
+
+  useEffect(() => {
+    const splash = document.getElementById("splash");
+    if (splash) splash.remove();
+
+    const theme = localStorage.getItem("vite-ui-theme");
+
+    if (!theme) localStorage.setItem("vite-ui-theme", "system");
+  }, []);
 
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
 
   if (checkAuthLoading) {
-    return "";
+    return <SplashScreen />;
   }
 
   return (
@@ -36,7 +50,6 @@ const App = () => {
         <Route path="/auth/login" element={<Login />} />
         <Route path="/auth/register" element={<Register />} />
 
-        <Route path="*" element={<h1>Page not found</h1>} />
         <Route
           element={
             authUser ? <MainLayout /> : <Navigate to="/auth/login" replace />
@@ -49,6 +62,7 @@ const App = () => {
           <Route path="/messages" element={<MessagePage />} />
           <Route path="/post/:postId" element={<PostPage />} />
           <Route path="/user/:username" element={<ProfilePage />} />
+          <Route path="*" element={<PageNotFound />} />
         </Route>
       </Routes>
     </Router>

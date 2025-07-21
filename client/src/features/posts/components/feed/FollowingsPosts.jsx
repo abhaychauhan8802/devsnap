@@ -5,13 +5,12 @@ import { useEffect } from "react";
 
 import useBreakPoints from "@/hooks/useBreakPoints";
 
-import { usePostStore } from "../usePostStore";
-import PostCard from "./PostCard";
-import PostSkeleton from "./PostSkeleton";
+import { usePostStore } from "../../usePostStore";
+import PostCard from "../common/PostCard";
+import PostSkeleton from "../common/PostSkeleton";
 
 const limit = 15;
-
-const ForYouPosts = () => {
+const FollowingsPosts = () => {
   const {
     posts,
     setPosts,
@@ -19,7 +18,7 @@ const ForYouPosts = () => {
     pagination,
     setHasMore,
     postLoading,
-    getFeedPost,
+    getFollowingPosts,
   } = usePostStore();
 
   const { isMobile } = useBreakPoints();
@@ -27,13 +26,16 @@ const ForYouPosts = () => {
   const observer = useRef();
 
   const loadMorePosts = async () => {
-    const newPosts = await getFeedPost({ skip: pagination.feed.skip, limit });
+    const newPosts = await getFollowingPosts({
+      skip: pagination.following.skip,
+      limit,
+    });
 
     if (newPosts?.length === 0) {
-      setHasMore(false, "feed");
+      setHasMore(false, "following");
       return;
     }
-    appendPosts(newPosts, limit, "feed");
+    appendPosts(newPosts, limit, "following");
   };
 
   const lastPostRef = useCallback(
@@ -42,31 +44,32 @@ const ForYouPosts = () => {
       if (observer.current) observer.current.disconnect();
 
       observer.current = new IntersectionObserver(([entry]) => {
-        if (entry.isIntersecting && pagination.feed.hasMore) {
+        if (entry.isIntersecting && pagination.following.hasMore) {
           loadMorePosts();
         }
       });
 
       if (node) observer.current.observe(node);
     },
-    [postLoading, pagination.feed.hasMore, pagination.feed.skip],
+    [postLoading, pagination.following.hasMore, pagination.following.skip],
   );
 
   useEffect(() => {
     const initialFetch = async () => {
-      const firstBatch = await getFeedPost({
-        skip: pagination.feed.skip,
+      const firstBatch = await getFollowingPosts({
+        skip: pagination.following.skip,
         limit,
       });
-      setPosts(firstBatch, limit, "feed");
+      setPosts(firstBatch, limit, "following");
+      console.log("Initial fetch call");
     };
 
-    if (posts?.feed?.length === 0) {
+    if (posts?.following?.length === 0) {
       initialFetch();
     }
   }, []);
 
-  if (posts?.feed?.length === 0 && postLoading) {
+  if (posts?.following?.length === 0 && postLoading) {
     return (
       <div className="w-full min-h-full flex justify-center items-center">
         <Loader2Icon className="animate-spin" />
@@ -75,25 +78,22 @@ const ForYouPosts = () => {
   }
 
   return (
-    <div className={`flex flex-col gap-0`}>
-      {posts?.feed?.map((post, idx) => {
-        const isLast = idx === posts?.feed?.length - 1;
+    <div className="flex flex-col">
+      {posts?.following?.map((post, idx) => {
+        const isLast = idx === posts?.following?.length - 1;
 
         return (
           <PostCard
             ref={isLast ? lastPostRef : null}
-            idx={idx}
             key={idx}
+            idx={idx}
             post={post}
             varient={isMobile ? "default" : "wide"}
           />
         );
       })}
-      {postLoading &&
-        [1, 2, 3].map((itm) => (
-          <PostSkeleton key={itm} type={isMobile ? "default" : "wide"} />
-        ))}
-      {!pagination.feed.hasMore && (
+      {postLoading && [1, 2, 3].map((itm) => <PostSkeleton key={itm} />)}
+      {!pagination.following.hasMore && (
         <p className="text-center text-sm text-gray-400 mb-5">
           There are no more posts to show
         </p>
@@ -102,4 +102,4 @@ const ForYouPosts = () => {
   );
 };
 
-export default ForYouPosts;
+export default FollowingsPosts;

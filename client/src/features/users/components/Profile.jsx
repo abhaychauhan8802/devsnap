@@ -4,6 +4,7 @@ import UserAvatar from "@/components/common/UserAvatar";
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/features/posts/utils/formatDate";
 import useBreakPoints from "@/hooks/useBreakPoints";
+import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/store/useAuthStore";
 
 import { useUserStore } from "../useUserStore";
@@ -181,7 +182,7 @@ const Profile = ({ user }) => {
           </div>
 
           <div className="w-full my-5">
-            <div className="flex gap-3 border-b">
+            <div className="flex border-b">
               {tabs.map((tab, idx) => {
                 if (tab.name === "Bookmarks" && authUser?._id !== user?._id) {
                   if (tab.name === selectedTab) setSelectedTab("Posts");
@@ -190,7 +191,11 @@ const Profile = ({ user }) => {
                 return (
                   <button
                     key={idx}
-                    className={`flex items-center gap-1 cursor-pointer px-2 py-2 ${selectedTab === tab.name && "border-b-2 border-primary text-primary"}`}
+                    className={cn(
+                      "flex items-center justify-center gap-1 cursor-pointer px-2 py-3 hover:bg-secondary text-text-muted flex-1",
+                      selectedTab === tab.name &&
+                        "border-b-2 border-primary text-text-primary font-semibold",
+                    )}
                     onClick={() => setSelectedTab(tab.name)}
                   >
                     <span>{tab.name}</span>

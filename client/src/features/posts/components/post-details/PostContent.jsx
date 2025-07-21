@@ -1,14 +1,14 @@
 import { Link } from "react-router";
 
+import UserAvatar from "@/components/common/UserAvatar";
+import "@/components/tiptap/tiptap.css";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
 import { useUserStore } from "@/features/users/useUserStore";
 import { useAuthStore } from "@/store/useAuthStore";
 
-import UserAvatar from "../../../components/common/UserAvatar";
-import "../../../components/tiptap/tiptap.css";
-import PostActionButtons from "./PostActionButtons";
-import PostCommentSection from "./PostCommentSection";
+import PostCommentSection from "../comment/PostCommentSection";
+import PostActionButtons from "../common/PostActionButtons";
 
 const PostContent = ({ post }) => {
   const { authUser } = useAuthStore();
@@ -88,7 +88,11 @@ const PostContent = ({ post }) => {
 
         {/* Actions buttons */}
         <div>
-          <PostActionButtons post={post} mainStyle="border rounded-xl p-1" />
+          <PostActionButtons
+            post={post}
+            commentIcon={false}
+            mainStyle="border rounded-xl p-1"
+          />
         </div>
 
         {/* Post comments */}

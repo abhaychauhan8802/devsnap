@@ -1,13 +1,12 @@
 import { useEffect } from "react";
 import { Link } from "react-router";
 
-import { useAuthStore } from "@/store/useAuthStore";
+import UserAvatar from "@/components/common/UserAvatar";
+import { cn } from "@/lib/utils";
 
-import UserAvatar from "../../../components/common/UserAvatar";
-import { usePostStore } from "../usePostStore";
+import { usePostStore } from "../../usePostStore";
 
 const CommentCard = () => {
-  const { authUser } = useAuthStore();
   const { post, postComments, getPostComments } = usePostStore();
 
   useEffect(() => {
@@ -19,9 +18,12 @@ const CommentCard = () => {
   return (
     <div className="mt-5">
       {postComments.length !== 0 ? (
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col">
           {postComments.map((comment, idx) => (
-            <div key={idx} className="border p-4 rounded-xl">
+            <div
+              key={idx}
+              className={cn("p-4", idx !== 0 && "border-t border-muted/50")}
+            >
               <Link
                 to={`/user/${comment?.author?.username}`}
                 className="flex gap-2 items-center justify-center cursor-pointer w-fit"

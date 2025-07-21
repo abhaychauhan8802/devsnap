@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router";
 import { useSearchParams } from "react-router";
 
 import UserAvatar from "@/components/common/UserAvatar";
-import PostCard from "@/features/posts/components/PostCard";
+import PostCard from "@/features/posts/components/common/PostCard";
 import SuggestedUser from "@/features/users/components/SuggestedUser";
 import useBreakPoints from "@/hooks/useBreakPoints";
 
@@ -40,8 +40,6 @@ const Search = () => {
     };
   }, [query]);
 
-  console.log("searchPosts", searchPosts, "searchUsers", searchUsers);
-
   return (
     <div className="flex gap-5 sm:px-4">
       <div className="max-w-2xl w-full mx-auto px-4">
@@ -59,7 +57,7 @@ const Search = () => {
                     <Link
                       to={`/user/${user?.username}`}
                       key={idx}
-                      className="flex items-center gap-2 py-2 cursor-pointer hover:bg-accent/30 rounded-sm"
+                      className="flex items-center gap-2 py-2 px-2 cursor-pointer hover:bg-accent/30 rounded-sm"
                     >
                       <UserAvatar
                         avatarStyle="size-12"

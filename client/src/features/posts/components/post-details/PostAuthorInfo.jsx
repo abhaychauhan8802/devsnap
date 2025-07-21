@@ -1,12 +1,12 @@
 import { Link } from "react-router";
 
+import UserAvatar from "@/components/common/UserAvatar";
 import { Button } from "@/components/ui/button";
 import SuggestedUser from "@/features/users/components/SuggestedUser";
 import { useUserStore } from "@/features/users/useUserStore";
 import { useAuthStore } from "@/store/useAuthStore";
 
-import UserAvatar from "../../../components/common/UserAvatar";
-import { formatDate } from "../utils/formatDate";
+import { formatDate } from "../../utils/formatDate";
 
 const PostAuthorInfo = ({ post }) => {
   const { followAndUnfollow } = useUserStore();

@@ -5,9 +5,42 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Devsnap</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+    </style>
   </head>
   <body class="scrollbar">
-    <div id="root" class="text-text-primary"></div>
+    <div
+      id="splash"
+      style="
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      "
+    >
+      <img src="./src/assets/images/logo.png" alt="logo" style="width: 160px" />
+    </div>
+    <script>
+      const root = document.getElementById("splash");
+
+      const theme = localStorage.getItem("vite-ui-theme");
+
+      if (theme === "light") {
+        root.style.backgroundColor = "#f3f5f9";
+      } else if (theme === "dark") {
+        root.style.backgroundColor = "#06141b";
+      } else if (theme === "system") {
+        window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? (root.style.backgroundColor = "#06141b")
+          : (root.style.backgroundColor = "#f3f5f9");
+      }
+    </script>
+
+    <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

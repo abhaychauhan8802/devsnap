@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
+import UserAvatar from "@/components/common/UserAvatar";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuthStore } from "@/store/useAuthStore";
 
-import UserAvatar from "../../../components/common/UserAvatar";
-import { usePostStore } from "../usePostStore";
+import { usePostStore } from "../../usePostStore";
 
 const AddComment = () => {
   const { authUser } = useAuthStore();

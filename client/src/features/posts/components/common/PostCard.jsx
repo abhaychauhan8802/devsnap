@@ -15,7 +15,7 @@ import { useUserStore } from "@/features/users/useUserStore";
 import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/store/useAuthStore";
 
-import UserAvatar from "../../../components/common/UserAvatar";
+import UserAvatar from "../../../../components/common/UserAvatar";
 import PostActionButtons from "./PostActionButtons";
 
 const PostCard = forwardRef(({ post, idx, varient = "default" }, ref) => {

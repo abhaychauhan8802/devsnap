@@ -6,8 +6,8 @@ import { useCallback } from "react";
 import SuggestedUser from "@/features/users/components/SuggestedUser";
 import useBreakPoints from "@/hooks/useBreakPoints";
 
-import PostCard from "../../posts/components/PostCard";
-import PostSkeleton from "../../posts/components/PostSkeleton";
+import PostCard from "../../posts/components/common/PostCard";
+import PostSkeleton from "../../posts/components/common/PostSkeleton";
 import { usePostStore } from "../../posts/usePostStore";
 import SearchBar from "./common/SearchBar";
 

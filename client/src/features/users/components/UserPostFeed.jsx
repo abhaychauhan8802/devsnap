@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router";
 
-import PostCard from "@/features/posts/components/PostCard";
+import PostCard from "@/features/posts/components/common/PostCard";
 import useBreakPoints from "@/hooks/useBreakPoints";
 
 import { useUserStore } from "../useUserStore";

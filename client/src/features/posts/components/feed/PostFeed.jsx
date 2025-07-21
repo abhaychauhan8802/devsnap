@@ -4,6 +4,7 @@ import { Link } from "react-router";
 import { Logo } from "@/components";
 import UserAvatar from "@/components/common/UserAvatar";
 import SuggestedUser from "@/features/users/components/SuggestedUser";
+import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/store/useAuthStore";
 
 import FollowingsPosts from "./FollowingsPosts";
@@ -40,12 +41,16 @@ const PostFeed = () => {
         </div>
       </div>
       <div className="flex gap-5 sm:px-4">
-        <div className="max-w-2xl w-full mx-auto pt-2 px-4">
-          <div className="flex gap-3 border-b">
+        <div className="max-w-2xl w-full mx-auto px-4">
+          <div className="flex border-b sm:sticky top-0 bg-background/60 backdrop-blur-3xl z-20">
             {tabs.map((tab, idx) => (
               <button
                 key={idx}
-                className={`flex items-center gap-1 cursor-pointer px-2 py-2 ${currentTab === tab.name && "border-b-2 border-primary text-primary"}`}
+                className={cn(
+                  "flex items-center justify-center gap-1 cursor-pointer px-2 py-3 hover:bg-secondary text-text-muted flex-1",
+                  currentTab === tab.name &&
+                    "border-b-2 border-primary text-text-primary font-semibold",
+                )}
                 onClick={() => handleTabSwitch(tab.name)}
               >
                 <span>{tab.label}</span>

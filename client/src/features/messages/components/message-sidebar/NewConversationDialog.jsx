@@ -1,5 +1,4 @@
-import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router";
+import { useEffect, useState } from "react";
 
 import UserAvatar from "@/components/common/UserAvatar";
 import { Button } from "@/components/ui/button";
@@ -11,7 +10,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 import { useExploreStore } from "@/features/explore/useExploreStore";
 import { useUserStore } from "@/features/users/useUserStore";
 import useBreakPoints from "@/hooks/useBreakPoints";
@@ -19,7 +17,7 @@ import { useAuthStore } from "@/store/useAuthStore";
 
 import { useMessageStore } from "../../useMessageStore";
 
-const UserDialog = ({ children }) => {
+const NewConversationDialog = ({ children }) => {
   const { followings, getFollowings } = useUserStore();
   const { authUser } = useAuthStore();
   const { setSelectedUser } = useMessageStore();
@@ -102,4 +100,4 @@ const UserDialog = ({ children }) => {
   );
 };
 
-export default UserDialog;
+export default NewConversationDialog;

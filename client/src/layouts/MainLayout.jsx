@@ -58,7 +58,7 @@ const MainLayout = () => {
       ) : (
         <div className="flex w-full">
           <Sidebar />
-          <main ref={scrollRef} className="w-full">
+          <main ref={scrollRef} className="w-full ml-[60px] xl:ml-[280px]">
             <Outlet />
           </main>
         </div>

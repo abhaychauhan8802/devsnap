@@ -9,7 +9,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import useBreakPoints from "@/hooks/useBreakPoints";
 import { useAuthStore } from "@/store/useAuthStore";
 
 const Logout = () => {

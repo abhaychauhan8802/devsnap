@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useParams } from "react-router";
 
-import { usePostStore } from "../usePostStore";
+import { usePostStore } from "../../usePostStore";
 import PostAuthorInfo from "./PostAuthorInfo";
 import PostContent from "./PostContent";
 

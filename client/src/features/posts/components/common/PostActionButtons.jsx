@@ -5,9 +5,9 @@ import { toast } from "sonner";
 
 import { useAuthStore } from "@/store/useAuthStore";
 
-import { usePostStore } from "../usePostStore";
+import { usePostStore } from "../../usePostStore";
 
-const PostActionButtons = ({ post }) => {
+const PostActionButtons = ({ post, commentIcon = true }) => {
   const { authUser } = useAuthStore();
   const { likePost, bookmarkPost } = usePostStore();
 
@@ -62,10 +62,12 @@ const PostActionButtons = ({ post }) => {
           )}
         </button>
 
-        <button className={`flex gap-2 items-center z-10 cursor-pointer`}>
-          <FaRegComment />
-          <span>{post?.comments?.length}</span>
-        </button>
+        {commentIcon && (
+          <button className={`flex gap-2 items-center z-10 cursor-pointer`}>
+            <FaRegComment />
+            <span>{post?.comments?.length}</span>
+          </button>
+        )}
 
         <button
           variant="ghost"
