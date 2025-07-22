@@ -47,7 +47,7 @@ const PostFeed = () => {
               <button
                 key={idx}
                 className={cn(
-                  "flex items-center justify-center gap-1 cursor-pointer px-2 py-3 hover:bg-secondary text-text-muted flex-1",
+                  "flex items-center justify-center gap-1 cursor-pointer px-2 py-3 hover:bg-secondary/20 text-text-muted flex-1",
                   currentTab === tab.name &&
                     "border-b-2 border-primary text-text-primary font-semibold",
                 )}

@@ -1,5 +1,4 @@
 import { AiFillPlusSquare, AiOutlinePlusSquare } from "react-icons/ai";
-import { FaRegMoon } from "react-icons/fa";
 import { GoHome, GoHomeFill } from "react-icons/go";
 import { IoMdMenu } from "react-icons/io";
 import {
@@ -8,29 +7,16 @@ import {
   IoSearch,
   IoSearchOutline,
 } from "react-icons/io5";
-import { MdOutlineSettings } from "react-icons/md";
 import { Link } from "react-router";
 import { useLocation } from "react-router";
 
 import AvatarImg from "@/assets/images/avatar.png";
 import { Logo } from "@/components";
+import MenuMore from "@/components/common/MenuMore";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { useTheme } from "@/context/theme-provider";
 import useBreakPoints from "@/hooks/useBreakPoints";
 import { useAuthStore } from "@/store/useAuthStore";
-
-import Logout from "./Logout";
 
 const iconSize = 25;
 
@@ -38,8 +24,6 @@ const Sidebar = () => {
   const { authUser } = useAuthStore();
 
   const location = useLocation();
-
-  const { setTheme } = useTheme();
 
   const { isDesktop } = useBreakPoints();
 
@@ -127,53 +111,14 @@ const Sidebar = () => {
         </div>
 
         {/*  */}
-
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <div className="hover:bg-accent p-2 xl:px-4 xl:py-2 rounded-lg flex items-center justify-center xl:justify-start gap-2 text-text-secondary cursor-pointer">
-              <IoMdMenu size={iconSize} />
-              <span className="hidden xl:inline-block text-lg font-medium">
-                More
-              </span>
-            </div>
-          </DropdownMenuTrigger>
-
-          <DropdownMenuContent className="w-[250px]" align="start">
-            <DropdownMenuGroup>
-              <DropdownMenuItem className="py-2 px-3 cursor-pointer">
-                <MdOutlineSettings className="text-secondary-foreground" />
-                <span className="font-medium">Settings</span>
-              </DropdownMenuItem>
-
-              <DropdownMenuSub>
-                <DropdownMenuSubTrigger className="flex gap-3 py-2 px-3 cursor-pointer">
-                  <FaRegMoon className="text-secondary-foreground" />
-                  <span className="font-medium">Theme</span>
-                </DropdownMenuSubTrigger>
-
-                <DropdownMenuSubContent>
-                  <DropdownMenuItem onClick={() => setTheme("light")}>
-                    Light
-                  </DropdownMenuItem>
-
-                  <DropdownMenuItem onClick={() => setTheme("dark")}>
-                    Dark
-                  </DropdownMenuItem>
-
-                  <DropdownMenuItem onClick={() => setTheme("system")}>
-                    System
-                  </DropdownMenuItem>
-                </DropdownMenuSubContent>
-              </DropdownMenuSub>
-            </DropdownMenuGroup>
-
-            <DropdownMenuSeparator />
-
-            <DropdownMenuItem asChild>
-              <Logout />
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <MenuMore>
+          <div className="hover:bg-accent p-2 xl:px-4 xl:py-2 rounded-lg flex items-center justify-center xl:justify-start gap-2 text-text-secondary cursor-pointer">
+            <IoMdMenu size={iconSize} />
+            <span className="hidden xl:inline-block text-lg font-medium">
+              More
+            </span>
+          </div>
+        </MenuMore>
       </div>
     </div>
   );

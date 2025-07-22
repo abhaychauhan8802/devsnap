@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { IoMdMenu } from "react-icons/io";
 
+import MenuMore from "@/components/common/MenuMore";
 import UserAvatar from "@/components/common/UserAvatar";
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/features/posts/utils/formatDate";
@@ -41,8 +43,13 @@ const Profile = ({ user }) => {
 
   return (
     <>
-      <div className="h-14 border-b sticky top-0 bg-background z-20 flex items-center px-4 sm:hidden">
+      <div className="h-14 border-b sticky top-0 bg-background z-20 flex items-center justify-between px-4 sm:hidden">
         <h3 className="text-lg font-bold">Profile</h3>
+        <MenuMore>
+          <div className="p-2 rounded-lg flex items-center justify-center text-text-secondary cursor-pointer">
+            <IoMdMenu size={20} align="end" />
+          </div>
+        </MenuMore>
       </div>
       <div>
         <div className="max-w-2xl w-full mx-auto px-4">

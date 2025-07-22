@@ -1,6 +1,8 @@
 import { FiLogOut } from "react-icons/fi";
 
-import { Button } from "@/components/ui/button";
+import { useAuthStore } from "@/store/useAuthStore";
+
+import { Button } from "../ui/button";
 import {
   Dialog,
   DialogContent,
@@ -8,8 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { useAuthStore } from "@/store/useAuthStore";
+} from "../ui/dialog";
 
 const Logout = () => {
   const { logout } = useAuthStore();
