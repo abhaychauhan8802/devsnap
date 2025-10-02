@@ -14,7 +14,6 @@ import AvatarImg from "@/assets/images/avatar.png";
 import { Logo } from "@/components";
 import MenuMore from "@/components/common/MenuMore";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useTheme } from "@/context/theme-provider";
 import useBreakPoints from "@/hooks/useBreakPoints";
 import { useAuthStore } from "@/store/useAuthStore";
 

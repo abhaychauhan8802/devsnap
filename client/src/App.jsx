@@ -5,7 +5,6 @@ import { Navigate } from "react-router";
 import { Toaster } from "@/components/ui/sonner";
 
 import SplashScreen from "./components/SplashScreen";
-import useBreakPoints from "./hooks/useBreakPoints";
 import MainLayout from "./layouts/MainLayout";
 import {
   AddPostPage,
@@ -23,8 +22,6 @@ import { useAuthStore } from "./store/useAuthStore";
 
 const App = () => {
   const { authUser, checkAuth, checkAuthLoading } = useAuthStore();
-
-  const { isMobile } = useBreakPoints();
 
   useEffect(() => {
     const splash = document.getElementById("splash");

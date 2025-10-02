@@ -1,117 +1,102 @@
 import { io } from "socket.io-client";
 import { toast } from "sonner";
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
 
 import axiosInstance from "@/lib/axios";
 
-const BASE_URL =
-  import.meta.env.MODE === "development" ? "http://localhost:3000" : "/";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+const BASE_URL = import.meta.env.MODE === "development" ? backendUrl : "/";
 
-export const useAuthStore = create(
-  persist(
-    (set, get) => ({
-      authUser: null,
-      loading: false,
-      checkAuthLoading: false,
-      onlineUsers: [],
-      socket: null,
+export const useAuthStore = create((set, get) => ({
+  authUser: null,
+  loading: false,
+  checkAuthLoading: false,
+  onlineUsers: [],
+  socket: null,
 
-      checkAuth: async () => {
-        set({ checkAuthLoading: true });
-        try {
-          const res = await axiosInstance.get("/auth/auth-profile");
+  checkAuth: async () => {
+    set({ checkAuthLoading: true });
+    try {
+      const res = await axiosInstance.get("/auth/auth-profile");
+      set({ authUser: res.data.user });
 
-          set({ authUser: res.data.user });
+      setTimeout(() => {
+        get().socketConnection();
+      }, 100);
+    } catch (error) {
+      console.log("Error in checking auth");
+      set({ authUser: null });
+    } finally {
+      set({ checkAuthLoading: false });
+    }
+  },
 
-          setTimeout(() => {
-            get().socketConnection();
-          }, 100);
-        } catch (error) {
-          console.log("Error in checking auth");
-          set({ authUser: null });
-        } finally {
-          set({ checkAuthLoading: false });
-        }
-      },
+  login: async (data) => {
+    set({ loading: true });
+    try {
+      console.log("Logging in with data:", data);
 
-      login: async (data) => {
-        set({ loading: true });
-        try {
-          const res = await axiosInstance.post("/auth/login", data);
+      const res = await axiosInstance.post("/auth/login", data);
+      set({ authUser: res.data.user });
+      toast.success("Login successfully");
 
-          set({ authUser: res.data.user });
-          toast.success("Login successfully");
+      setTimeout(() => {
+        get().socketConnection();
+      }, 100);
+    } catch (error) {
+      toast.error(error?.response?.data?.message);
+    } finally {
+      set({ loading: false });
+    }
+  },
 
-          setTimeout(() => {
-            get().socketConnection();
-          }, 100);
-        } catch (error) {
-          toast.error(error?.response?.data?.message);
-        } finally {
-          set({ loading: false });
-        }
-      },
+  register: async (data) => {
+    set({ loading: true });
+    try {
+      const res = await axiosInstance.post("/auth/register", data);
+      set({ authUser: res.data.user });
+      toast.success("Account created");
 
-      register: async (data) => {
-        set({ loading: true });
+      setTimeout(() => {
+        get().socketConnection();
+      }, 100);
+    } catch (error) {
+      toast.error(error?.response?.data?.message);
+    } finally {
+      set({ loading: false });
+    }
+  },
 
-        try {
-          const res = await axiosInstance.post("/auth/register", data);
+  logout: async () => {
+    try {
+      const res = await axiosInstance.post("/auth/logout");
+      set({ authUser: null });
+      toast.success(res.data.message);
 
-          set({ authUser: res.data.user });
-          toast.success("Account created");
+      get().socketDisconnection();
+    } catch (error) {
+      toast.error(error?.response?.data?.message);
+    }
+  },
 
-          setTimeout(() => {
-            get().socketConnection();
-          }, 100);
-        } catch (error) {
-          toast.error(error?.response?.data?.message);
-        } finally {
-          set({ loading: false });
-        }
-      },
+  socketConnection: () => {
+    const { authUser } = get();
+    if (!authUser || get().socket?.connected) return;
 
-      logout: async () => {
-        try {
-          const res = await axiosInstance.post("/auth/logout");
+    const socket = io(BASE_URL, { withCredentials: true });
 
-          set({ authUser: null });
-          toast.success(res.data.message);
+    socket.on("connect", () => {
+      console.log("Socket connected");
+    });
 
-          get().socketDisconnection();
-        } catch (error) {
-          toast.error(error?.response?.data?.message);
-        }
-      },
+    socket.on("getOnlineUsers", (userIds) => {
+      set({ onlineUsers: userIds });
+    });
 
-      socketConnection: () => {
-        const { authUser } = get();
+    set({ socket });
+  },
 
-        if (!authUser || get().socket?.connected) return;
-
-        const socket = io(BASE_URL, {
-          withCredentials: true,
-        });
-
-        socket.on("connect", () => {
-          console.log("Socket connected");
-        });
-
-        socket.on("getOnlineUsers", (userIds) => {
-          set({ onlineUsers: userIds });
-        });
-
-        set({ socket });
-      },
-
-      socketDisconnection: () => {
-        if (get().socket?.connected) get().socket.disconnect();
-      },
-    }),
-    {
-      name: "auth-user",
-      partialize: (state) => ({ authUser: state.authUser }),
-    },
-  ),
-);
+  socketDisconnection: () => {
+    if (get().socket?.connected) get().socket.disconnect();
+  },
+}));

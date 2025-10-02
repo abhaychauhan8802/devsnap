@@ -32,7 +32,7 @@ const Login = () => {
     if (authUser) {
       navigate("/");
     }
-  }, [authUser]);
+  }, [authUser, navigate]);
 
   if (authUser) return <Navigate to="/" replace />;
 
